@@ -6,7 +6,7 @@ import React from 'react';
 
 const Page = () => {
     return (
-        <div className='flex justify-between mt-6 mx-3 gap-4'>
+        <div className='flex justify-between mt-6 mx-3 gap-4 container'>
             <div className='bg-white p-4 w-3/4'>
                 <RotorStatus />
 

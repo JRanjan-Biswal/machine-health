@@ -12,8 +12,15 @@ body {
 @source not inline('container');
 
 .container {
-  max-width: calc(100vw - 60px);
+  /* max-width: calc(100vw - 60px); */
+  max-width: 1440px;
   margin-inline: auto;
+}
+
+@media screen and (max-width:1440px) {
+  .container {
+    margin-inline: 30px;
+  }
 }
 
 
