@@ -52,7 +52,7 @@ const SideModal = ({ handleClick, showSideBar }) => {
     const handleExploreNow = () => router.push('/stock-preparation/hydrapuler')
 
     return (
-        <div className={`fixed top-4 right-4 h-[calc(100svh_-_16px) transition-all duration-300 ${!showSideBar ? 'translate-x-[calc(100%_+_100px)]' : 'translate-x-0'}`}>
+        <div className={`fixed bottom-4 right-4 h-[calc(100svh_-_16px) transition-all duration-300 ${!showSideBar ? 'translate-x-[calc(100%_+_100px)]' : 'translate-x-0'}`}>
             <div className="flex flex-col bg-[#2d3e5c] rounded-lg w-[413px]">
                 {/* Header Section */}
                 <div className="flex justify-between items-center px-4 pt-4">
