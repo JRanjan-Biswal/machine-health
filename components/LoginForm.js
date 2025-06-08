@@ -1,0 +1,91 @@
+'use client';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
+
+  const router = useRouter()
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    clientId: defaultClientId,
+    password: defaultPassword
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    router.push("/dashboard")
+    // Handle login logic here
+  };
+
+  return (
+    <div className="w-full max-w-[443px] min-w-[320px] flex flex-col gap-[50px] p-4">
+      <div className="flex flex-col gap-[10px]">
+        <h1 className="text-[32px] font-bold font-montserrat text-[#1d1d1d]">
+          Client Portal
+        </h1>
+        <p className="text-base font-normal font-montserrat text-[#1d1d1d]">
+          Log in to view assigned cases
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-[35px]">
+        <div className="flex flex-col gap-5">
+          <div className="relative">
+            <input
+              type="text"
+              name="clientId"
+              placeholder="Client ID"
+              value={formData.clientId}
+              onChange={handleInputChange}
+              className="w-full px-5 py-[15px] border border-[#96a5ba] rounded-[6px] text-base font-montserrat text-[#2d3e5c] focus:outline-none focus:border-[#1d1d1d]"
+            />
+          </div>
+
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleInputChange}
+              className="w-full px-5 py-[15px] border border-[#96a5ba] rounded-[6px] text-base font-montserrat text-[#2d3e5c] focus:outline-none focus:border-[#1d1d1d]"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-[14px] top-1/2 transform -translate-y-1/2"
+            >
+              <Image
+                src="/icon-clo.png"
+                alt="toggle password"
+                className="w-6 h-6"
+                width={24}
+                height={24}
+              />
+            </button>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          className="cursor-pointer w-full py-[15px] px-[50px] bg-[#1d1d1d] text-white rounded-[6px] font-bold text-base font-montserrat hover:bg-[#2d2d2d] transition-colors"
+        >
+          Log In
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default LoginForm;
+

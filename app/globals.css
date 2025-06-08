@@ -1,0 +1,331 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-blue: #2d3e5c;
+  --color-secondary-blue: #e6eef5;
+}
+
+body {
+  @apply bg-[#F3F9FF];
+}
+
+@source not inline('container');
+
+.container {
+  max-width: calc(100vw - 60px);
+  margin-inline: auto;
+}
+
+
+/* cost benefit analysis */
+/* .cost-benegit-three-d {
+  background-image: url("/scope-image.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: bottom left;
+
+} */
+
+.custom-range {
+  position: relative;
+  width: 70%;
+  z-index: 20;
+}
+
+.custom-range .first {
+  position: absolute;
+  left: 25%;
+  width: 2px;
+  height: 100%;
+  background-color: white;
+  z-index: -1;
+}
+
+.custom-range .second {
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background-color: white;
+  z-index: -1;
+}
+
+.custom-range .third {
+  position: absolute;
+  left: 75%;
+  width: 2px;
+  height: 100%;
+  background-color: white;
+  z-index: -1;
+}
+
+.custom-range input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /*   position: absolute; */
+  /*   left: 35%; */
+  /*   top: 35%; */
+  width: 100%;
+  margin: auto;
+  display: block;
+  margin-top: 35px;
+  /*   transform: translate(-50%, -50%); */
+}
+
+.slider-background {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 20px;
+  transform: translateY(-50%);
+  border-radius: 10px;
+  /* box-shadow: 0px 0px 5px 5px gainsboro; */
+  overflow: hidden;
+}
+
+.slider-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  transition: width 0.1s ease;
+}
+
+.slider-remaining {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  opacity: 0.5;
+  transition: width 0.1s ease;
+}
+
+.slider-color {
+  position: absolute;
+  inset: 0;
+  background: -moz-linear-gradient(45deg,
+      rgb(17, 82, 0) 0%,
+      rgb(45, 156, 1) 40%,
+      rgb(248, 177, 45) 51%,
+      rgb(194, 41, 41) 100%);
+  height: 20px;
+  width: 100%;
+  z-index: -2;
+  border-radius: 20px;
+}
+
+.custom-range [type="range"]::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 5px gainsboro;
+  background: #4776e6;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right,
+      #8e54e9,
+      #4776e6);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right,
+      #8e54e9,
+      #4776e6);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  height: 7.5px;
+}
+
+.custom-range input[type="range"]:focus {
+  outline: none;
+}
+
+/* .custom-range input[type="range"]::-moz-range-track {
+  -moz-appearance: none;
+  background: rgba(59, 173, 227, 1);
+  background: -moz-linear-gradient(45deg,
+      rgba(59, 173, 227, 1) 0%,
+      rgba(87, 111, 230, 1) 25%,
+      rgba(152, 68, 183, 1) 51%,
+      rgba(255, 53, 127, 1) 100%);
+  background: -webkit-gradient(left bottom,
+      right top,
+      color-stop(0%, rgba(59, 173, 227, 1)),
+      color-stop(25%, rgba(87, 111, 230, 1)),
+      color-stop(51%, rgba(152, 68, 183, 1)),
+      color-stop(100%, rgba(255, 53, 127, 1)));
+  background: -webkit-linear-gradient(45deg,
+      rgba(59, 173, 227, 1) 0%,
+      rgba(87, 111, 230, 1) 25%,
+      rgba(152, 68, 183, 1) 51%,
+      rgba(255, 53, 127, 1) 100%);
+  background: -o-linear-gradient(45deg,
+      rgba(59, 173, 227, 1) 0%,
+      rgba(87, 111, 230, 1) 25%,
+      rgba(152, 68, 183, 1) 51%,
+      rgba(255, 53, 127, 1) 100%);
+  background: -ms-linear-gradient(45deg,
+      rgba(59, 173, 227, 1) 0%,
+      rgba(87, 111, 230, 1) 25%,
+      rgba(152, 68, 183, 1) 51%,
+      rgba(255, 53, 127, 1) 100%);
+  background: linear-gradient(45deg,
+      rgba(59, 173, 227, 1) 0%,
+      rgba(87, 111, 230, 1) 25%,
+      rgba(152, 68, 183, 1) 51%,
+      rgba(255, 53, 127, 1) 100%);
+  height: 20px;
+  border-radius: 50px;
+} */
+
+.custom-range input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 2px solid;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  max-width: 80px;
+  position: relative;
+  bottom: 11px;
+  background-color: white;
+  cursor: -webkit-grab;
+  z-index: 20;
+  -webkit-transition: border 1000ms ease;
+  transition: border 1000ms ease;
+}
+
+.custom-range input[type="range"]::-moz-range-thumb {
+  -moz-appearance: none;
+  border: none;
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+  max-width: 80px;
+  position: absolute;
+  bottom: 11px;
+  z-index: 20;
+  background-color: green;
+  cursor: -moz-grab;
+  -moz-transition: border 1000ms ease;
+  transition: border 1000ms ease;
+}
+
+.custom-range input::-webkit-slider-thumb {
+  border-color: rgb(59, 173, 227);
+  z-index: 20;
+}
+
+
+.trashwell {
+  z-index: 100;
+  cursor: pointer;
+  width: 217px;
+  height: 194px;
+  position: absolute;
+  bottom: 327px;
+  left: 725px;
+}
+
+.trashwell .hover-bg {
+  object-fit: cover;
+  object-position: bottom;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.trashwell:hover .hover-bg {
+  opacity: 1;
+}
+
+.hydrapulper {
+  z-index: 100;
+  cursor: pointer;
+  width: 208px;
+  height: 194px;
+  position: absolute;
+  bottom: 393px;
+  left: 453px;
+}
+
+.hydrapulper .hover-bg {
+  object-fit: cover;
+  object-position: bottom;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.hydrapulper:hover .hover-bg {
+  opacity: 1;
+}
+
+.hydrapurge {
+  z-index: 100;
+  cursor: pointer;
+  width: 238px;
+  height: 194px;
+  position: absolute;
+  bottom: 282px;
+  left: 240px;
+}
+
+.hydrapurge .hover-bg {
+  object-fit: cover;
+  object-position: bottom;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.hydrapurge:hover .hover-bg {
+  opacity: 1;
+}
+
+
+.mtk {
+  z-index: 100;
+  cursor: pointer;
+  width: 278px;
+  height: 194px;
+  position: absolute;
+  bottom: 31px;
+  left: 302px;
+}
+
+.mtk .hover-bg {
+  object-fit: cover;
+  object-position: bottom;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.mtk:hover .hover-bg {
+  opacity: 1;
+}
+
+@media screen and (min-width: 1560px) {
+  .trashwell {
+    left: 47.3%;
+    bottom: 35.6%;
+    z-index: 100;
+    height: 28%;
+    width: 13.7%;
+    cursor: pointer;
+  }
+}
+
+@media screen and (min-width: 1560px) {
+  .trashwell {
+    left: 47.3%;
+    bottom: 35.6%;
+    z-index: 100;
+    height: 28%;
+    width: 13.7%;
+    cursor: pointer;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+  }
+}

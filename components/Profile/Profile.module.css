@@ -1,0 +1,55 @@
+/* ProfileLayout.module.css */
+
+.show {
+  transform: translateX(0);
+}
+
+.hide {
+  transform: translateX(calc(100% + 50px));
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 342px;
+  height: auto;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 40px;
+  right: 16px;
+  height: calc(100vh - 78px);
+  overflow: scroll;
+  transition: all 300ms ease-in-out;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.settingsSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  column-gap: 16px;
+}
+
+.logoutSection {
+  display: flex;
+  justify-content: center;
+}
+
