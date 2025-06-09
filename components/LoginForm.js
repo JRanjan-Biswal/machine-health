@@ -34,7 +34,6 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log('Form submitted:', formData, isValidEmail(formData.email));
     if (!formData.email || !formData.password) {
       toast.error('Please fill in all fields', { color: '#1d1d1d' });
       return;
@@ -53,18 +52,18 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
       });
       setIsLoading(true);
       if (response.ok) {
+        toast.success('Login successful!', { color: '#1d1d1d' });
         router.push('/dashboard');
+        return;
       }
-      // const result = await response.json();
-      // localStorage.setItem('token', result.data.token);
+      else {
+        throw Error();
+      }
     }
     catch (error) {
-      console.error('Login failed:', error);
-      alert('Login failed. Please check your credentials and try again.');
-      return;
+      toast.error('Login failed. Please check your credentials.', { color: '#1d1d1d' });
     }
     setIsLoading(false);
-    toast.success('Login successful!', { color: '#1d1d1d' });
   };
 
   return (

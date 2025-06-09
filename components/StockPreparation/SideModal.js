@@ -58,7 +58,7 @@ const SideModal = ({ handleClick, showSideBar }) => {
 
 
     return (
-        <div className={`fixed bottom-4 right-4 h-[calc(100svh_-_130px)] transition-all duration-300 ${!showSideBar ? 'translate-x-[calc(100%_+_100px)]' : 'translate-x-0'}`}>
+        <div className={`fixed bottom-[10px] right-4 transition-all duration-300 ${!showSideBar ? 'translate-x-[calc(100%_+_100px)]' : 'translate-x-0'}`}>
             <div className="flex flex-col bg-[#2d3e5c] rounded-lg w-[413px]">
                 {/* Header Section */}
                 <div className="flex justify-between items-center px-4 pt-4">
@@ -133,7 +133,7 @@ const SideModal = ({ handleClick, showSideBar }) => {
                         <div className="grid grid-cols-2 gap-4">
                             {
                                 componentData.map((component, index) => (
-                                    <div key={index} className="bg-[#26334b] rounded-xl h-[181px] relative cursor-pointer overflow-hidden">
+                                    <div key={index} className="bg-[#26334b] rounded-xl h-[170px] relative cursor-pointer overflow-hidden">
                                         <div className="bg-[#13213a] rounded-t-xl flex items-center justify-center gap-2 py-1 px-4">
                                             <Image src={component.icon} alt="Status Icon" width={16} height={16} />
                                             <div className={`font-semibold ${component.color}`}>{component.status}</div>

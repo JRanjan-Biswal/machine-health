@@ -1,9 +1,10 @@
 'use client';
+import React from 'react';
 import RotorStatus from '@/components/MachineryDetails/rotorstatus';
 import RotorComponent from '@/components/StockPreparationCategoryInner/RotorComponent';
-import RotorLayout from '@/components/StockPreparationCategoryInner/RotorLayout';
+// import RotorLayout from '@/components/StockPreparationCategoryInner/RotorLayout';
 import Image from 'next/image';
-import React from 'react';
+import { LuRotate3D } from "react-icons/lu";
 
 const Page = () => {
 
@@ -48,25 +49,29 @@ const Page = () => {
                                 : <Image src="/rotor-bottom-knife.png" alt="" height={300} width={300} className='w-auto h-full object-contain' />
                         }
 
-                        <Image src="/power-saver-arrow.png" alt='' width={100} height={2} className={`absolute ${bottomKnkifeSelected ? 'w-[15%] h-[10px] top-[31%] right-[100%]' : 'top-[24%] right-[83%] z-10 w-[24%] h-[15px]'}`} />
-                        <p onClick={(e) => handleImageClick("Power Saver")} className={`cursor-pointer text-primary-blue font-lato font-medium text-xl absolute ${bottomKnkifeSelected ? 'top-[27.5%] right-[115%]' : 'top-[21.5%] right-[106%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-4 py-[6px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Power Saver</p>
+                        <Image src="/power-saver-arrow.png" alt='' width={100} height={2} 
+                        className={`absolute ${bottomKnkifeSelected ? 'w-[15%] h-[10px] top-[31%] right-[100%]' : 'top-[24%] right-[83%] z-10 w-[20%] h-[10px]'}`} />
 
-                        <Image src="/power-saver-arrow.png" alt='' width={100} height={2} className={`absolute ${bottomKnkifeSelected ? 'h-[10px] w-[17%] top-[73.5%] right-[96%]' : 'h-[15px] w-[24%] top-[48%] right-[99%]'} z-10`} />
-                        <p onClick={(e) => handleImageClick("Foil")} className={`cursor-pointer text-primary-blue font-lato font-medium text-xl absolute ${bottomKnkifeSelected ? 'top-[70.5%] right-[111.5%]' : 'top-[45.5%] right-[122%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-4 py-[6px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Foil</p>
+                        <p onClick={(e) => handleImageClick("Power Saver")} className={`cursor-pointer text-primary-blue font-lato font-medium text-xl absolute ${bottomKnkifeSelected ? 'top-[27.5%] right-[115%]' : 'top-[20.5%] right-[102%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-4 py-[6px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Power Saver</p>
+
+                        <Image src="/power-saver-arrow.png" alt='' width={100} height={2} 
+                        className={`absolute ${bottomKnkifeSelected ? 'h-[10px] w-[17%] top-[73.5%] right-[96%]' : 'h-[10px] w-[20%] top-[48%] right-[99%]'} z-10`} />
+
+                        <p onClick={(e) => handleImageClick("Foil")} className={`cursor-pointer text-primary-blue font-lato font-medium text-xl absolute ${bottomKnkifeSelected ? 'top-[70.5%] right-[111.5%]' : 'top-[44.5%] right-[118%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-4 py-[6px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Foil</p>
 
                         {
                             bottomKnkifeSelected
                                 ? <Image src="/power-saver-arrow.png" alt='' width={100} height={2} className='h-[13px] w-[20%] absolute top-[61%] right-[98%] z-10' />
-                                : <Image src="/top-right.png" alt='' width={100} height={2} className='h-[30px] w-[18%] absolute top-[62%] right-[89%] z-10' />
+                                : <Image src="/top-right.png" alt='' width={100} height={2} className='h-[22px] w-[16%] absolute top-[62%] right-[89%] z-10' />
                         }
-                        <p onClick={(e) => handleImageClick("Side Shield")} className={`cursor-pointer text-primary-blue font-lato font-medium text-xl absolute ${bottomKnkifeSelected ? 'top-[58.5%] right-[117%]' : 'top-[62.5%] right-[106%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-4 py-[6px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Side Shield</p>
+                        <p onClick={(e) => handleImageClick("Side Shield")} className={`cursor-pointer text-primary-blue font-lato font-medium text-xl absolute ${bottomKnkifeSelected ? 'top-[58.5%] right-[117%]' : 'top-[61%] right-[104.5%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-4 py-[6px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Side Shield</p>
 
                         {
                             bottomKnkifeSelected
                                 ? <Image src="/angular-arrow.png" alt='' width={100} height={2} className='h-[81px] w-[37%] absolute top-[73%] right-[77%] z-10' />
-                                : <Image src="/power-saver-arrow.png" alt='' width={100} height={2} className='h-[15px] w-[24%] absolute top-[79%] right-[86%] z-10' />
+                                : <Image src="/power-saver-arrow.png" alt='' width={100} height={2} className='h-[10px] w-[20%] absolute top-[79%] right-[86%] z-10' />
                         }
-                        <p onClick={(e) => handleImageClick("Bottom Knife")} className={`cursor-pointer text-primary-blue font-lato font-medium text-xl absolute ${bottomKnkifeSelected ? 'top-[84%] right-[113%]' : 'top-[76%] right-[109%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-4 py-[6px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Bottom Knife</p>
+                        <p onClick={(e) => handleImageClick("Bottom Knife")} className={`cursor-pointer text-primary-blue font-lato font-medium text-xl absolute ${bottomKnkifeSelected ? 'top-[84%] right-[113%]' : 'top-[75.5%] right-[105%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-4 py-[6px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Bottom Knife</p>
 
                     </div>
                 </div>
@@ -87,7 +92,7 @@ const Page = () => {
                         </div>
                     </div>
                     <div>
-                        <button className='cursor-pointer flex bg-white px-[13px] py-[6px] rounded-4xl'><p>Rotate 3D</p> <Image src="/rotate-threed.png" alt="" height={24} width={24} className='h-6 w-6' /></button>
+                        <button className='cursor-pointer flex bg-white px-[13px] py-[6px] rounded-4xl gap-1.5'><p>Rotate 3D</p><LuRotate3D size={20} /></button>
                     </div>
                 </div>
             </div>

@@ -2,9 +2,10 @@
 import BusinessSnapshot from "@/components/Dashboard/BusinessSnapshot";
 import RecentActivity from "@/components/Dashboard/RecentActivity";
 import MillOverviewModal from "@/components/MillOverviewModal";
+import Modal from "@/components/Modal";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LuFactory } from "react-icons/lu";
 
 const page = () => {
@@ -14,9 +15,17 @@ const page = () => {
   const handleShowModal = () => setshowmodal(!showmodal);
 
   const [dropdownOpen, setDropdownOpen] = useState(false); // business | recent
+
   const toggleDropdown = (type) => setDropdownOpen((prev) => prev == type ? false : type);
 
   const handleHydraPulerClick = () => router.push('/stock-preparation');
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       {
@@ -77,17 +86,17 @@ const page = () => {
               <p>Recent Activity</p>
             </div>
             {
-              dropdownOpen == "business" && <div className="absolute top-12 right-0 z-10"><BusinessSnapshot /></div>
+              dropdownOpen == "business" && <div className="absolute top-12 right-0 z-10"><Modal isOpen={dropdownOpen == "business"} onClose={toggleDropdown}><BusinessSnapshot /></Modal></div>
             }
 
             {
-              dropdownOpen == "recent" && <div className="absolute top-12 right-0 z-10"><RecentActivity /></div>
+              dropdownOpen == "recent" && <div className="absolute top-12 right-0 z-10"><Modal isOpen={dropdownOpen == "recent"} onClose={toggleDropdown}><RecentActivity /></Modal></div>
             }
           </div>
 
         </div>
 
-        <div className="fixed top-[194px] h-[1px] w-full left-0 right-0 bg-primary-grey"/>
+        <div className="fixed top-[194px] h-[1px] w-full left-0 right-0 bg-primary-grey" />
 
         <div className="h-full w-full relative mt-9">
           <Image src="/dashboard.png" alt="dashboard table" height={1000} width={1500} className="w-full h-full object-center object-fill" />
