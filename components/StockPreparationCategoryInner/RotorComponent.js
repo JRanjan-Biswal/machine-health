@@ -13,7 +13,7 @@ const RotorComponent = ({ currentState = true, optimalState = true, currentState
                 {/* Current State Section */}
                 <div className="flex flex-col gap-1.5">
                     <h2 className="text-white text-base font-montserrat font-medium">Current State</h2>
-                    <div className="relative w-full h-[252px] bg-[#dfe6ec] rounded-md overflow-hidden">
+                    <div className="relative w-full h-[calc(50svh_-_200px)] bg-[#dfe6ec] rounded-md overflow-hidden">
                         <div className="absolute top-2.5 right-2.5 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100">
                             <Image
                                 src="/icon-exp.png"
@@ -32,7 +32,7 @@ const RotorComponent = ({ currentState = true, optimalState = true, currentState
                 {/* Optimal State Section */}
                 <div className="flex flex-col gap-1.5">
                     <h2 className="text-white text-base font-montserrat font-medium">Optimal State</h2>
-                    <div className="relative w-full h-[252px] bg-[#607797] rounded-md overflow-hidden">
+                    <div className="relative w-full h-[calc(50svh_-_200px)] bg-[#607797] rounded-md overflow-hidden">
                         <div className="absolute top-2.5 right-2.5 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100">
                             <Image
                                 src="/icon-exp.png"

@@ -236,7 +236,7 @@ const MainContent = () => {
                 </div>
 
                 {/* Chart Area */}
-                <div className="mt-8 w-[calc(100%_-_400px)] h-[260px]">
+                <div className="mt-8 w-[calc(100%_-_350px)] h-[calc(50svh_-_220px)]">
                     <Bar ref={chartRef} data={data} options={options} id='chart' />
                 </div>
 
@@ -247,15 +247,9 @@ const MainContent = () => {
                         <div className='second' />
                         <div className='third' />
                         <div className='slider-color'></div>
-                        {/* <div class="slider-background">
-                            <div className="slider-fill" id="fill-1"></div>
-                            <div className="slider-remaining" id="remaining-1"></div>
-                        </div> */}
                         <input type="range" min="0" max="100" id="slider-1"  onChange={handleSliderChange} value={sliderValue} />
-                        {/* <div className="w-full h-5 bg-gradient-to-r from-[#e5eacc] via-[#f4eac4] to-[#ffd3c4] rounded-full"></div>
-                        <Image src="/capa-1.png" width={64} height={64} alt="Timeline marker" className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2" /> */}
                     </div>
-                    <div className="flex justify-between mt-4 text-[#2d3e5c] font-bold w-[70%] mx-auto">
+                    <div className="flex justify-between mt-4 text-[#2d3e5c] font-bold w-[70%] mx-auto shadow-custom-1">
                         <div className="text-center">
                             <p>Installed On</p>
                             <p>(17/08/2024)</p>
