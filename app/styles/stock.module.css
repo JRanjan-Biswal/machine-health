@@ -14,6 +14,7 @@
     width: 100%;
     height: 100%;
     opacity: 0;
+    transition: all 0.2s ease-in-out;
 }
 
 .trashwell:hover .hoverBg {
@@ -27,7 +28,7 @@
 .hydrapulper {
     z-index: 100;
     cursor: pointer;
-    width: 208px;
+    width: 202px;
     height: 242px;
     position: absolute;
     bottom: 393px;
@@ -40,6 +41,7 @@
     width: 100%;
     height: 100%;
     opacity: 0;
+    transition: all 0.2s ease-in-out;
 }
 
 .hydrapulper .tooltip {
@@ -53,11 +55,11 @@
 .hydrapurge {
     z-index: 100;
     cursor: pointer;
-    width: 238px;
+    width: 229px;
     height: 250px;
     position: absolute;
     bottom: 282px;
-    left: 240px;
+    left: 248px;
 }
 
 .hydrapurge .hoverBg {
@@ -66,6 +68,7 @@
     width: 100%;
     height: 100%;
     opacity: 0;
+    transition: all 0.2s ease-in-out;
 }
 
 .hydrapurge .tooltip {
@@ -93,6 +96,7 @@
     width: 100%;
     height: 100%;
     opacity: 0;
+    transition: all 0.2s ease-in-out;
 }
 
 .mtk .tooltip {

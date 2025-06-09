@@ -19,7 +19,7 @@ const page = () => {
   const handleHydraPulerClick = () => router.push('/stock-preparation');
   return (
     <>
-      {/* {
+      {
         showmodal &&
         <div className="flex justify-center items-center w-full h-screen bg-black/75 p-5 backdrop-blur-[5px] absolute inset-0 z-100">
           <div className="absolute z-10">
@@ -34,7 +34,7 @@ const page = () => {
             />
           </div>
         </div>
-      } */}
+      }
       <div className="container h-[calc(100vh_-_260px)] mt-[20px] relative">
         <div className="flex justify-between mx-5">
           <div>

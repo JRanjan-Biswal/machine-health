@@ -5,6 +5,25 @@ import React, { useState } from 'react';
 import { RxCross2 } from "react-icons/rx";
 
 
+// replacs €/ton and €/kwhr with empty string and validates the price
+function extractAndValidatePrice(priceString) {
+  let cleanedString = priceString.replace(/€\/ton|€\/kwhr/g, '').trim();
+  let regex = /^\d*\.?\d*$/; // Regex to match any character that is not a digit, comma, or period
+  let checkNumType = regex.test(cleanedString); // Remove unwanted characters
+
+  if (checkNumType) {
+    return {
+      isValidNumber: true,
+      value: cleanedString
+    };
+  } else {
+    return {
+      isValidNumber: false,
+      value: null
+    };
+  }
+}
+
 const MillOverviewModal = ({
   customerName = 'Select Company',
   powerCost = '0.09 €/kwhr',
@@ -16,6 +35,23 @@ const MillOverviewModal = ({
 }) => {
   const router = useRouter();
   const [selectedCompany, setSelectedCompany] = useState(customerName);
+
+  const [powerCostState, setPowerCostState] = useState(powerCost);
+  const [fiberCostState, setFiberCostState] = useState(fiberCost);
+
+  const handleChangeCost = (value, type) => {
+
+    const isValidPowerCost = extractAndValidatePrice(value);
+    if (!isValidPowerCost.isValidNumber) return;
+
+    if (type === 'powerCost') {
+      setPowerCostState(isValidPowerCost.value + ' €/kwhr');
+    }
+    else if (type === 'fiberCost') {
+      setFiberCostState(isValidPowerCost.value + ' €/ton');
+    }
+  }
+
 
   return (
     <div className="max-w-lg w-full bg-white rounded-2xl p-10 shadow-lg flex flex-col gap-6">
@@ -38,12 +74,8 @@ const MillOverviewModal = ({
               <option value="GayatriShakti Papers & Boards Ltd.">GayatriShakti Papers & Boards Ltd.</option>
               <option value="Lemit Papers LLP">Lemit Papers LLP</option>
             </select>
-            <Image
-              src="/icon.png"
-              alt="Dropdown"
+            <Image src="/icon.png" alt="Dropdown" width={24} height={24}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none -rotate-90"
-              width={24}
-              height={24}
             />
           </div>
         </div>
@@ -53,9 +85,9 @@ const MillOverviewModal = ({
             <label className="font-semibold text-gray-700">Power Cost</label>
             <input
               type="text"
-              value={powerCost}
+              value={powerCostState}
               className="w-full p-3 border border-gray-300 rounded-md"
-              readOnly
+              onChange={(e) => handleChangeCost(e.target.value, 'powerCost')}
             />
           </div>
 
@@ -63,9 +95,9 @@ const MillOverviewModal = ({
             <label className="font-semibold text-gray-700">Fiber Cost</label>
             <input
               type="text"
-              value={fiberCost}
+              value={fiberCostState}
               className="w-full p-3 border border-gray-300 rounded-md"
-              readOnly
+              onChange={(e) => handleChangeCost(e.target.value, 'fiberCost')}
             />
           </div>
         </div>

@@ -6,8 +6,8 @@ import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 // import useUserLogedIn from '@/app/actions/isUserLoggedIn';
 
-function Layout ({ children }){
-  
+function Layout({ children }) {
+
   const pathname = usePathname();
 
   if (pathname == "/") return children
@@ -25,12 +25,9 @@ function Layout ({ children }){
       <div className='container'>
         <div className="flex flex-row items-center justify-between px-12 py-4 bg-white rounded-full border border-[#dfe6ec] min-h-[80px] w-full mt-4 shadow-custom-1">
           <div className="w-[134px] h-[20px] relative">
-            <Image
-              src="/logo.png"
-              alt="Logo"
-              width={134}
-              height={20}
-            />
+            <Link href="/dashboard">
+              <Image src="/logo.png" alt="Logo" width={134} height={20} />
+            </Link>
           </div>
 
           <div className="flex flex-row gap-4">

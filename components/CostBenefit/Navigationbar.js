@@ -28,7 +28,7 @@ const NavigationBar = ({ activeTab = 'pulping', onTabChange = () => { } }) => {
                     <Link
                         key={item.id}
                         href={`#${item.id}`}
-                        className={`flex items-center px-5 py-[10px] hover:bg-[#f5f7f9] transition-colors
+                        className={`flex items-center px-4 py-[10px] hover:bg-[#f5f7f9] transition-colors
               ${activeTab === item.id ? 'bg-[#f5f7f9]' : ''}`}
                         onClick={() => onTabChange(item.id)}
                     >

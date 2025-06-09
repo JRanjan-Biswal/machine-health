@@ -1,4 +1,5 @@
 
+'use client';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, LinearScale, CategoryScale } from "chart.js";
 import gradient from 'chartjs-plugin-gradient';
@@ -7,14 +8,31 @@ ChartJS.register(ArcElement, Tooltip, Legend, BarElement, LinearScale, CategoryS
 
 import { RiArrowRightSLine } from "react-icons/ri";
 import Image from 'next/image';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
+
+
+const updateThumbColor = (element, value) => {
+    let color;
+    const normalizedValue = value / 100;
+
+    if (normalizedValue >= 0 && normalizedValue < 0.25) {
+        color = 'hsl(120, 100%, 20%)'; // Darker green
+    } else if (normalizedValue >= 0.25 && normalizedValue < 0.5) {
+        color = 'hsl(120, 100%, 40%)'; // Standard green
+    } else if (normalizedValue >= 0.5 && normalizedValue < 0.75) {
+        color = 'hsl(30, 100%, 50%)'; // Orange
+    } else {
+        color = 'hsl(0, 100%, 50%)'; // Red
+    }
+
+    // Set the CSS variable on the slider element
+    element.style.setProperty('--slider-thumb-color', color);
+};
 
 const MainContent = () => {
 
     const chartRef = useRef(null);
-
-    const chartDataValues = [120, 150, 100, 180, 130];
-    const labels = ['January', 'February', 'March', 'April', 'May'];
+    const [sliderValue, setSliderValue] = useState(49);
 
     const data = {
         labels: ['Power Loss', 'Fiber Loss', 'Total Loss'],
@@ -123,38 +141,25 @@ const MainContent = () => {
                     color: '#96A5BA', // Y-axis line color
                     width: 2 // Y-axis line width
                 },
-                // ticks: {
-                //     // Adjust padding to move labels inside the chart area
-                //     padding: -10,
-                //     z: 999, // Try a very high value initially
-                //     color: 'white',// Make tick labels white for contrast if bars are dark
-                //     font: {
-                //         weight: 'bold',
-                //         size: 14,
-                //     },
-                // }
             }
         },
     };
 
-    // function updateSlider() {
-    //     const slider = document.getElementById("slider-1");
-    //     const fill = document.getElementById("fill-1");
-    //     const remaining = document.getElementById('remaining-1');
 
-    //     function update() {
-    //         const value = slider.value;
-    //         const percentage = (value / slider.max) * 100;
+    // useEffect to handle the initial color setting and subsequent changes
+    useMemo(() => {
+        if (typeof window === 'undefined') return; // Ensure this runs only in the browser
 
-    //         fill.style.width = percentage + '%';
-    //         remaining.style.width = (100 - percentage) + '%';
-    //     }
+        const sliderElement = document.getElementById('slider-1');
+        if (sliderElement) {
+            updateThumbColor(sliderElement, sliderValue);
+        }
+    }, [sliderValue]); // Re-run when sliderValue changes
 
-
-
-    //     // Initial update
-    //     update();
-    // }
+    const handleSliderChange = (event) => {
+        const newValue = parseInt(event.target.value, 10);
+        setSliderValue(newValue);
+    };
 
     return (
         <div className="w-full mx-auto bg-white rounded-xl border border-[#dfe6ec] overflow-hidden h-[calc(100svh_-_200px)]">
@@ -236,7 +241,7 @@ const MainContent = () => {
                 </div>
 
                 {/* Timeline */}
-                <div className="mt-16 mx-auto">
+                <div className="mt-12 mx-auto">
                     <div className="relative custom-range mx-auto">
                         <div className='first' />
                         <div className='second' />
@@ -246,7 +251,7 @@ const MainContent = () => {
                             <div className="slider-fill" id="fill-1"></div>
                             <div className="slider-remaining" id="remaining-1"></div>
                         </div> */}
-                        <input type="range" min="0" max="100" id="slider-1" />
+                        <input type="range" min="0" max="100" id="slider-1"  onChange={handleSliderChange} value={sliderValue} />
                         {/* <div className="w-full h-5 bg-gradient-to-r from-[#e5eacc] via-[#f4eac4] to-[#ffd3c4] rounded-full"></div>
                         <Image src="/capa-1.png" width={64} height={64} alt="Timeline marker" className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2" /> */}
                     </div>
@@ -256,7 +261,8 @@ const MainContent = () => {
                             <p>(17/08/2024)</p>
                         </div>
                         <div className="text-center">
-                            <p>Lifespan (3600 Hrs)</p>
+                            <p>Lifespan</p>
+                            <p>(3600 Hrs)</p>
                         </div>
                         <div className="text-center">
                             <p>Current running hours</p>
