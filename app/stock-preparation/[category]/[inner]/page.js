@@ -71,7 +71,7 @@ const Page = () => {
                     </div>
                 </div>
 
-                <div className='bg-[#DFE6EC] w-full flex justify-between p-4 absolute bottom-0'>
+                <div className='bg-[#DFE6EC] w-full flex justify-between items-center p-4 absolute bottom-0'>
                     <div className='flex gap-6'>
                         <div>
                             <p className='font-semibold font-lato text-xl text-primary-blue'>Installation date</p>
@@ -85,6 +85,9 @@ const Page = () => {
                             <p className='font-semibold font-lato text-xl text-primary-blue'>Running Hours</p>
                             <p className='text-primary-blue'>5040</p>
                         </div>
+                    </div>
+                    <div>
+                        <button className='cursor-pointer flex bg-white px-[13px] py-[6px] rounded-4xl'><p>Rotate 3D</p> <Image src="/rotate-threed.png" alt="" height={24} width={24} className='h-6 w-6' /></button>
                     </div>
                 </div>
             </div>

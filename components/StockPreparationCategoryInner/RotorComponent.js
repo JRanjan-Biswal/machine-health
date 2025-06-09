@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 const RotorComponent = ({ currentState = true, optimalState = true, currentStateImge = "/image-95.png", optimalStateimg="/image-94.png", percentage = "60%" }) => {
 
@@ -69,10 +70,10 @@ const RotorComponent = ({ currentState = true, optimalState = true, currentState
                 </div> */}
 
                 {/* View Details Button */}
-                <button className="flex items-center justify-center gap-2 bg-[#d45815] text-white py-4 px-8 rounded-full hover:bg-[#c24d12] transition-colors group cursor-pointer">
+                <Link href="/cost-benefit" className="flex items-center justify-center gap-2 bg-[#d45815] text-white py-4 px-8 rounded-full hover:bg-[#c24d12] transition-colors group cursor-pointer">
                     <Image src="/icon-gea.png" width={24} height={24} alt="gear icon" className='transition-all duration-300 group-hover:rotate-90' />
                     <span className="font-montserrat font-bold text-base">View Details</span>
-                </button>
+                </Link>
             </div>
         </div>
     );

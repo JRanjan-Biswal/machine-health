@@ -2,12 +2,19 @@
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, LinearScale, CategoryScale } from "chart.js";
 import gradient from 'chartjs-plugin-gradient';
-ChartJS.register(ArcElement, Tooltip, Legend, BarElement, LinearScale, CategoryScale, gradient);
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+ChartJS.register(ArcElement, Tooltip, Legend, BarElement, LinearScale, CategoryScale, gradient, ChartDataLabels);
 
 import { RiArrowRightSLine } from "react-icons/ri";
 import Image from 'next/image';
+import { useMemo, useRef } from 'react';
 
 const MainContent = () => {
+
+    const chartRef = useRef(null);
+
+    const chartDataValues = [120, 150, 100, 180, 130];
+    const labels = ['January', 'February', 'March', 'April', 'May'];
 
     const data = {
         labels: ['Power Loss', 'Fiber Loss', 'Total Loss'],
@@ -15,11 +22,42 @@ const MainContent = () => {
             {
                 label: 'Loss (%)',
                 data: [12.5, 2.5, 12],
-                backgroundColor: [
-                    'rgba(235, 81, 84, 0.8)',
-                    'rgba(255, 182, 71, 0.8)',
-                    'rgba(65, 94, 145, 0.8)'
-                ],
+                backgroundColor: function (context) {
+                    const chart = context.chart;
+                    const { ctx, chartArea } = chart;
+
+                    if (!ctx || !chartArea) {
+                        return null;
+                    }
+
+                    const { element } = context;
+                    let gradientFill;
+
+                    if (element && element.base && element.height) {
+                        gradientFill = ctx.createLinearGradient(0, element.base, 0, element.base - element.height);
+                    } else {
+                        gradientFill = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                    }
+
+                    switch (context.dataIndex) {
+                        case 0:
+                            gradientFill.addColorStop(0, '#BF1E21');
+                            gradientFill.addColorStop(1, '#EB5154');
+                            break;
+                        case 1:
+                            gradientFill.addColorStop(0, '#FF9A00');
+                            gradientFill.addColorStop(1, '#FFB647');
+                            break;
+                        case 2:
+                            gradientFill.addColorStop(0, '#2D3E5C');
+                            gradientFill.addColorStop(1, '#415E91');
+                            break;
+                        default:
+                            gradientFill.addColorStop(0, 'rgba(211, 211, 211, 0.8)');
+                            gradientFill.addColorStop(1, 'rgba(128, 128, 128, 0.8)');
+                    }
+                    return gradientFill;
+                },
                 borderColor: [
                     'rgba(191, 30, 33, 1)',
                     'rgba(255, 154, 0, 1)',
@@ -39,6 +77,19 @@ const MainContent = () => {
             legend: {
                 display: false // Remove legend if desired
             },
+            datalabels: { // Datalabels plugin configuration
+                anchor: 'end', // Position the label at the end of the bar (top for vertical)
+                align: 'end',   // Align the label to the end (top for vertical)
+                offset: 0,      // Offset from the end of the bar
+                formatter: (value) => {
+                    return value + ' %'; // Display the value and add " units"
+                },
+                font: {
+                    weight: 'bold',
+                    size: 16,
+                },
+                color: '#333', // Darker color for better contrast
+            }
         },
         scales: {
             y: {
@@ -72,6 +123,16 @@ const MainContent = () => {
                     color: '#96A5BA', // Y-axis line color
                     width: 2 // Y-axis line width
                 },
+                // ticks: {
+                //     // Adjust padding to move labels inside the chart area
+                //     padding: -10,
+                //     z: 999, // Try a very high value initially
+                //     color: 'white',// Make tick labels white for contrast if bars are dark
+                //     font: {
+                //         weight: 'bold',
+                //         size: 14,
+                //     },
+                // }
             }
         },
     };
@@ -171,15 +232,15 @@ const MainContent = () => {
 
                 {/* Chart Area */}
                 <div className="mt-8 w-[calc(100%_-_400px)] h-[260px]">
-                    <Bar data={data} options={options} id='chart' />
+                    <Bar ref={chartRef} data={data} options={options} id='chart' />
                 </div>
 
                 {/* Timeline */}
                 <div className="mt-16 mx-auto">
                     <div className="relative custom-range mx-auto">
-                        <div className='first'/>
-                        <div className='second'/>
-                        <div className='third'/>
+                        <div className='first' />
+                        <div className='second' />
+                        <div className='third' />
                         <div className='slider-color'></div>
                         {/* <div class="slider-background">
                             <div className="slider-fill" id="fill-1"></div>
