@@ -211,9 +211,9 @@ const MainContent = () => {
 
                 {/* Loss Stats Box */}
                 <div className="bg-[#e6eef5] rounded-md border border-[#cad9ed] mt-4 w-full max-w-[361px] ml-auto">
-                    <div className="flex justify-center items-center gap-4 py-4">
-                        <span className="text-[28px] font-bold text-[#ae2d2d]">€ 24,880</span>
-                        <span className="text-base text-[#ae2d2d]">Total Loss</span>
+                    <div className="flex justify-center flex-col items-center py-4">
+                        <div className="text-[28px] font-bold text-[#ae2d2d]">€ 24,880</div>
+                        <div className="text-base text-[#ae2d2d]">Total Loss</div>
                     </div>
                     <div className="border-t border-[#cad9ed]">
                         <div className="flex justify-between relative px-4">

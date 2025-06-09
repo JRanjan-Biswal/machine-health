@@ -4,9 +4,10 @@ import SideModal from '@/components/StockPreparation/SideModal';
 import StatusLegend from '@/components/StockPreparation/StatusLegend';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import styles from '@/app/styles/stock.module.css';
 
 
-const Layout = () => {
+const Page = () => {
 
     const [showSideBar, setShowSideBar] = useState(false);
     const handleClick = () => {
@@ -24,22 +25,22 @@ const Layout = () => {
 
                     {/* trashwell  */}
                     <Image alt='' src={"/scope-image.png"} width={1700} height={1080} className='w-full h-full fixed -z-1 inset-0 object-cover object-bottom-left' />
-                    <div className='trashwell' onClick={handleClick}>
-                        <Image src="/trashwell-hover.png" alt='' height={200} width={200} className='hover-bg' />
-                        <Image src="/trashwell-tooltip.png" alt='' height={200} width={500} className='absolute left-[98px] bottom-[220px] z-10 w-[100px]' />
+                    <div className={styles.trashwell} onClick={handleClick}>
+                        <Image src="/trashwell-hover.png" alt='' height={200} width={200} className={styles.hoverBg} />
+                        <Image src="/trashwell-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
                     </div>
 
-                    <div className='hydrapulper' onClick={handleClick}>
-                        <Image src="/hydrapulper-hovert.png" alt='' height={200} width={200} className='hover-bg' />
-                        <Image src="/hydrapulper-tooltip.png" alt='' height={200} width={500} className='absolute left-[-50px] bottom-[158px] z-10 w-[100px]' />
+                    <div className={styles.hydrapulper} onClick={handleClick}>
+                        <Image src="/hydrapulper-hovert.png" alt='' height={200} width={200} className={styles.hoverBg} />
+                        <Image src="/hydrapulper-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
                     </div>
-                    <div className='hydrapurge' onClick={handleClick}>
-                        <Image src="/hydrapurge-hover.png" alt='' height={200} width={200} className='hover-bg' />
-                        <Image src="/hydrapurge-tooltip.png" alt='' height={200} width={500} className='absolute left-[9px] bottom-[158px] z-10 w-[100px]' />
+                    <div className={styles.hydrapurge} onClick={handleClick}>
+                        <Image src="/hydrapurge-hover.png" alt='' height={200} width={200} className={styles.hoverBg} />
+                        <Image src="/hydrapurge-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
                     </div>
-                    <div className='mtk' onClick={handleClick}>
-                        <Image src="/mtk-hover.png" alt='' height={200} width={200} className='hover-bg' />
-                        <Image src="/mtk-tooltip.png" alt='' height={200} width={500} className='absolute left-[93px] bottom-[197px] z-10 w-[55px]' />
+                    <div className={styles.mtk} onClick={handleClick}>
+                        <Image src="/mtk-hover.png" alt='' height={200} width={200} className={styles.hoverBg} />
+                        <Image src="/mtk-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
                     </div>
                 </div>
                 <StatusLegend />
@@ -50,4 +51,4 @@ const Layout = () => {
     );
 };
 
-export default Layout;
+export default Page;

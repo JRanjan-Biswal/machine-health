@@ -60,7 +60,7 @@ const page = () => {
                 {/* line */}
                 <div className="absolute top-[140px] h-[1px] w-full left-0 right-0 bg-primary-grey" />
 
-                <div className='flex flex-wrap gap-4 h-[calc(100%_-_140px)] mt-8'>
+                <div className='flex flex-wrap gap-4 h-[calc(100svh_-_140px)] mt-8'>
                     <div className='bg-[#DFE6EC] rounded-lg w-[calc(50%_-_8px)] h-[calc(50%_-_10px)] overflow-hidden group relative'>
                         <Link href="/stock-preparation/hydrapuler/rotor">
                             <p className='ps-4 pt-4 font-bold text-2xl font-lato'>Rotor</p>

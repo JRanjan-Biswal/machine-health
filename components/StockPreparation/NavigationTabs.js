@@ -10,7 +10,7 @@ const NavigationTabs = ({ style = {} }) => {
     { id: 5, label: 'LW Cleaning and Thickening' },
   ];
 
-  const [sliceTab, setSliceTab] = useState(5);
+  const [sliceTab, setSliceTab] = useState(3);
 
   const handleSlice = () => {setSliceTab(sliceTab === 5 ? 3 : 5);};
 

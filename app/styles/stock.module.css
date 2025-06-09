@@ -1,0 +1,172 @@
+.trashwell {
+    z-index: 100;
+    cursor: pointer;
+    width: 217px;
+    height: 227px;
+    position: absolute;
+    bottom: 327px;
+    left: 725px;
+}
+
+.trashwell .hoverBg {
+    object-fit: cover;
+    object-position: bottom;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.trashwell:hover .hoverBg {
+    opacity: 1;
+}
+
+.trashwell .tooltip {
+    @apply absolute left-[98px] bottom-[220px] z-10 w-[100px];
+}
+
+.hydrapulper {
+    z-index: 100;
+    cursor: pointer;
+    width: 208px;
+    height: 242px;
+    position: absolute;
+    bottom: 393px;
+    left: 453px;
+}
+
+.hydrapulper .hoverBg {
+    object-fit: cover;
+    object-position: bottom;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.hydrapulper .tooltip {
+    @apply absolute left-[-50px] bottom-[158px] z-10 w-[100px];
+}
+
+.hydrapulper:hover .hoverBg {
+    opacity: 1;
+}
+
+.hydrapurge {
+    z-index: 100;
+    cursor: pointer;
+    width: 238px;
+    height: 250px;
+    position: absolute;
+    bottom: 282px;
+    left: 240px;
+}
+
+.hydrapurge .hoverBg {
+    object-fit: cover;
+    object-position: bottom;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.hydrapurge .tooltip {
+    @apply absolute left-[9px] bottom-[158px] z-10 w-[100px]
+}
+
+.hydrapurge:hover .hoverBg {
+    opacity: 1;
+}
+
+
+.mtk {
+    z-index: 100;
+    cursor: pointer;
+    width: 278px;
+    height: 225px;
+    position: absolute;
+    bottom: 31px;
+    left: 302px;
+}
+
+.mtk .hoverBg {
+    object-fit: cover;
+    object-position: bottom;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.mtk .tooltip {
+    @apply absolute left-[93px] bottom-[197px] z-10 w-[55px];
+}
+
+.mtk:hover .hoverBg {
+    opacity: 1;
+}
+
+@media screen and (min-width: 1540px) {
+    .trashwell {
+        left: 47.3%;
+        bottom: 21.1vw;
+        width: 14%;
+    }
+
+    .hydrapulper {
+        left: 29.5%;
+        width: 13.6%;
+        bottom: 25.5vw;
+    }
+
+    .hydrapurge {
+        left: 15.7%;
+        width: 15.4%;
+        bottom: 18.4vw;
+    }
+
+    .mtk {
+        left: 19.7%;
+        width: 18%;
+        bottom: 2vw;
+    }
+
+    .trashwell .tooltip {
+        left: 44%;
+        bottom: 14.6vw;
+    }
+
+    .hydrapulper .tooltip {
+        left: -21%;
+        bottom: 10.5vw;
+    }
+
+    .mtk .tooltip {
+        left: 36%;
+        bottom: 12.9vw;
+    }
+
+    .hydrapurge .tooltip {
+        left: 8.5%;
+        bottom: 10vw;
+    }
+}
+
+/* @media screen and (min-width: 1560px) {
+    .trashwell {
+        left: 47.3%;
+        bottom: 35.6%;
+        z-index: 100;
+        height: 28%;
+        width: 13.7%;
+        cursor: pointer;
+    }
+}
+
+@media screen and (min-width: 1560px) {
+    .trashwell {
+        left: 47.3%;
+        bottom: 35.6%;
+        z-index: 100;
+        height: 28%;
+        width: 13.7%;
+        cursor: pointer;
+    }
+} */
