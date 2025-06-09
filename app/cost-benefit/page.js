@@ -9,7 +9,6 @@ const page = () => {
 
     const handleSideBarView = useCallback(() => {
         setShowSideBar(!showSideBar);
-        console.log(showSideBar)
     }, [showSideBar])
 
     return (

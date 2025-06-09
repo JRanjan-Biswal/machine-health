@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { RxCross2 } from "react-icons/rx";
 
@@ -13,40 +14,42 @@ const MillOverviewModal = ({
   endProduct = 'Kraft Test Liner',
   handleShowModal
 }) => {
+  const router = useRouter();
   const [selectedCompany, setSelectedCompany] = useState(customerName);
 
   return (
-    <div className="max-w-lg w-full bg-white rounded-lg p-10 shadow-lg flex flex-col gap-6">
+    <div className="max-w-lg w-full bg-white rounded-2xl p-10 shadow-lg flex flex-col gap-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">Mill Overview</h1>
-        <RxCross2 size={20} onClick={handleShowModal} className='cursor-pointer' />
+        <RxCross2 size={20} onClick={() => router.push("/")} className='cursor-pointer' />
       </div>
 
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
           <label className="font-semibold text-gray-700">Customer Name</label>
-          <div className="relative">
+          <div className="relative dropdown-container">
             <select
               className="w-full p-3 border border-gray-300 rounded-md"
               value={selectedCompany}
               onChange={(e) => setSelectedCompany(e.target.value)}
             >
-              <option value="Select Company">Select Company</option>
-              <option value="Company 1">Company 1</option>
-              <option value="Company 2">Company 2</option>
+              <option value="Aryan Papers">Aryan Papers</option>
+              <option value="Sri Andal Paper Mill">Sri Andal Paper Mill</option>
+              <option value="GayatriShakti Papers & Boards Ltd.">GayatriShakti Papers & Boards Ltd.</option>
+              <option value="Lemit Papers LLP">Lemit Papers LLP</option>
             </select>
             <Image
               src="/icon.png"
               alt="Dropdown"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none -rotate-90"
               width={24}
               height={24}
             />
           </div>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
+        <div className="flex gap-4">
+          <div className="flex flex-col gap-2 w-1/2">
             <label className="font-semibold text-gray-700">Power Cost</label>
             <input
               type="text"
@@ -56,7 +59,7 @@ const MillOverviewModal = ({
             />
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 w-1/2">
             <label className="font-semibold text-gray-700">Fiber Cost</label>
             <input
               type="text"
@@ -75,7 +78,7 @@ const MillOverviewModal = ({
 
         <hr className="border-t border-gray-200" />
 
-        <button className="w-full p-3 bg-gray-800 text-white rounded-md font-bold hover:bg-gray-700">
+        <button className="w-full cursor-pointer p-3 bg-gray-800 text-white rounded-md font-bold hover:bg-gray-700" onClick={() => handleShowModal()}>
           Submit
         </button>
       </div>

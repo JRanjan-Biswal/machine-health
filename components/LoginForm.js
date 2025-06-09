@@ -9,7 +9,7 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    clientId: defaultClientId,
+    email: defaultClientId,
     password: defaultPassword
   });
 
@@ -21,10 +21,27 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    router.push("/dashboard")
-    // Handle login logic here
+
+    if (!formData.email || !formData.password) return;
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        body: JSON.stringify({ email: formData.email, password: formData.password }),
+      });
+      if (response.ok) {
+        router.push('/dashboard');
+      }
+      // const result = await response.json();
+      // localStorage.setItem('token', result.data.token);
+    }
+    catch (error) {
+      console.error('Login failed:', error);
+      alert('Login failed. Please check your credentials and try again.');
+      return;
+    }
   };
 
   return (
@@ -43,9 +60,9 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
           <div className="relative">
             <input
               type="text"
-              name="clientId"
-              placeholder="Client ID"
-              value={formData.clientId}
+              name="email"
+              placeholder="email"
+              value={formData.email}
               onChange={handleInputChange}
               className="w-full px-5 py-[15px] border border-[#96a5ba] rounded-[6px] text-base font-montserrat text-[#2d3e5c] focus:outline-none focus:border-[#1d1d1d]"
             />

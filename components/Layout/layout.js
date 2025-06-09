@@ -3,13 +3,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Profile from '../Profile/Profile';
 import { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+// import useUserLogedIn from '@/app/actions/isUserLoggedIn';
 
-const Layout = ({ children }) => {
-
+function Layout ({ children }){
+  
   const pathname = usePathname();
-
-  console.log(pathname.split("/"))
 
   if (pathname == "/") return children
 
@@ -17,10 +16,14 @@ const Layout = ({ children }) => {
 
   const handleProfileButton = () => setShowProfile(!showProfile);
 
+  // const login = useUserLogedIn();
+  // console.log(login)
+
+
   return (
     <>
       <div className='container'>
-        <div className="flex flex-row items-center justify-between px-12 py-4 bg-white rounded-full border border-[#dfe6ec] min-h-[80px] w-full mt-4">
+        <div className="flex flex-row items-center justify-between px-12 py-4 bg-white rounded-full border border-[#dfe6ec] min-h-[80px] w-full mt-4 shadow-custom-1">
           <div className="w-[134px] h-[20px] relative">
             <Image
               src="/logo.png"

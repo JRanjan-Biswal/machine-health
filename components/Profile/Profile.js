@@ -13,23 +13,28 @@ const Profile = ({ handleProfileButton, showProfile }) => {
 
 
   return (
-    <div className={`${styles.container} ${showProfile ? styles.show : styles.hide}`}>
-      <div onClick={handleProfileButton} className='cursor-pointer absolute right-6 top-4'><RxCross2 /></div>
-      <div className={styles.header}>
-        <ProfileHeader />
+    <>
+    {
+      showProfile && <div className={styles.overlay} onClick={handleProfileButton} />
+    }
+      <div className={`${styles.container} ${showProfile ? styles.show : styles.hide}`}>
+        <div onClick={handleProfileButton} className='cursor-pointer absolute right-6 top-4'><RxCross2 /></div>
+        <div className={styles.header}>
+          <ProfileHeader />
+        </div>
+        <div className={styles.formSection}>
+          <EditProfileForm />
+          <ChangePasswordForm />
+        </div>
+        <div className={styles.settingsSection}>
+          <NotificationSettings />
+          <SupportSection />
+        </div>
+        <div className={styles.logoutSection}>
+          <LogoutButton />
+        </div>
       </div>
-      <div className={styles.formSection}>
-        <EditProfileForm />
-        <ChangePasswordForm />
-      </div>
-      <div className={styles.settingsSection}>
-        <NotificationSettings />
-        <SupportSection />
-      </div>
-      <div className={styles.logoutSection}>
-        <LogoutButton />
-      </div>
-    </div>
+    </>
   );
 };
 

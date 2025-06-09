@@ -1,8 +1,11 @@
 'use client';
+import BusinessSnapshot from "@/components/Dashboard/BusinessSnapshot";
+import RecentActivity from "@/components/Dashboard/RecentActivity";
 import MillOverviewModal from "@/components/MillOverviewModal";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { LuFactory } from "react-icons/lu";
 
 const page = () => {
   const router = useRouter();
@@ -10,24 +13,29 @@ const page = () => {
   const [showmodal, setshowmodal] = useState(true);
   const handleShowModal = () => setshowmodal(!showmodal);
 
+  const [dropdownOpen, setDropdownOpen] = useState(false); // business | recent
+  const toggleDropdown = (type) => setDropdownOpen((prev) => prev == type ? false : type);
+
   const handleHydraPulerClick = () => router.push('/stock-preparation');
   return (
     <>
-      {
+      {/* {
         showmodal &&
-        <div className="flex justify-center items-center w-full h-screen bg-black/60 p-5 absolute inset-0 z-100">
-          <MillOverviewModal
-            customerName="Select Company"
-            powerCost="0.09 €/kwhr"
-            fiberCost="200 €/ton"
-            capacity="400 BDMTPD"
-            location="Vapi, Gujarat, India"
-            endProduct="Kraft Test Liner"
-            handleShowModal={handleShowModal}
-          />
+        <div className="flex justify-center items-center w-full h-screen bg-black/75 p-5 backdrop-blur-[5px] absolute inset-0 z-100">
+          <div className="absolute z-10">
+            <MillOverviewModal
+              customerName="Select Company"
+              powerCost="0.09 €/kwhr"
+              fiberCost="200 €/ton"
+              capacity="400 BDMTPD"
+              location="Vapi, Gujarat, India"
+              endProduct="Kraft Test Liner"
+              handleShowModal={handleShowModal}
+            />
+          </div>
         </div>
-      }
-      <div className="container h-[calc(100vh_-_260px)] mt-[20px]">
+      } */}
+      <div className="container h-[calc(100vh_-_260px)] mt-[20px] relative">
         <div className="flex justify-between mx-5">
           <div>
             <p className="text-[#2D3E5C] font-bold text-2xl">Welcome, Feroz</p>
@@ -51,12 +59,37 @@ const page = () => {
               <div>By Customer</div>
             </div>
           </div>
-          <div className="flex gap-5 items-center">
-            <div>Business Snapshot</div>
-            <div className="text-orange-500">Recent Activity</div>
+
+          <div className="flex gap-5 items-center relative">
+
+            <div className={`${dropdownOpen == 'business' ? 'text-orange-500' : 'text-primary-blue'} flex items-center cursor-pointer gap-[5px]`}
+              onClick={() => toggleDropdown('business')}
+            >
+              <LuFactory />
+              <p>Business Snapshot</p>
+            </div>
+
+            <div className={`${dropdownOpen == 'recent' ? 'text-orange-500' : 'text-primary-blue'} flex items-center cursor-pointer gap-[5px]`}
+              onClick={() => toggleDropdown('recent')}
+            >
+              <Image src="/clock-blue.svg" alt="notification" height={20} width={20} className={`${dropdownOpen != 'recent' ? 'block' : 'hidden'}`} />
+              <Image src="/clock-oranage.svg" alt="notification" height={20} width={20} className={`${dropdownOpen == 'recent' ? 'block' : 'hidden'}`} />
+              <p>Recent Activity</p>
+            </div>
+            {
+              dropdownOpen == "business" && <div className="absolute top-12 right-0 z-10"><BusinessSnapshot /></div>
+            }
+
+            {
+              dropdownOpen == "recent" && <div className="absolute top-12 right-0 z-10"><RecentActivity /></div>
+            }
           </div>
+
         </div>
-        <div className="h-full w-full relative mt-5">
+
+        <div className="fixed top-[194px] h-[1px] w-full left-0 right-0 bg-primary-grey"/>
+
+        <div className="h-full w-full relative mt-9">
           <Image src="/dashboard.png" alt="dashboard table" height={1000} width={1500} className="w-full h-full object-center object-fill" />
 
           {/* clickable | hydrapuler 10DR */}

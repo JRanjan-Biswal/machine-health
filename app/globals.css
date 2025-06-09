@@ -1,12 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Montserrat:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 @import "tailwindcss";
 
 @theme {
   --color-primary-blue: #2d3e5c;
   --color-secondary-blue: #e6eef5;
+  --color-primary-grey: #DFE6EC;
+  --shadow-custom-1: 0px 2px 5.5px 0px rgba(0, 0, 0, 0.08);
+  --shadow-custom-2: 0px 2px 5.5px 0px #00000014;
+  --font-monteserrat: 'Montserrat', sans-serif;
+  --font-lato: 'Lato', sans-serif;
 }
 
 body {
   @apply bg-[#F3F9FF];
+  font-family: var(--font-monteserrat);
 }
 
 @source not inline('container');
@@ -307,6 +315,18 @@ body {
 
 .mtk:hover .hover-bg {
   opacity: 1;
+}
+
+.dropdown-container select {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Safari, Chrome, Opera */
+  -webkit-appearance: none;
+}
+
+/* for IE10 */
+.dropdown-container select::-ms-expand {
+  display: none;
 }
 
 @media screen and (min-width: 1560px) {
