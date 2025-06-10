@@ -1,31 +1,38 @@
-'use client'
-import { useCallback, useState } from 'react';
-import NavigationBar from '@/components/CostBenefit/Navigationbar';
-import Sidebar from '@/components/CostBenefit/Sidebar';
-import MainContent from '@/components/CostBenefit/MainContent';
+import Costcompt from "@/components/CostBenefit/Costcompt";
+import { cookies } from 'next/headers';
+import { notFound } from "next/navigation";
 
-const page = () => {
-    const [showSideBar, setShowSideBar] = useState(false);
+const getData = async () => {
+    try {
+        const cookieStore = await cookies();
+        const currentcookie = cookieStore.get('token').value.trim();
 
-    const handleSideBarView = useCallback(() => {
-        setShowSideBar(!showSideBar);
-    }, [showSideBar])
+        const response = await fetch(`${process.env.API_URL}/machines/684362214978c14755e02860/spare-parts/68436859af3221a4b1df84f1`, {
+            cache: 'no-store',
+            headers: {
+                Authorization: `Bearer ${currentcookie}`
+            }
+        });
 
-    return (
-        <div className="container transition-all duration-300">
-            <div><NavigationBar /></div>
-            <div className="flex flex-row w-full gap-4 mt-4 h-[calc(100svh_-_200px)]">
-                <div className="flex-grow-0">
-                    <Sidebar handleSideBarView={handleSideBarView} showSideBar={showSideBar} />
-                </div>
-                <div className="flex-grow"
-                    style={{ width: showSideBar ? 'calc(100% - 334px)' : 'calc(100% - 50px)' }}
-                >
-                    <MainContent />
-                </div>
-            </div>
-        </div>
-    )
+        if (!response.ok) {
+            throw notFound();
+        }
+
+        const result = await response.json();
+        const filterRotorData = result.filter(item => item.name == 'Rotor')?.[0]; // rotor
+        return filterRotorData;
+        // TODO: Add your logic to handle the data, e.g., save to database
+
+    } catch (error) {
+        throw notFound();
+    }
+}
+
+const page = async() => {
+
+    const data = await getData();
+
+    return <Costcompt data={data} />
 }
 
 export default page;

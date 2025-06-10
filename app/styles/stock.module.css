@@ -1,11 +1,11 @@
 .trashwell {
     z-index: 100;
-    cursor: pointer;
-    width: 217px;
-    height: 227px;
     position: absolute;
+    cursor: pointer;
+    /* width: 217px;
+    height: 227px;
     bottom: 327px;
-    left: 725px;
+    left: 725px; */
 }
 
 .trashwell .hoverBg {
@@ -28,11 +28,11 @@
 .hydrapulper {
     z-index: 100;
     cursor: pointer;
-    width: 202px;
-    height: 242px;
     position: absolute;
+    /* width: 202px;
+    height: 242px;
     bottom: 393px;
-    left: 453px;
+    left: 453px; */
 }
 
 .hydrapulper .hoverBg {
@@ -55,11 +55,11 @@
 .hydrapurge {
     z-index: 100;
     cursor: pointer;
-    width: 229px;
-    height: 250px;
     position: absolute;
+    /* width: 229px;
+    height: 250px;
     bottom: 282px;
-    left: 248px;
+    left: 248px; */
 }
 
 .hydrapurge .hoverBg {
@@ -83,11 +83,11 @@
 .mtk {
     z-index: 100;
     cursor: pointer;
-    width: 278px;
-    height: 225px;
     position: absolute;
+    /* width: 278px;
+    height: 225px;
     bottom: 31px;
-    left: 302px;
+    left: 302px; */
 }
 
 .mtk .hoverBg {
@@ -107,51 +107,52 @@
     opacity: 1;
 }
 
-@media screen and (min-width: 1540px) {
-    .trashwell {
-        left: 47.3%;
-        bottom: 21.1vw;
-        width: 14%;
-    }
-
-    .hydrapulper {
-        left: 29.5%;
-        width: 13.6%;
-        bottom: 25.5vw;
-    }
-
-    .hydrapurge {
-        left: 15.7%;
-        width: 15.4%;
-        bottom: 18.4vw;
-    }
-
-    .mtk {
-        left: 19.7%;
-        width: 18%;
-        bottom: 2vw;
-    }
-
-    .trashwell .tooltip {
-        left: 44%;
-        bottom: 14.6vw;
-    }
-
-    .hydrapulper .tooltip {
-        left: -21%;
-        bottom: 10.5vw;
-    }
-
-    .mtk .tooltip {
-        left: 36%;
-        bottom: 12.9vw;
-    }
-
-    .hydrapurge .tooltip {
-        left: 8.5%;
-        bottom: 10vw;
-    }
+/* @media screen and (min-width: 1540px) { */
+.trashwell {
+    left: 47.3%;
+    bottom: 21.1vw;
+    width: 14%;
 }
+
+.hydrapulper {
+    left: 29.5%;
+    width: 13.6%;
+    bottom: 25.5vw;
+}
+
+.hydrapurge {
+    left: 15.7%;
+    width: 15.4%;
+    bottom: 18.4vw;
+}
+
+.mtk {
+    left: 19.7%;
+    width: 18%;
+    bottom: 2vw;
+}
+
+.trashwell .tooltip {
+    left: 44%;
+    bottom: 14.6vw;
+}
+
+.hydrapulper .tooltip {
+    left: -21%;
+    bottom: 10.5vw;
+}
+
+.mtk .tooltip {
+    left: 36%;
+    bottom: 12.9vw;
+}
+
+.hydrapurge .tooltip {
+    left: 8.5%;
+    bottom: 10vw;
+}
+
+/* } */
 
 /* @media screen and (min-width: 1560px) {
     .trashwell {

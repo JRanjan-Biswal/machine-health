@@ -58,7 +58,7 @@ const Layout = () => {
                 <RotorStatus />
 
                 <div className='h-[calc(100%_-_190px)] mt-4 relative'>
-                    <div className='text-[#96A5BA]'>Pulping &gt; Hydraulic pulper &gt; Rotor</div>
+                    <div className='text-[#96A5BA]'>Pulping &gt; Hydrapulper &gt; Rotor</div>
                     <div className='text-3xl font-bold'>Rotor</div>
                     {/* main image */}
                     <div className='absolute h-[500px] w-[600px] right-0 bottom-0'>

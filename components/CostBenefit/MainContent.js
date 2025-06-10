@@ -8,7 +8,8 @@ ChartJS.register(ArcElement, Tooltip, Legend, BarElement, LinearScale, CategoryS
 
 import { RiArrowRightSLine } from "react-icons/ri";
 import Image from 'next/image';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { calculateFiberLoss, calculatePowerLoss } from './cost-calculate';
 
 
 const updateThumbColor = (element, value) => {
@@ -29,17 +30,19 @@ const updateThumbColor = (element, value) => {
     element.style.setProperty('--slider-thumb-color', color);
 };
 
-const MainContent = () => {
+const MainContent = ({ contentData }) => {
 
     const chartRef = useRef(null);
     const [sliderValue, setSliderValue] = useState(49);
+
+    const [barData, setBarData] = useState(null);
 
     const data = {
         labels: ['Power Loss', 'Fiber Loss', 'Total Loss'],
         datasets: [
             {
-                label: 'Loss (%)',
-                data: [12.5, 2.5, 12],
+                label: '',
+                data: barData,
                 backgroundColor: function (context) {
                     const chart = context.chart;
                     const { ctx, chartArea } = chart;
@@ -161,8 +164,35 @@ const MainContent = () => {
         setSliderValue(newValue);
     };
 
+    useMemo(() => {
+        const fData = {
+            capacityOfLine: contentData?.clientMachineSparePart?.capacityOfLine?.value,
+            dailyRunningHours: contentData?.clientMachineSparePart?.dailyRunningHours?.value,
+            fiberCost: contentData?.clientMachineSparePart?.fiberCost?.value,
+            fiberLossRanges: contentData?.clientMachineSparePart?.fiberLossRanges,
+            lifetimeOfRotor: contentData?.clientMachineSparePart?.lifetimeOfRotor?.value,
+            totalRunningHours: contentData?.clientMachineSparePart?.totalRunningHours?.value,
+        }
+
+        const cData = {
+            capacityOfLine: contentData?.clientMachineSparePart?.capacityOfLine?.value,
+            dailyRunningHours: contentData?.clientMachineSparePart?.dailyRunningHours?.value,
+            installedMotorPower: contentData?.clientMachineSparePart?.installedMotorPower?.value,
+            actualMotorPowerConsumption: contentData?.clientMachineSparePart?.actualMotorPowerConsumption,
+            powerConsumption: contentData?.clientMachineSparePart?.powerConsumption,
+            lifetimeOfRotor: contentData?.clientMachineSparePart?.lifetimeOfRotor?.value,
+            totalRunningHours: contentData?.clientMachineSparePart?.totalRunningHours?.value,
+            powerCost: contentData?.clientMachineSparePart?.powerCost?.value,
+        }
+        const fiberLossData = calculateFiberLoss(fData);
+        const powerLossData = calculatePowerLoss(cData)
+        console.log(fiberLossData, powerLossData)
+        setBarData([powerLossData?.powerCost, fiberLossData?.fiberLoss, powerLossData?.powerCost + fiberLossData?.fiberLoss])
+
+    }, [contentData])
+
     return (
-        <div className="w-full mx-auto bg-white rounded-xl border border-[#dfe6ec] overflow-hidden h-[calc(100svh_-_200px)]">
+        <div className="w-full mx-auto bg-white rounded-xl border border-[#dfe6ec] overflow-hidden h-[calc(100svh_-_200px)] shadow-custom-1">
             {/* Header */}
             <div className="flex flex-col gap-x-2 bg-secondary-blue relative">
                 <div className="bg-[#2d3e5c] rounded-t-xl px-5 py-1 w-fit">
@@ -197,7 +227,7 @@ const MainContent = () => {
                 </div>
             </div>
 
-            <div className='px-4 relative'>
+            <div className='px-4 relative h-[calc(100%_-_77px)]'>
 
                 <div className='flex gap-5 absolute top-4 left-8'>
                     <div className='flex gap-2 items-center'>
@@ -215,20 +245,20 @@ const MainContent = () => {
                 </div>
 
                 {/* Loss Stats Box */}
-                <div className="bg-[#e6eef5] rounded-md border border-[#cad9ed] mt-4 w-full max-w-[361px] ml-auto">
+                <div className="bg-[#e6eef5] rounded-md border border-[#cad9ed] mt-4 w-full max-w-[361px] ml-auto absolute top-0 right-4">
                     <div className="flex justify-center flex-col items-center py-4">
-                        <div className="text-[28px] font-bold text-[#ae2d2d]">€ 24,880</div>
+                        <div className="text-[28px] font-bold text-[#ae2d2d]">€ {contentData?.clientMachineSparePart?.totalLossCost?.value}</div>
                         <div className="text-base text-[#ae2d2d]">Total Loss</div>
                     </div>
                     <div className="border-t border-[#cad9ed]">
                         <div className="flex justify-between relative px-4">
                             <div className="flex flex-col py-4 w-1/2">
-                                <span className="text-[#2d3e5c] font-bold text-xl text-center">€ 18,400</span>
+                                <span className="text-[#2d3e5c] font-bold text-xl text-center">€ {contentData?.clientMachineSparePart?.totalFiberLossCost?.value}</span>
                                 <span className="text-[#607797] text-center">Fiber Loss</span>
                             </div>
                             <div className='h-full w-[1px] absolute left-1/2 top-0 bottom-0 bg-[#cad9ed]' />
                             <div className="border-[#cad9ed] flex flex-col py-4 w-1/2">
-                                <span className="text-[#2d3e5c] font-bold text-xl text-center">€ 6,480</span>
+                                <span className="text-[#2d3e5c] font-bold text-xl text-center">€ {contentData?.clientMachineSparePart?.totalPowerLossCost?.value}</span>
                                 <span className="text-[#607797] text-center">Power Loss</span>
                             </div>
                         </div>
@@ -236,20 +266,20 @@ const MainContent = () => {
                 </div>
 
                 {/* Chart Area */}
-                <div className="mt-8 w-[calc(100%_-_350px)] h-[calc(50svh_-_220px)]">
+                <div className="w-[calc(100%_-_400px)] h-[calc(50svh_-_130px)] absolute bottom-[150px]">
                     <Bar ref={chartRef} data={data} options={options} id='chart' />
                 </div>
 
                 {/* Timeline */}
-                <div className="mt-12 mx-auto">
+                <div className="mt-12 mx-auto w-full absolute bottom-[40px]">
                     <div className="relative custom-range mx-auto">
                         <div className='first' />
                         <div className='second' />
                         <div className='third' />
                         <div className='slider-color'></div>
-                        <input type="range" min="0" max="100" id="slider-1"  onChange={handleSliderChange} value={sliderValue} />
+                        <input type="range" min="0" max="100" id="slider-1" onChange={handleSliderChange} value={sliderValue} />
                     </div>
-                    <div className="flex justify-between mt-4 text-[#2d3e5c] font-bold w-[70%] mx-auto shadow-custom-1">
+                    <div className="flex justify-between mt-4 text-[#2d3e5c] font-bold w-[70%] mx-auto">
                         <div className="text-center">
                             <p>Installed On</p>
                             <p>(17/08/2024)</p>

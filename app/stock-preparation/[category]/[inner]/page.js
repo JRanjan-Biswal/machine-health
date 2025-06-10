@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useCallback } from 'react';
 import RotorStatus from '@/components/MachineryDetails/rotorstatus';
 import RotorComponent from '@/components/StockPreparationCategoryInner/RotorComponent';
 // import RotorLayout from '@/components/StockPreparationCategoryInner/RotorLayout';
@@ -15,19 +15,42 @@ const Page = () => {
         'Bottom Knife': ['/bottom-knife-1.png', '/bottom-knife-2.png']
     }
 
+    const mainImage = [
+        '/rotor.png',
+        '/rotor-rotated.png',
+        '/rotor-bottom-knife.png',
+    ]
+
     const [selectedImage, setSelectedImage] = React.useState(imageData['Power Saver']);
     const [bottomKnkifeSelected, setBottomKnifeSelected] = React.useState(false);
 
+    const [selectedMainImage, setSelectedMainImage] = React.useState(0);
+
     const handleImageClick = (key) => {
         setSelectedImage(imageData[key]);
-
+        setSelectedMainImage(0);
+        // setSelectedMainImage({ image: null, rotation: 0 });
         if (key === 'Bottom Knife') {
             setBottomKnifeSelected(imageData[key]);
         }
         else {
             setBottomKnifeSelected(false);
         }
-    }
+    };
+
+    const handleRotateThree = useCallback(() => {
+        setSelectedMainImage(prev => prev == 2 ? 0 : prev + 1);
+        if (selectedMainImage === 2) {
+            setSelectedImage(imageData["Power Saver"]);
+        }
+        if (selectedMainImage === 1) {
+            setBottomKnifeSelected(imageData["Bottom Knife"]);
+            setSelectedImage(imageData["Bottom Knife"]);
+        }
+        else {
+            setBottomKnifeSelected(false);
+        }
+    }, [selectedMainImage]);
 
     // angular-arrow
     return (
@@ -39,39 +62,57 @@ const Page = () => {
                 <div className="absolute top-[145px] h-[1px] w-full left-0 right-0 bg-primary-grey" />
 
                 <div className='h-[calc(100%_-_240px)] mt-8 relative px-4'>
-                    <div className='text-[#96A5BA]'>Pulping &gt; Hydraulic pulper &gt; Rotor</div>
+                    <div className='text-[#96A5BA]'>Pulping &gt; Hydrapulper &gt; Rotor</div>
                     <div className='text-3xl font-bold text-primary-blue'>Rotor</div>
                     {/* main image */}
                     <div className={`absolute h-[500px] w-[600px] ${bottomKnkifeSelected ? '-right-10' : 'right-[8%]'} bottom-[5%]`}>
                         {
-                            !bottomKnkifeSelected
-                                ? <Image src="/rotor.png" alt="" height={300} width={300} className='w-full h-full object-cover' />
-                                : <Image src="/rotor-bottom-knife.png" alt="" height={300} width={300} className='w-auto h-full object-contain' />
+                            selectedMainImage === 1 &&
+                            <Image src={"/rotor-rotated.png"} alt="" height={300} width={300} className='w-full h-full object-cover' />
                         }
-
-                        <Image src="/power-saver-arrow.png" alt='' width={100} height={2} 
-                        className={`absolute ${bottomKnkifeSelected ? 'w-[15%] h-[10px] top-[31%] right-[100%]' : 'top-[24%] right-[83%] z-10 w-[20%] h-[10px]'}`} />
-
-                        <p onClick={(e) => handleImageClick("Power Saver")} className={`cursor-pointer text-primary-blue font-lato font-medium text-xl absolute ${bottomKnkifeSelected ? 'top-[27.5%] right-[115%]' : 'top-[20.5%] right-[102%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-4 py-[6px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Power Saver</p>
-
-                        <Image src="/power-saver-arrow.png" alt='' width={100} height={2} 
-                        className={`absolute ${bottomKnkifeSelected ? 'h-[10px] w-[17%] top-[73.5%] right-[96%]' : 'h-[10px] w-[20%] top-[48%] right-[99%]'} z-10`} />
-
-                        <p onClick={(e) => handleImageClick("Foil")} className={`cursor-pointer text-primary-blue font-lato font-medium text-xl absolute ${bottomKnkifeSelected ? 'top-[70.5%] right-[111.5%]' : 'top-[44.5%] right-[118%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-4 py-[6px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Foil</p>
 
                         {
-                            bottomKnkifeSelected
-                                ? <Image src="/power-saver-arrow.png" alt='' width={100} height={2} className='h-[13px] w-[20%] absolute top-[61%] right-[98%] z-10' />
-                                : <Image src="/top-right.png" alt='' width={100} height={2} className='h-[22px] w-[16%] absolute top-[62%] right-[89%] z-10' />
+                            (selectedMainImage != 1) && (
+                                !bottomKnkifeSelected
+                                    ? <Image src="/rotor.png" alt="" height={300} width={300} className='w-full h-full object-cover' />
+                                    : <Image src="/rotor-bottom-knife.png" alt="" height={300} width={300} className='w-auto h-full object-contain' />
+                            )
                         }
-                        <p onClick={(e) => handleImageClick("Side Shield")} className={`cursor-pointer text-primary-blue font-lato font-medium text-xl absolute ${bottomKnkifeSelected ? 'top-[58.5%] right-[117%]' : 'top-[61%] right-[104.5%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-4 py-[6px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Side Shield</p>
 
                         {
-                            bottomKnkifeSelected
-                                ? <Image src="/angular-arrow.png" alt='' width={100} height={2} className='h-[81px] w-[37%] absolute top-[73%] right-[77%] z-10' />
-                                : <Image src="/power-saver-arrow.png" alt='' width={100} height={2} className='h-[10px] w-[20%] absolute top-[79%] right-[86%] z-10' />
+                            selectedMainImage !== 1 &&
+                            <>
+                                {
+                                    selectedMainImage !== 2 &&
+                                    <>
+                                        <Image src="/power-saver-arrow.png" alt='' width={100} height={2}
+                                            className={`absolute z-10 ${bottomKnkifeSelected ? 'w-[15%] h-[9px] top-[31%] right-[100%]' : 'top-[24%] right-[83%] z-10 w-[18%] h-[9px]'}`} />
+
+                                        <p onClick={(e) => handleImageClick("Power Saver")} className={`cursor-pointer text-primary-blue font-lato font-medium text-base absolute ${bottomKnkifeSelected ? 'top-[28%] right-[114.5%]' : 'top-[21%] right-[100.5%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-3 py-[5px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Power Saver</p>
+
+                                        <Image src="/power-saver-arrow.png" alt='' width={100} height={2}
+                                            className={`absolute ${bottomKnkifeSelected ? 'h-[9px] w-[17%] top-[73.5%] right-[96%]' : 'h-[9px] w-[17%] top-[48%] right-[99%]'} z-10`} />
+
+                                        <p onClick={(e) => handleImageClick("Foil")} className={`cursor-pointer text-primary-blue font-lato font-medium text-base absolute ${bottomKnkifeSelected ? 'top-[71%] right-[112.5%]' : 'top-[45%] right-[115%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-3 py-[5px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Foil</p>
+
+                                        {
+                                            bottomKnkifeSelected
+                                                ? <Image src="/power-saver-arrow.png" alt='' width={100} height={2} className='h-[9px] w-[18%] absolute top-[61%] right-[98%] z-10' />
+                                                : <Image src="/top-right.png" alt='' width={100} height={2} className='h-[20px] w-[13%] absolute top-[62%] right-[89%] z-10' />
+                                        }
+                                        <p onClick={(e) => handleImageClick("Side Shield")} className={`cursor-pointer text-primary-blue font-lato font-medium text-base absolute ${bottomKnkifeSelected ? 'top-[58%] right-[115.5%]' : 'top-[61.4%] right-[101.5%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-3 py-[5px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Side Shield</p>
+                                    </>
+                                }
+
+                                {
+                                    bottomKnkifeSelected
+                                        ? <Image src="/angular-arrow.png" alt='' width={100} height={2} className='h-[81px] w-[37%] absolute top-[73%] right-[77%] z-10' />
+                                        : <Image src="/power-saver-arrow.png" alt='' width={100} height={2} className='h-[9px] w-[17%] absolute top-[79%] right-[86%] z-10' />
+                                }
+                                <p onClick={(e) => handleImageClick("Bottom Knife")} className={`cursor-pointer text-primary-blue font-lato font-medium text-base absolute ${bottomKnkifeSelected ? 'top-[84.5%] right-[113%]' : 'top-[76%] right-[102.5%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-3 py-[5px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Bottom Knife</p>
+                            </>
                         }
-                        <p onClick={(e) => handleImageClick("Bottom Knife")} className={`cursor-pointer text-primary-blue font-lato font-medium text-xl absolute ${bottomKnkifeSelected ? 'top-[84%] right-[113%]' : 'top-[75.5%] right-[105%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-4 py-[6px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Bottom Knife</p>
+
 
                     </div>
                 </div>
@@ -92,7 +133,7 @@ const Page = () => {
                         </div>
                     </div>
                     <div>
-                        <button className='cursor-pointer flex bg-white px-[13px] py-[6px] rounded-4xl gap-1.5'><p>Rotate 3D</p><LuRotate3D size={20} /></button>
+                        <button className='cursor-pointer flex bg-white px-[13px] py-[6px] rounded-4xl gap-1.5' onClick={handleRotateThree}><p>Rotate 3D</p><LuRotate3D size={20} /></button>
                     </div>
                 </div>
             </div>

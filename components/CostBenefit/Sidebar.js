@@ -4,7 +4,7 @@ import styles from './sidebar.module.css';
 
 const Sidebar = ({ handleSideBarView, showSideBar }) => {
     return (
-        <div className={`${showSideBar ? 'w-[334px]' : 'w-[70px] bg-white rounded-2xl'} relative transition-all duration-300 h-full`}>
+        <div className={`${showSideBar ? 'w-[334px]' : 'w-[70px] bg-white rounded-2xl'} relative transition-all duration-300 h-full shadow-custom-1`}>
             <div className={`w-full h-full overflow-hidden ${styles.sidebar}`}>
                 {/* Main container */}
                 <div className={`relative w-full h-full overflow-y-auto bg-white rounded-xl border border-[#dfe6ec] [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:hidden [&::-webkit-scrollbar-thumb]:hidden [&::-webkit-scrollbar-thumb]:hiden dark:[&::-webkit-scrollbar-track]:bg-neutral-400
@@ -73,7 +73,7 @@ const Sidebar = ({ handleSideBarView, showSideBar }) => {
             </div>
 
             {/* Icon Frame */}
-            <div className={`absolute top-[361px] right-0 translate-x-1/2 transition-all duration-300 flex items-center justify-center ${!showSideBar ? 'bg-primary-blue rotate-180' : 'bg-[#dfe6ec] rotate-0'} p-[5px] rounded-full cursor-pointer`} onClick={handleSideBarView}>
+            <div className={`absolute top-1/2 -translate-y-1/2 right-0 translate-x-1/2 transition-all duration-300 flex items-center justify-center ${!showSideBar ? 'bg-primary-blue rotate-180' : 'bg-[#dfe6ec] rotate-0'} p-[5px] rounded-full cursor-pointer`} onClick={handleSideBarView}>
                 <RiArrowLeftSLine size={25} color={showSideBar ? '#2d3e5c' : 'white'} />
             </div>
         </div>

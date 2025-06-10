@@ -47,18 +47,6 @@ body {
 
 @source not inline('container');
 
-.container {
-  /* max-width: calc(100vw - 60px); */
-  max-width: 1440px;
-  margin-inline: auto;
-}
-
-@media screen and (max-width:1440px) {
-  .container {
-    margin-inline: 30px;
-  }
-}
-
 
 /* cost benefit analysis */
 /* .cost-benegit-three-d {
@@ -258,9 +246,22 @@ body {
 }
 
 
-@media screen and (min-width: 1440px) {
+.container {
+  /* max-width: calc(100vw - 60px); */
+  max-width: 1440px;
+  margin-inline: auto;
+}
+
+@media screen and (max-width:1281px) {
+  .container {
+    margin-inline: 30px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
   .container {
     max-width: 1280px;
+    margin-inline: auto;
   }
 }
 
