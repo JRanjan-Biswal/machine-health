@@ -1,6 +1,6 @@
 const StatsBox = ({ contentData }) => {
     return (
-        <div className="bg-[#e6eef5] rounded-md border border-[#cad9ed] mt-4 w-full max-w-[361px] ml-auto absolute top-0 right-4">
+        <div className="bg-[#e6eef5] rounded-md border border-[#cad9ed] mt-4 w-full max-w-[361px] ml-auto absolute top-0 right-4 shadow-custom-1">
             <div className="flex justify-center flex-col items-center py-4">
                 <div className="text-[28px] font-bold text-[#ae2d2d]">€ {contentData?.clientMachineSparePart?.totalLossCost?.value}</div>
                 <div className="text-base text-[#ae2d2d]">Total Loss</div>
