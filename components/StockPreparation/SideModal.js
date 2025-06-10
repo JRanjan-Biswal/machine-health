@@ -7,7 +7,7 @@ import 'swiper/css';
 import 'swiper/css/effect-fade';
 import { EffectFade } from 'swiper/modules';
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -45,12 +45,66 @@ const componentData = [
         href: '/#'
     }
 ];
+
+const imageMap = {
+    "684363cf58886bd63a211b24": "/rotor-1.png",
+    "6845f978af4093194af7ee8d": "/rotor-hu-2.png",
+    "6845f98faf4093194af7ee8e": "/rotor-hu-3.png",
+    "6845f99daf4093194af7ee8f": "/rotor-hu-4.png",
+}
+
 const SideModal = ({ handleClick, showSideBar }) => {
     const router = useRouter()
     const swiperRef = useRef(null);
+    const [spareParts, setSpareParts] = useState([]);
+
+    const fetchSpareParts = async () => {
+        const response = await fetch('/api/sparepart');
+        const data = await response.json();
+        setSpareParts(data.data);
+    }
+
+    useEffect(() => {
+        fetchSpareParts();
+    }, []);
 
     const [showSummary, setShowSummary] = useState(false);
 
+    const getSparePartColor = (sparePart) => {
+        if (sparePart.clientMachineSparePart) {
+            if (sparePart.clientMachineSparePart.totalRunningHours?.value > sparePart.lifeTime?.value) {
+                return 'text-red-500';
+            } else if (sparePart.clientMachineSparePart.totalRunningHours?.value == sparePart.lifeTime?.value) {
+                return 'text-yellow-500';
+            } else {
+                return 'text-green-500';
+            }
+        }
+    }
+
+    const getSparePartStatus = (sparePart) => {
+        if (sparePart.clientMachineSparePart) {
+            if (sparePart.clientMachineSparePart.totalRunningHours?.value > sparePart.lifeTime?.value) {
+                return 'Attention';
+            } else if (sparePart.clientMachineSparePart.totalRunningHours?.value == sparePart.lifeTime?.value) {
+                return 'Monitor';
+            } else {
+                return 'Healthy';
+            }
+        }
+    }
+
+    const getSparePartStatusIcon = (sparePart) => {
+        if (sparePart.clientMachineSparePart) {
+            if (sparePart.clientMachineSparePart.totalRunningHours?.value > sparePart.lifeTime?.value) {
+                return '/icon-rem.png';
+            } else if (sparePart.clientMachineSparePart.totalRunningHours?.value == sparePart.lifeTime?.value) {
+                return '/yellow-bell.png';
+            } else {
+                return '/icon-rem-2.png';
+            }
+        }
+    }
 
     const handleProductSummaryClick = () => setShowSummary(!showSummary);
 
@@ -132,20 +186,20 @@ const SideModal = ({ handleClick, showSideBar }) => {
                         <h2 className="text-[18px] font-semibold text-white mb-4">Components Status</h2>
                         <div className="grid grid-cols-2 gap-4">
                             {
-                                componentData.map((component, index) => (
+                                spareParts.map((sparePart, index) => (
                                     <div key={index} className="bg-[#26334b] rounded-xl h-[170px] relative cursor-pointer overflow-hidden">
                                         <div className="bg-[#13213a] rounded-t-xl flex items-center justify-center gap-2 py-1 px-4">
-                                            <Image src={component.icon} alt="Status Icon" width={16} height={16} />
-                                            <div className={`font-semibold ${component.color}`}>{component.status}</div>
+                                            <Image src={getSparePartStatusIcon(sparePart)} alt="Status Icon" width={16} height={16} />
+                                            <div className={`font-semibold ${getSparePartColor(sparePart)}`}>{getSparePartStatus(sparePart)}</div>
                                         </div>
                                         <div className="relative group h-[calc(100%_-_28px)]">
                                             <div className="absolute inset-0 z-10 group-hover:backdrop-blur-sm ">
-                                                <Link href={component.href} className="bg-white text-primary-blue px-6 py-[3px] absolute left-1/2 top-[44%] -translate-1/2 rounded-4xl font-medium opacity-0 group-hover:opacity-100">explore</Link>
+                                                <Link href={"/stock-preparation/hydrapulper/rotor"} className="bg-white text-primary-blue px-6 py-[3px] absolute left-1/2 top-[44%] -translate-1/2 rounded-4xl font-medium opacity-0 group-hover:opacity-100">explore</Link>
                                             </div>
                                             <div className="flex justify-center mb-4 h-[calc(100%_-_24px)]">
-                                                <Image src={component.image} alt={component.name} width={120} height={110} className="h-full w-full object-contain" />
+                                                <Image src={imageMap[sparePart._id]} alt={sparePart.name} width={120} height={110} className="h-full w-full object-contain" />
                                             </div>
-                                            <p className="text-white font-bold text-center absolute bottom-2 left-1/2 -translate-x-1/2 w-full">{component.name}</p>
+                                            <p className="text-white font-bold text-center absolute bottom-2 left-1/2 -translate-x-1/2 w-full">{sparePart.name}</p>
                                         </div>
                                     </div>
                                 ))

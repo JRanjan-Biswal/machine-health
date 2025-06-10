@@ -4,8 +4,7 @@ import NavigationBar from '@/components/CostBenefit/Navigationbar';
 import Sidebar from '@/components/CostBenefit/Sidebar';
 import MainContent from '@/components/CostBenefit/MainContent';
 
-
-const Costcompt = ({data}) => {
+const Costcompt = ({ data }) => {
     const [showSideBar, setShowSideBar] = useState(false);
 
     const handleSideBarView = useCallback(() => {
