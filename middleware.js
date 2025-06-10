@@ -1,40 +1,29 @@
 // middleware.ts
-import { NextResponse } from 'next/server';
+import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
-// Define public routes that don't require authentication
-const publicRoutes = ['/']; // Add any other public routes
+// When user is not logged in and tries to access protected routes redirect to login page
+export const DEFAULT_REDIRECT_LOGIN_URL = '/login'
 
-export async function middleware(request) {
-    console.log('Middleware triggered for:', request.nextUrl.pathname);
-  const { pathname } = request.nextUrl;
+// When user is logged in and tries to access login page redirect to dashboard
+export const DEFAULT_REDIRECT_HOME_URL = '/dashboard'
 
-  // Check if the current path is a public route
-  if (publicRoutes.includes(pathname)) {
-    return NextResponse.next(); // Allow access to public routes
-  }
+export default withAuth(
+    function middleware(req) {
+        return NextResponse.next();
+    },
+    {
+        callbacks: {
+            authorized: ({ token }) => !!token
+        },
+    }
+);
 
-  // 1. Get the token from the cookie
-  const token = request.cookies.get('token')?.value;
-
-  // 2. Check if the token exists and is valid (optional, but recommended for more robust security)
-  //    In a real application, you might decode a JWT here or make an API call to your backend
-  //    to validate the token against your database/authentication service.
-  const isAuthenticated = !!token; // Basic check: just presence of token
-
-  // If no token or invalid token, redirect to login
-  if (!isAuthenticated) {
-    const loginUrl = new URL('/', request.url);
-    loginUrl.searchParams.set('redirect', pathname); // Optional: redirect back after login
-    return NextResponse.redirect(loginUrl);
-  }
-
-  // If authenticated, allow the request to proceed
-  return NextResponse.next();
-}
-
-// Configure which paths the middleware should run on
-// This matcher ensures the middleware doesn't run on internal Next.js paths or static files.
 export const config = {
-  // matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.jpg$|.*\\.jpeg$|.*\\.gif$|.*\\.svg$|.*\\.webp$|.*\\.css$|.*\\.js$|.*\\.map$).*)'],
+    matcher: [
+        "/dashboard",
+        "/dashboard/:path*",
+        "/stock-preparation/:path*",
+        "/cost-benefit/:path*",
+    ]
 };

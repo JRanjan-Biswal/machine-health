@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { TbEyeClosed } from "react-icons/tb";
 import { PiEye } from "react-icons/pi";
 import { toast, ToastContainer } from 'react-toastify';
+import { signIn } from 'next-auth/react';
 
 function isValidEmail(email) {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -11,13 +12,9 @@ function isValidEmail(email) {
 }
 
 const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
-
   const router = useRouter();
-
   const [showPassword, setShowPassword] = useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
-
   const [formData, setFormData] = useState({
     email: defaultClientId,
     password: defaultPassword
@@ -25,6 +22,7 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log('Input changed:', name, value); // Debug log
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -33,6 +31,7 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form submitted with data:', formData); // Debug log
 
     if (!formData.email || !formData.password) {
       toast.error('Please fill in all fields', { color: '#1d1d1d' });
@@ -40,30 +39,39 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
     }
 
     if (!isValidEmail(formData.email)) {
-      alert('Invalid email format');
       toast.error('Invalid email format');
       return;
     }
 
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        body: JSON.stringify({ email: formData.email, password: formData.password }),
-      });
       setIsLoading(true);
-      if (response.ok) {
-        toast.success('Login successful!', { color: '#1d1d1d' });
-        router.push('/dashboard');
+      console.log('Attempting to sign in with:', formData.email); // Debug log
+
+      const result = await signIn('credentials', {
+        email: formData.email,
+        password: formData.password,
+        redirect: false, // Enable redirect
+        callbackUrl: '/dashboard' // This will handle the redirect
+      });
+
+      console.log('Sign in result:', result); // Debug log
+
+      if (result?.error) {
+        toast.error('Login failed. Please check your credentials.', { color: '#1d1d1d' });
         return;
       }
-      else {
-        throw Error();
-      }
+
+      toast.success('Login successful!', { color: '#1d1d1d' });
+      router.push('/dashboard');
+      setTimeout(() => {
+        router.refresh();
+      }, 200); // 200ms delay to ensure session is set
+    } catch (error) {
+      console.error('Login error:', error); // Debug log
+      toast.error('An error occurred during login.', { color: '#1d1d1d' });
+    } finally {
+      setIsLoading(false);
     }
-    catch (error) {
-      toast.error('Login failed. Please check your credentials.', { color: '#1d1d1d' });
-    }
-    setIsLoading(false);
   };
 
   return (
@@ -81,9 +89,14 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
         <form onSubmit={handleSubmit} className="flex flex-col gap-[35px]" autoComplete="off">
           <div className="flex flex-col gap-5">
             <div className="relative">
-              <input type="text" name="email" placeholder="email"
-                value={formData.email} onChange={handleInputChange}
+              <input
+                type="text"
+                name="email"
+                placeholder="email"
+                value={formData.email}
+                onChange={handleInputChange}
                 className="w-full px-5 py-[15px] border border-[#96a5ba] rounded-[6px] text-base font-montserrat text-[#2d3e5c] focus:outline-none focus:border-[#1d1d1d]"
+                autoComplete="email"
               />
             </div>
 
@@ -95,6 +108,7 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
                 value={formData.password}
                 onChange={handleInputChange}
                 className="w-full px-5 py-[15px] border border-[#96a5ba] rounded-[6px] text-base font-montserrat text-[#2d3e5c] focus:outline-none focus:border-[#1d1d1d]"
+                autoComplete="current-password"
               />
               <button
                 type="button"
