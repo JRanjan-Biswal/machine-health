@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 
-const RotorComponent = ({ currentState = true, optimalState = true, currentStateImge = "/image-95.png", optimalStateimg = "/image-94.png", percentage = "60%" }) => {
+const RotorComponent = ({ currentState = true, optimalState = true, currentStateImge = "/image-95.png", optimalStateimg = "/image-94.png", percentage = "60%", comment = "No comments available yet." }) => {
+    const [isCommentsOpen, setIsCommentsOpen] = useState(false);
 
     return (
         <div className="w-[407px] bg-[#2d3e5c] rounded-xl p-5">
@@ -38,9 +40,32 @@ const RotorComponent = ({ currentState = true, optimalState = true, currentState
                 </div>
 
                 {/* Comments Section */}
-                <div className="flex flex-row items-center justify-between">
-                    <h2 className="text-[#dfe6ec] text-base font-montserrat font-bold">Comments</h2>
-                    <Image src="/icon.png" width={22} height={22} alt="comment icon" className='rotate-[270deg]' />
+                <div className="flex flex-col gap-2">
+                    <div
+                        className="flex flex-row items-center justify-between cursor-pointer"
+                        onClick={() => setIsCommentsOpen(!isCommentsOpen)}
+                    >
+                        <h2 className="text-[#dfe6ec] text-base font-montserrat font-bold">Comments</h2>
+                        <Image
+                            src="/icon.png"
+                            width={22}
+                            height={22}
+                            alt="comment icon"
+                            className={`transition-transform duration-300 ${isCommentsOpen ? 'rotate-90' : 'rotate-[270deg]'}`}
+                        />
+                    </div>
+
+                    <div
+                        className={`overflow-hidden transition-all duration-300 ease-in-out ${isCommentsOpen ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'
+                            }`}
+                    >
+                        <div className="bg-[#1e2a3d] rounded-lg p-4 text-[#dfe6ec]">
+                            {/* Add your comments content here */}
+                            <p className="text-sm">
+                                {comment}
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 {/* View Details Button */}

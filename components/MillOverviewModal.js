@@ -1,58 +1,56 @@
 'use client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RxCross2 } from "react-icons/rx";
 
-
-// replacs €/ton and €/kwhr with empty string and validates the price
-function extractAndValidatePrice(priceString) {
-  let cleanedString = priceString.replace(/€\/ton|€\/kwhr/g, '').trim();
-  let regex = /^\d*\.?\d*$/; // Regex to match any character that is not a digit, comma, or period
-  let checkNumType = regex.test(cleanedString); // Remove unwanted characters
-
-  if (checkNumType) {
-    return {
-      isValidNumber: true,
-      value: cleanedString
-    };
-  } else {
-    return {
-      isValidNumber: false,
-      value: null
-    };
-  }
-}
-
-const MillOverviewModal = ({
-  customerName = 'Select Company',
-  powerCost = '0.09 €/kwhr',
-  fiberCost = '200 €/ton',
-  capacity = '400 BDMTPD',
-  location = 'Vapi, Gujarat, India',
-  endProduct = 'Kraft Test Liner',
-  handleShowModal
-}) => {
+const MillOverviewModal = ({ handleShowModal }) => {
   const router = useRouter();
-  const [selectedCompany, setSelectedCompany] = useState(customerName);
+  const [selectedCompany, setSelectedCompany] = useState({
+    name: "",
+    powerCost: {
+      value: '',
+      priceUnit: '',
+      perUnit: '',
+    },
+    fiberCost: {
+      value: '',
+      priceUnit: '',
+      perUnit: '',
+    },
+    capacity: "",
+    location: "",
+    endProduct: "",
+  });
 
-  const [powerCostState, setPowerCostState] = useState(powerCost);
-  const [fiberCostState, setFiberCostState] = useState(fiberCost);
+  const [clients, setClients] = useState([]);
 
-  const handleChangeCost = (value, type) => {
-
-    const isValidPowerCost = extractAndValidatePrice(value);
-    if (!isValidPowerCost.isValidNumber) return;
-
-    if (type === 'powerCost') {
-      setPowerCostState(isValidPowerCost.value + ' €/kwhr');
-    }
-    else if (type === 'fiberCost') {
-      setFiberCostState(isValidPowerCost.value + ' €/ton');
-    }
+  const handleSelectCompany = (e) => {
+    const selectedClient = clients.find(client => client._id === e.target.value);
+    if (!selectedClient) return;
+    setSelectedCompany({
+      name: selectedClient.name,
+      powerCost: selectedClient.powerCost,
+      fiberCost: selectedClient.fiberCost,
+      capacity: selectedClient.capacity,
+      location: selectedClient.location,
+      endProduct: selectedClient.endProduct,
+    });
   }
 
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const response = await fetch('/api/clients');
+        const data = await response.json();
+        setClients(data.data.clients);
+      } catch (error) {
+        console.error('Error fetching clients:', error);
+      }
+    }
 
+    fetchClients();
+  }, []);
   return (
     <div className="max-w-lg w-full bg-white rounded-2xl p-10 shadow-lg flex flex-col gap-6">
       <div className="flex justify-between items-center">
@@ -66,13 +64,15 @@ const MillOverviewModal = ({
           <div className="relative dropdown-container">
             <select
               className="w-full p-3 border border-gray-300 rounded-md"
-              value={selectedCompany}
-              onChange={(e) => setSelectedCompany(e.target.value)}
+              value={selectedCompany._id}
+              onChange={handleSelectCompany}
             >
-              <option value="Aryan Papers">Aryan Papers</option>
-              <option value="Sri Andal Paper Mill">Sri Andal Paper Mill</option>
-              <option value="GayatriShakti Papers & Boards Ltd.">GayatriShakti Papers & Boards Ltd.</option>
-              <option value="Lemit Papers LLP">Lemit Papers LLP</option>
+              <option value="">Select Company</option>
+              {
+                clients.map((client) => (
+                  <option key={client._id} value={client._id}>{client.name}</option>
+                ))
+              }
             </select>
             <Image src="/icon.png" alt="Dropdown" width={24} height={24}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none -rotate-90"
@@ -83,29 +83,47 @@ const MillOverviewModal = ({
         <div className="flex gap-4">
           <div className="flex flex-col gap-2 w-1/2">
             <label className="font-semibold text-gray-700">Power Cost</label>
-            <input
-              type="text"
-              value={powerCostState}
-              className="w-full p-3 border border-gray-300 rounded-md"
-              onChange={(e) => handleChangeCost(e.target.value, 'powerCost')}
-            />
+            <div className="relative">
+              <input
+                readOnly
+                type="text"
+                value={selectedCompany.powerCost.value}
+                className="w-full p-3 border border-gray-300 rounded-md"
+              />
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <span className="text-sm text-muted-foreground">
+                  {new Intl.NumberFormat(undefined, { style: 'currency', currency: selectedCompany.powerCost.priceUnit || 'EUR' }).format(0).slice(0, 1)}/{selectedCompany.powerCost.perUnit}
+                </span>
+              </div>
+            </div>
           </div>
 
           <div className="flex flex-col gap-2 w-1/2">
             <label className="font-semibold text-gray-700">Fiber Cost</label>
-            <input
-              type="text"
-              value={fiberCostState}
-              className="w-full p-3 border border-gray-300 rounded-md"
-              onChange={(e) => handleChangeCost(e.target.value, 'fiberCost')}
-            />
+            <div className="relative">
+              <input
+                readOnly
+                type="text"
+                value={selectedCompany.fiberCost.value}
+                className="w-full p-3 border border-gray-300 rounded-md"
+              />
+              {
+                selectedCompany.fiberCost.value && selectedCompany.fiberCost.priceUnit && selectedCompany.fiberCost.perUnit &&
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <span className="text-sm text-muted-foreground">
+                    {new Intl.NumberFormat(undefined, { style: 'currency', currency: selectedCompany.fiberCost.priceUnit || 'EUR' }).format(0).slice(0, 1)}/{selectedCompany.fiberCost.perUnit}
+                  </span>
+                </div>
+              }
+            </div>
+
           </div>
         </div>
 
         <div className="flex flex-col gap-2">
-          <p className="font-semibold text-gray-700">Capacity : {capacity}</p>
-          <p className="font-semibold text-gray-700">Location : {location}</p>
-          <p className="font-semibold text-gray-700">End Product : {endProduct}</p>
+          <p className="font-semibold text-gray-700">Capacity : {selectedCompany.capacity}</p>
+          <p className="font-semibold text-gray-700">Location : {selectedCompany.location.address}</p>
+          <p className="font-semibold text-gray-700">End Product : {selectedCompany.endProduct}</p>
         </div>
 
         <hr className="border-t border-gray-200" />
