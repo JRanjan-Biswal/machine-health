@@ -1,4 +1,3 @@
-
 'use client';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, LinearScale, CategoryScale } from "chart.js";
@@ -6,294 +5,163 @@ import gradient from 'chartjs-plugin-gradient';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, LinearScale, CategoryScale, gradient, ChartDataLabels);
 
-import { RiArrowRightSLine } from "react-icons/ri";
-import Image from 'next/image';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { calculateFiberLoss, calculatePowerLoss } from './cost-calculate';
+import { useMemo, useRef, useState } from 'react';
+import "@/app/styles/slider.css";
+import Header from './HeaderContent';
+import ChartLegend from './Legend';
+import StatsBox from './StatBox';
+import CostChart from './CostChart';
+import Timeline from './Timeline';
 
 
-const updateThumbColor = (element, value) => {
-    let color;
-    const normalizedValue = value / 100;
+// const updateThumbColor = (element, value) => {
+//     let color;
+//     const normalizedValue = value / 100;
 
-    if (normalizedValue >= 0 && normalizedValue < 0.25) {
-        color = 'hsl(120, 100%, 20%)'; // Darker green
-    } else if (normalizedValue >= 0.25 && normalizedValue < 0.5) {
-        color = 'hsl(120, 100%, 40%)'; // Standard green
-    } else if (normalizedValue >= 0.5 && normalizedValue < 0.75) {
-        color = 'hsl(30, 100%, 50%)'; // Orange
-    } else {
-        color = 'hsl(0, 100%, 50%)'; // Red
-    }
+//     if (normalizedValue >= 0 && normalizedValue < 0.25) {
+//         color = 'hsl(120, 100%, 20%)'; // Darker green
+//     } else if (normalizedValue >= 0.25 && normalizedValue < 0.5) {
+//         color = 'hsl(120, 100%, 40%)'; // Standard green
+//     } else if (normalizedValue >= 0.5 && normalizedValue < 0.75) {
+//         color = 'hsl(30, 100%, 50%)'; // Orange
+//     } else {
+//         color = 'hsl(0, 100%, 50%)'; // Red
+//     }
 
-    // Set the CSS variable on the slider element
-    element.style.setProperty('--slider-thumb-color', color);
-};
+//     // Set the CSS variable on the slider element
+//     element.style.setProperty('--slider-thumb-color', color);
+// };
+
 
 const MainContent = ({ contentData }) => {
-
     const chartRef = useRef(null);
-    const [sliderValue, setSliderValue] = useState(49);
-
+    const [currentRunningHours, setCurrentRunningHours] = useState(contentData?.clientMachineSparePart?.totalRunningHours?.value);
+    const [installedOn, setInstalledOn] = useState(contentData?.clientMachineSparePart?.machineData?.installationDate);
     const [barData, setBarData] = useState(null);
 
-    const data = {
-        labels: ['Power Loss', 'Fiber Loss', 'Total Loss'],
-        datasets: [
-            {
-                label: '',
-                data: barData,
-                backgroundColor: function (context) {
-                    const chart = context.chart;
-                    const { ctx, chartArea } = chart;
+    // --- General & Fiber Loss Inputs ---
+    const [fiberCost, setFiberCost] = useState(contentData?.clientMachineSparePart?.fiberCost?.value);
+    const [rotorLifetime, setRotorLifetime] = useState(contentData?.clientMachineSparePart?.lifetimeOfRotor?.value);
+    const [lineCapacity, setLineCapacity] = useState(contentData?.clientMachineSparePart?.capacityOfLine?.value); // TPD
+    const [dailyRunningHours, setDailyRunningHours] = useState(contentData?.clientMachineSparePart?.dailyRunningHours?.value);
+    const [lossRangeA, setLossRangeA] = useState(contentData?.clientMachineSparePart?.fiberLossRanges?.[0]?.value);
+    const [lossRangeB, setLossRangeB] = useState(contentData?.clientMachineSparePart?.fiberLossRanges?.[1]?.value);
+    const [lossRangeC, setLossRangeC] = useState(contentData?.clientMachineSparePart?.fiberLossRanges?.[2]?.value);
+    const [lossRangeD, setLossRangeD] = useState(contentData?.clientMachineSparePart?.fiberLossRanges?.[3]?.value);
 
-                    if (!ctx || !chartArea) {
-                        return null;
-                    }
+    // --- State for Power Loss Inputs ---
+    const [installedMotorPower, setInstalledMotorPower] = useState(contentData?.clientMachineSparePart?.installedMotorPower?.value);
+    const [consumptionGoodRotor, setConsumptionGoodRotor] = useState(contentData?.clientMachineSparePart?.actualMotorPowerConsumption?.healthy?.value);
+    const [consumptionWornRotor, setConsumptionWornRotor] = useState(contentData?.clientMachineSparePart?.actualMotorPowerConsumption?.wornout?.value);
+    const [powerCost, setPowerCost] = useState(contentData?.clientMachineSparePart?.powerCost?.value);
 
-                    const { element } = context;
-                    let gradientFill;
+    const chartData = useMemo(() => {
+        // Shared variable for both calculations
+        const I =
+            currentRunningHours > rotorLifetime
+                ? currentRunningHours - rotorLifetime
+                : 0;
 
-                    if (element && element.base && element.height) {
-                        gradientFill = ctx.createLinearGradient(0, element.base, 0, element.base - element.height);
-                    } else {
-                        gradientFill = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                    }
-
-                    switch (context.dataIndex) {
-                        case 0:
-                            gradientFill.addColorStop(0, '#BF1E21');
-                            gradientFill.addColorStop(1, '#EB5154');
-                            break;
-                        case 1:
-                            gradientFill.addColorStop(0, '#FF9A00');
-                            gradientFill.addColorStop(1, '#FFB647');
-                            break;
-                        case 2:
-                            gradientFill.addColorStop(0, '#2D3E5C');
-                            gradientFill.addColorStop(1, '#415E91');
-                            break;
-                        default:
-                            gradientFill.addColorStop(0, 'rgba(211, 211, 211, 0.8)');
-                            gradientFill.addColorStop(1, 'rgba(128, 128, 128, 0.8)');
-                    }
-                    return gradientFill;
-                },
-                borderColor: [
-                    'rgba(191, 30, 33, 1)',
-                    'rgba(255, 154, 0, 1)',
-                    'rgba(45, 62, 92, 1)'
-                ],
-                borderWidth: 1,
-                borderRadius: 5
-            },
-        ],
-    };
-
-    const options = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            // gradient: true, // Enable the plugin
-            legend: {
-                display: false // Remove legend if desired
-            },
-            datalabels: { // Datalabels plugin configuration
-                anchor: 'end', // Position the label at the end of the bar (top for vertical)
-                align: 'end',   // Align the label to the end (top for vertical)
-                offset: 0,      // Offset from the end of the bar
-                formatter: (value) => {
-                    return value + ' %'; // Display the value and add " units"
-                },
-                font: {
-                    weight: 'bold',
-                    size: 16,
-                },
-                color: '#333', // Darker color for better contrast
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                grid: {
-                    display: false
-                },
-                ticks: {
-                    display: false // Keep labels
-                },
-                border: {
-                    color: '#96A5BA', // Y-axis line color
-                    width: 2 // Y-axis line width
-                },
-                title: {
-                    display: true,
-                    text: 'Cost',
-                    color: '#96A5BA',
-                    rotate: '180',
-                    font: {
-                        size: 16,
-                        weight: 'bold',
-                    }
-                },
-            },
-            x: {
-                grid: {
-                    display: false
-                },
-                border: {
-                    color: '#96A5BA', // Y-axis line color
-                    width: 2 // Y-axis line width
-                },
-            }
-        },
-    };
-
-
-    // useEffect to handle the initial color setting and subsequent changes
-    useMemo(() => {
-        if (typeof window === 'undefined') return; // Ensure this runs only in the browser
-
-        const sliderElement = document.getElementById('slider-1');
-        if (sliderElement) {
-            updateThumbColor(sliderElement, sliderValue);
-        }
-    }, [sliderValue]); // Re-run when sliderValue changes
-
-    const handleSliderChange = (event) => {
-        const newValue = parseInt(event.target.value, 10);
-        setSliderValue(newValue);
-    };
-
-    useMemo(() => {
-        const fData = {
-            capacityOfLine: contentData?.clientMachineSparePart?.capacityOfLine?.value,
-            dailyRunningHours: contentData?.clientMachineSparePart?.dailyRunningHours?.value,
-            fiberCost: contentData?.clientMachineSparePart?.fiberCost?.value,
-            fiberLossRanges: contentData?.clientMachineSparePart?.fiberLossRanges,
-            lifetimeOfRotor: contentData?.clientMachineSparePart?.lifetimeOfRotor?.value,
-            totalRunningHours: contentData?.clientMachineSparePart?.totalRunningHours?.value,
+        // --- Power Loss Calculation ---
+        let totalPowerLossCost = 0;
+        if (I > 0) {
+            const powerConsumptionGood =
+                (installedMotorPower * consumptionGoodRotor) / 100;
+            const powerConsumptionWorn =
+                (installedMotorPower * consumptionWornRotor) / 100;
+            const increaseInConsumption = powerConsumptionWorn - powerConsumptionGood;
+            // overallPowerLoss is in kWh
+            const overallPowerLoss = increaseInConsumption * I;
+            totalPowerLossCost = overallPowerLoss * powerCost;
         }
 
-        const cData = {
-            capacityOfLine: contentData?.clientMachineSparePart?.capacityOfLine?.value,
-            dailyRunningHours: contentData?.clientMachineSparePart?.dailyRunningHours?.value,
-            installedMotorPower: contentData?.clientMachineSparePart?.installedMotorPower?.value,
-            actualMotorPowerConsumption: contentData?.clientMachineSparePart?.actualMotorPowerConsumption,
-            powerConsumption: contentData?.clientMachineSparePart?.powerConsumption,
-            lifetimeOfRotor: contentData?.clientMachineSparePart?.lifetimeOfRotor?.value,
-            totalRunningHours: contentData?.clientMachineSparePart?.totalRunningHours?.value,
-            powerCost: contentData?.clientMachineSparePart?.powerCost?.value,
-        }
-        const fiberLossData = calculateFiberLoss(fData);
-        const powerLossData = calculatePowerLoss(cData)
-        console.log(fiberLossData, powerLossData)
-        setBarData([powerLossData?.powerCost, fiberLossData?.fiberLoss, powerLossData?.powerCost + fiberLossData?.fiberLoss])
+        // --- Fiber Loss Calculation ---
+        const totalProduction = lineCapacity * dailyRunningHours;
+        const lossCalculationBase = totalProduction / 24 / 24;
+        let fiberLoss = 0;
+        if (I > 0) {
+            const pA = lossRangeA / 100;
+            const pB = lossRangeB / 100;
+            const pC = lossRangeC / 100;
+            const pD = lossRangeD / 100;
 
-    }, [contentData])
+            const hoursInTierA = Math.max(0, Math.min(I, 240));
+            const hoursInTierB = Math.max(0, Math.min(I, 480) - 240);
+            const hoursInTierC = Math.max(0, Math.min(I, 720) - 480);
+            const hoursInTierD = Math.max(0, I - 720);
+
+            const lossFromA = hoursInTierA * pA;
+            const lossFromB = hoursInTierB * pB;
+            const lossFromC = hoursInTierC * pC;
+            const lossFromD = hoursInTierD * pD;
+
+            fiberLoss =
+                lossCalculationBase * (lossFromA + lossFromB + lossFromC + lossFromD);
+        }
+        const totalFiberLossCost = fiberLoss * fiberCost;
+
+        // --- UPDATED: Total Loss is now the sum of both calculations ---
+        const totalLoss = totalFiberLossCost + totalPowerLossCost;
+
+        // --- Chart Bar Height Calculation ---
+        const maxBarHeight = 320;
+        const maxChartValue = Math.max(totalLoss * 1.5, 20000);
+
+        const height1 = (totalPowerLossCost / maxChartValue) * maxBarHeight;
+        const height2 = (totalFiberLossCost / maxChartValue) * maxBarHeight;
+        const height3 = (totalLoss / maxChartValue) * maxBarHeight;
+
+        // --- Slider Thumb Color Logic ---
+        const extendedHours = currentRunningHours - rotorLifetime;
+        let thumbColor;
+        if (extendedHours > 720) {
+            thumbColor = "var(--slider-red)";
+        } else if (extendedHours > 480) {
+            thumbColor = "var(--slider-orange)";
+        } else {
+            thumbColor = "var(--slider-green)";
+        }
+
+        setBarData([Math.round(totalPowerLossCost), Math.round(totalFiberLossCost), Math.round(totalLoss)]);
+
+        return {
+            val1: totalPowerLossCost,
+            val2: totalFiberLossCost,
+            val3: totalLoss,
+            height1,
+            height2,
+            height3,
+            thumbColor,
+        };
+    }, [
+        currentRunningHours,
+        rotorLifetime,
+        fiberCost,
+        lineCapacity,
+        dailyRunningHours,
+        lossRangeA,
+        lossRangeB,
+        lossRangeC,
+        lossRangeD,
+        installedMotorPower,
+        consumptionGoodRotor,
+        consumptionWornRotor,
+        powerCost,
+    ]);
 
     return (
-        <div className="w-full mx-auto bg-white rounded-xl border border-[#dfe6ec] overflow-hidden h-[calc(100svh_-_200px)] shadow-custom-1">
-            {/* Header */}
-            <div className="flex flex-col gap-x-2 bg-secondary-blue relative">
-                <div className="bg-[#2d3e5c] rounded-t-xl px-5 py-1 w-fit">
-                    <h1 className="text-white font-lato text-base">Spare Parts Analysis (Hydrapulper)</h1>
-                </div>
-
-                <div className="flex flex-row items-center w-full border-b border-[#96a5ba]">
-                    <div className="flex items-end-safe gap-1 p-2.5">
-                        <span className="text-[#d45815] font-montserrat font-bold ps-4">Rotor</span>
-                        <RiArrowRightSLine size={24} />
-                    </div>
-                    <div className="flex items-end-safe gap-1 p-2.5">
-                        <span className="text-[#2d3e5c] font-montserrat font-bold">Rotor Shaft</span>
-                        <RiArrowRightSLine size={24} />
-                    </div>
-                    <div className="flex items-end-safe gap-1 p-2.5">
-                        <span className="text-[#2d3e5c] font-montserrat font-bold">Rotor hub</span>
-                        <RiArrowRightSLine size={24} />
-                    </div>
-                    <div className="flex items-end-safe gap-1 p-2.5">
-                        <span className="text-[#2d3e5c] font-montserrat font-bold">BedPlate</span>
-                        <RiArrowRightSLine size={24} />
-                    </div>
-                </div>
-
-                {/* Schedule Maintenance Button */}
-                <div className="flex justify-end mt-4 absolute right-4">
-                    <button className="flex items-center gap-2 bg-[#2d3e5c] text-white px-8 py-3 rounded-[50px]">
-                        <Image src="/icon-gea.png" width={24} height={24} alt="Gear icon" />
-                        <span className="font-montserrat font-bold">Schedule Maintenance</span>
-                    </button>
-                </div>
-            </div>
-
+        <div className="w-full mx-auto bg-white rounded-xl border border-[#dfe6ec] overflow-hidden h-[calc(100svh_-_200px)] shadow-custom-1" style={{ "--slider-thumb-color": chartData.thumbColor }}>
+            <Header />
             <div className='px-4 relative h-[calc(100%_-_77px)]'>
-
-                <div className='flex gap-5 absolute top-4 left-8'>
-                    <div className='flex gap-2 items-center'>
-                        <div className='h-5 w-5 rounded-sm' style={{ 'background': 'linear-gradient(270deg, #EB5154 0%, #BF1E21 100%)' }} />
-                        <p>Power loss (%)</p>
-                    </div>
-                    <div className='flex gap-2 items-center'>
-                        <div className='h-5 w-5 rounded-sm' style={{ 'background': 'linear-gradient(270deg, #FFB647 0%, #FF9A00 100%)' }} />
-                        <p>Fiber loss (%)</p>
-                    </div>
-                    <div className='flex gap-2 items-center'>
-                        <div className='h-5 w-5 rounded-sm' style={{ 'background': 'linear-gradient(270deg, #415E91 0%, #2D3E5C 100%)' }} />
-                        <p>Total loss</p>
-                    </div>
-                </div>
-
-                {/* Loss Stats Box */}
-                <div className="bg-[#e6eef5] rounded-md border border-[#cad9ed] mt-4 w-full max-w-[361px] ml-auto absolute top-0 right-4">
-                    <div className="flex justify-center flex-col items-center py-4">
-                        <div className="text-[28px] font-bold text-[#ae2d2d]">€ {contentData?.clientMachineSparePart?.totalLossCost?.value}</div>
-                        <div className="text-base text-[#ae2d2d]">Total Loss</div>
-                    </div>
-                    <div className="border-t border-[#cad9ed]">
-                        <div className="flex justify-between relative px-4">
-                            <div className="flex flex-col py-4 w-1/2">
-                                <span className="text-[#2d3e5c] font-bold text-xl text-center">€ {contentData?.clientMachineSparePart?.totalFiberLossCost?.value}</span>
-                                <span className="text-[#607797] text-center">Fiber Loss</span>
-                            </div>
-                            <div className='h-full w-[1px] absolute left-1/2 top-0 bottom-0 bg-[#cad9ed]' />
-                            <div className="border-[#cad9ed] flex flex-col py-4 w-1/2">
-                                <span className="text-[#2d3e5c] font-bold text-xl text-center">€ {contentData?.clientMachineSparePart?.totalPowerLossCost?.value}</span>
-                                <span className="text-[#607797] text-center">Power Loss</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Chart Area */}
-                <div className="w-[calc(100%_-_400px)] h-[calc(50svh_-_130px)] absolute bottom-[150px]">
-                    <Bar ref={chartRef} data={data} options={options} id='chart' />
-                </div>
-
-                {/* Timeline */}
-                <div className="mt-12 mx-auto w-full absolute bottom-[40px]">
-                    <div className="relative custom-range mx-auto">
-                        <div className='first' />
-                        <div className='second' />
-                        <div className='third' />
-                        <div className='slider-color'></div>
-                        <input type="range" min="0" max="100" id="slider-1" onChange={handleSliderChange} value={sliderValue} />
-                    </div>
-                    <div className="flex justify-between mt-4 text-[#2d3e5c] font-bold w-[70%] mx-auto">
-                        <div className="text-center">
-                            <p>Installed On</p>
-                            <p>(17/08/2024)</p>
-                        </div>
-                        <div className="text-center">
-                            <p>Lifespan</p>
-                            <p>(3600 Hrs)</p>
-                        </div>
-                        <div className="text-center">
-                            <p>Current running hours</p>
-                            <p>(5040 Hrs)</p>
-                        </div>
-                    </div>
-                </div>
+                <ChartLegend />
+                <StatsBox contentData={contentData} />
+                <CostChart barData={barData} chartRef={chartRef} />
+                <Timeline
+                    currentRunningHours={currentRunningHours}
+                    setCurrentRunningHours={setCurrentRunningHours}
+                    installedOn={installedOn}
+                    lifespan={rotorLifetime}
+                />
             </div>
         </div>
     );

@@ -14,6 +14,30 @@
   --font-lato: 'Lato', sans-serif;
 }
 
+:root {
+  --font-family: "Inter", sans-serif;
+  --bg-color: #f7f8fc;
+  --card-bg-color: #ffffff;
+  --text-primary: #1a202c;
+  --text-secondary: #718096;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --bar-chart-border: #e2e8f0;
+  --input-bg: #edf2f7;
+  --input-border: #cbd5e0;
+
+  --power-loss-color: #c7524b;
+  --fiber-loss-color: #e3a84a;
+  --total-loss-color: #4a5568;
+
+  --slider-green: #2e937a;
+  --slider-orange: #f6b352;
+  --slider-red: #d65a49;
+  --slider-gradient: linear-gradient(to right,
+      var(--slider-green) 30%,
+      var(--slider-orange) 60%,
+      var(--slider-red) 100%);
+}
+
 html {
   height: 100%;
   width: 100%;
