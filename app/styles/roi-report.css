@@ -1,0 +1,209 @@
+/* 1. FONT IMPORT */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* 2. COLOR & STYLE VARIABLES */
+:root {
+  --font-family: "Inter", sans-serif;
+  --bg-color: #f7f8fc;
+  --card-bg-color: #ffffff;
+  --text-primary: #1a202c;
+  --text-secondary: #718096;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --border-color: #e2e8f0;
+  --input-bg: #f8fafc;
+  --report-header-bg: #4a5568;
+  --report-header-text: #ffffff;
+
+  --report-green: #2e937a;
+  --report-orange: #f6b352;
+  --report-red: #d65a49;
+}
+
+/* 3. GLOBAL STYLES */
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* 4. REPORT CONTAINER & LAYOUT */
+.report-container {
+  background: var(--card-bg-color);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.report-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  color: var(--text-primary);
+}
+
+.report-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.report-section {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--card-bg-color);
+}
+
+.report-section-title {
+  background-color: var(--report-header-bg);
+  color: var(--report-header-text);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.75rem;
+  text-align: center;
+  border-radius: 8px 8px 0 0;
+}
+
+.report-subsection {
+  padding: 1rem 1.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.8rem 1rem;
+  align-items: center;
+}
+
+.report-subsection h3 {
+  grid-column: 1 / -1;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+/* 5. STYLES FOR INPUT & CALCULATION ROWS */
+.report-row {
+  grid-column: 1 / -1;
+  display: contents;
+}
+
+.report-label {
+  color: var(--text-primary);
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  padding-right: 1rem;
+}
+
+.report-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-align: right;
+}
+
+.input-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+.input-wrapper input {
+  font-family: var(--font-family);
+  font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background-color: var(--input-bg);
+  width: 120px;
+  text-align: right;
+}
+.input-wrapper input:focus {
+  outline: none;
+  border-color: var(--report-header-bg);
+  box-shadow: 0 0 0 2px rgba(74, 85, 104, 0.2);
+}
+
+/* 6. --- FINAL OVERALL IMPACT SECTION STYLES --- */
+.overall-impact {
+  grid-column: 1 / -1;
+  margin-top: 2rem;
+  padding: 1rem 1.5rem; /* Add padding to the whole section */
+}
+
+/* New header style for the single, centered title */
+.impact-header {
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+}
+
+.impact-header h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0;
+  padding-bottom: 0.5rem;
+  display: inline-block; /* Allows margin and padding to work correctly */
+}
+
+.impact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* The .report-subsection inside impact is now just for content, no h3 */
+.impact-grid .report-subsection {
+  padding: 0;
+  display: block; /* Revert to block for simple stacking of rows */
+}
+
+.report-row.impact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.report-row.impact:last-child {
+  border-bottom: none;
+}
+.report-row.impact .report-value {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  color: white;
+  min-width: 160px;
+  text-align: center;
+}
+
+/* 7. PDF DOWNLOAD BUTTON STYLES */
+.download-section {
+  display: flex;
+  justify-content: center;
+  padding: 2.5rem 0 1rem 0;
+}
+
+.pdf-button {
+  font-family: var(--font-family);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--report-header-bg);
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+.pdf-button:hover {
+  background-color: #2d3748;
+}
+.pdf-button:active {
+  transform: scale(0.98);
+}

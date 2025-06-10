@@ -17,7 +17,7 @@ const Costcompt = ({data}) => {
             <div><NavigationBar /></div>
             <div className="flex flex-row w-full gap-4 mt-4 h-[calc(100svh_-_200px)]">
                 <div className="flex-grow-0">
-                    <Sidebar handleSideBarView={handleSideBarView} showSideBar={showSideBar} />
+                    <Sidebar contentData={data} handleSideBarView={handleSideBarView} showSideBar={showSideBar} />
                 </div>
                 <div className="flex-grow"
                     style={{ width: showSideBar ? 'calc(100% - 334px)' : 'calc(100% - 50px)' }}

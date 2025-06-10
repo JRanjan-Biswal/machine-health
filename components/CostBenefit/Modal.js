@@ -31,7 +31,7 @@ const Modal = ({ isOpen, onClose, children }) => {
             
             {/* Modal Content */}
             <div 
-                className={`relative bg-white rounded-lg p-6 w-[500px] transform transition-all duration-500 ease-out ${
+                className={`relative bg-white rounded-lg p-6 transform transition-all duration-500 ease-out ${
                     isOpen 
                         ? 'opacity-100 translate-y-0 scale-100' 
                         : 'opacity-0 -translate-y-8 scale-95'

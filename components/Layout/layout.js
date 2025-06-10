@@ -45,7 +45,7 @@ function Layout({ children }) {
   };
 
   // Move the conditional return after all hooks
-  if (pathname === "/") {
+  if (pathname === "/" || pathname === "/roi-report") {
     return (
       <div className={`transition-opacity duration-700 ease-out ${isPageLoaded ? 'opacity-100' : 'opacity-0'}`}>
         {children}
