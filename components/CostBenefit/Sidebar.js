@@ -13,7 +13,7 @@ const formatCurrency = (value, currencyCode) => {
     }).format(value);
 };
 
-const Sidebar = ({ handleSideBarView, showSideBar }) => {
+const Sidebar  = ({ handleSideBarView, showSideBar }) => {
     const [spareParts, setSpareParts] = React.useState([]);
     const [sparePartData, setSparePartData] = React.useState(null);
 
@@ -178,3 +178,5 @@ const Sidebar = ({ handleSideBarView, showSideBar }) => {
         </>
     );
 };
+
+export default Sidebar;
