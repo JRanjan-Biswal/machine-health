@@ -1,8 +1,35 @@
 import Image from "next/image";
 import { RiArrowLeftSLine } from "react-icons/ri";
 import styles from './sidebar.module.css';
+import React from "react";
+import { useEffect } from "react";
+
+const formatCurrency = (value, currencyCode) => {
+    if (!value || !currencyCode) return '0';
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currencyCode,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(value);
+};
 
 const Sidebar = ({ handleSideBarView, showSideBar }) => {
+    const [spareParts, setSpareParts] = React.useState([]);
+    const [sparePartData, setSparePartData] = React.useState(null);
+
+    const fetchSparePart = async () => {
+        const response = await fetch('/api/sparepart');
+        const data = await response.json();
+
+        setSpareParts(data.data);
+        setSparePartData(data.data.find(sparePart => sparePart._id === '684363cf58886bd63a211b24'));
+    }
+
+    useEffect(() => {
+        fetchSparePart();
+    }, []);
+
     return (
         <div className={`${showSideBar ? 'w-[334px]' : 'w-[70px] bg-white rounded-2xl'} relative transition-all duration-300 h-full shadow-custom-1`}>
             <div className={`w-full h-full overflow-hidden ${styles.sidebar}`}>
@@ -28,32 +55,47 @@ const Sidebar = ({ handleSideBarView, showSideBar }) => {
                             <div className="flex flex-col gap-5">
                                 {/* Basic Info */}
                                 <div className="flex flex-col gap-2.5">
-                                    <p className="text-[#607797] text-base font-medium">Capacity of Line: 400 tpd</p>
-                                    <p className="text-[#607797] text-base font-medium">Daily running Hours: 24 Hrs</p>
-                                    <p className="text-[#607797] text-base font-medium">Lifetime of rotor: 3600 Hrs</p>
-                                    <p className="text-[#607797] text-base font-medium">Total running Hours: 5040 Hrs</p>
+                                    <p className="text-[#607797] text-base font-medium">Capacity of Line: {sparePartData?.clientMachineSparePart?.capacityOfLine?.value} {sparePartData?.clientMachineSparePart?.capacityOfLine?.unit}</p>
+                                    <p className="text-[#607797] text-base font-medium">Daily running Hours: {sparePartData?.clientMachineSparePart?.dailyRunningHours?.value} {sparePartData?.clientMachineSparePart?.dailyRunningHours?.unit}</p>
+                                    <p className="text-[#607797] text-base font-medium">Lifetime of rotor: {sparePartData?.clientMachineSparePart?.lifetimeOfRotor?.value} {sparePartData?.clientMachineSparePart?.lifetimeOfRotor?.unit}</p>
+                                    <p className="text-[#607797] text-base font-medium">Total running Hours: {sparePartData?.clientMachineSparePart?.totalRunningHours?.value} {sparePartData?.clientMachineSparePart?.totalRunningHours?.unit}</p>
                                 </div>
 
                                 {/* Fiber Loss Section */}
                                 <div className="flex flex-col gap-2.5">
                                     <h3 className="text-[#2d3e5c] text-lg font-bold">Fiber Loss</h3>
-                                    <p className="text-[#607797] text-base font-medium">Fiber Loss: 92 tons</p>
-                                    <p className="text-[#607797] text-base font-medium">Fiber Cost: € 200/ton</p>
-                                    <p className="text-[#607797] text-base font-medium">Total Fiber Loss Value: € 18,400</p>
+                                    <p className="text-[#607797] text-base font-medium">Fiber Loss: {sparePartData?.clientMachineSparePart?.totalFiberLoss?.value} {sparePartData?.clientMachineSparePart?.totalFiberLoss?.unit}</p>
+                                    <p className="text-[#607797] text-base font-medium">Fiber Cost: {formatCurrency(
+                                        sparePartData?.clientMachineSparePart?.fiberCost?.value,
+                                        sparePartData?.clientMachineSparePart?.fiberCost?.priceUnit
+                                    )} / {sparePartData?.clientMachineSparePart?.fiberCost?.perUnit}</p>
+                                    <p className="text-[#607797] text-base font-medium">Total Fiber Loss Value: {formatCurrency(
+                                        sparePartData?.clientMachineSparePart?.totalFiberLossCost?.value,
+                                        sparePartData?.clientMachineSparePart?.totalFiberLossCost?.unit
+                                    )}</p>
                                 </div>
 
                                 {/* Power Loss Section */}
                                 <div className="flex flex-col gap-2.5">
                                     <h3 className="text-[#2d3e5c] text-lg font-bold">Power Loss</h3>
-                                    <p className="text-[#607797] text-base font-medium">Installed Motor power: 500 kw</p>
-                                    <p className="text-[#607797] text-base font-medium">Power Cost: 0.09 €/kwhr</p>
-                                    <p className="text-[#607797] text-base font-medium">Total Power Cost: € 6,480</p>
+                                    <p className="text-[#607797] text-base font-medium">Installed Motor power: {sparePartData?.clientMachineSparePart?.installedMotorPower?.value} {sparePartData?.clientMachineSparePart?.installedMotorPower?.unit}</p>
+                                    <p className="text-[#607797] text-base font-medium">Power Cost: {formatCurrency(
+                                        sparePartData?.clientMachineSparePart?.powerCost?.value,
+                                        sparePartData?.clientMachineSparePart?.powerCost?.priceUnit
+                                    )} / {sparePartData?.clientMachineSparePart?.powerCost?.perUnit}</p>
+                                    <p className="text-[#607797] text-base font-medium">Total Power Cost: {formatCurrency(
+                                        sparePartData?.clientMachineSparePart?.totalPowerLossCost?.value,
+                                        sparePartData?.clientMachineSparePart?.totalPowerLossCost?.unit
+                                    )}</p>
                                 </div>
 
                                 {/* Total Loss Section */}
                                 <div className="flex flex-col gap-2.5">
                                     <h3 className="text-[#2d3e5c] text-lg font-bold">Total Loss</h3>
-                                    <p className="text-[#607797] text-base font-medium">Total Loss: € 24,880</p>
+                                    <p className="text-[#607797] text-base font-medium">Total Loss: {formatCurrency(
+                                        sparePartData?.clientMachineSparePart?.totalLossCost?.value,
+                                        sparePartData?.clientMachineSparePart?.totalLossCost?.unit
+                                    )}</p>
                                 </div>
                             </div>
                         </div>

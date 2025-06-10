@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import RotorStatus from '@/components/MachineryDetails/rotorstatus';
 import RotorComponent from '@/components/StockPreparationCategoryInner/RotorComponent';
 // import RotorLayout from '@/components/StockPreparationCategoryInner/RotorLayout';
@@ -15,6 +15,13 @@ const Page = () => {
         'Bottom Knife': ['/bottom-knife-1.png', '/bottom-knife-2.png']
     }
 
+    const partIdMaps = {
+        'Foil': "684610b78576c08de8d762dd",
+        "Side Shield": "684610c48576c08de8d76311",
+        "Power Saver": "684610d28576c08de8d76345",
+        "Bottom Knife": "684610da8576c08de8d76379",
+    }
+
     const mainImage = [
         '/rotor.png',
         '/rotor-rotated.png',
@@ -23,12 +30,32 @@ const Page = () => {
 
     const [selectedImage, setSelectedImage] = React.useState(imageData['Power Saver']);
     const [bottomKnkifeSelected, setBottomKnifeSelected] = React.useState(false);
-
     const [selectedMainImage, setSelectedMainImage] = React.useState(0);
+    const [spareParts, setSpareParts] = React.useState([]);
+    const [sparePartData, setSparePartData] = React.useState(null);
+    const [partCurrentStateImage, setPartCurrentStateImage] = React.useState(null);
+    const [partCurrentStateImageComment, setPartCurrentStateImageComment] = React.useState(null);
+
+    const fetchSparePart = async () => {
+        const response = await fetch('/api/sparepart');
+        const data = await response.json();
+        setSpareParts(data.data);
+        setSparePartData(data.data.find(sparePart => sparePart._id === '684363cf58886bd63a211b24'));
+    }
 
     const handleImageClick = (key) => {
         setSelectedImage(imageData[key]);
         setSelectedMainImage(0);
+        const partId = partIdMaps[key];
+        if (sparePartData.clientSparePartPhotos) {
+            const partCurrentStateImage = sparePartData.clientSparePartPhotos.find(photo => photo.part === partId);
+            console.log(partCurrentStateImage);
+
+            if (partCurrentStateImage) {
+                setPartCurrentStateImage(partCurrentStateImage.imageUrl);
+                setPartCurrentStateImageComment(partCurrentStateImage.comments);
+            }
+        }
         // setSelectedMainImage({ image: null, rotation: 0 });
         if (key === 'Bottom Knife') {
             setBottomKnifeSelected(imageData[key]);
@@ -52,11 +79,15 @@ const Page = () => {
         }
     }, [selectedMainImage]);
 
+    useEffect(() => {
+        fetchSparePart();
+    }, []);
+
     // angular-arrow
     return (
         <div className='flex justify-between mt-6 mx-3 gap-4 container'>
             <div className='bg-white w-3/4 shadow-custom-2 rounded-xl relative overflow-hidden'>
-                <div className='px-4 pt-4'><RotorStatus /></div>
+                <div className='px-4 pt-4'><RotorStatus spareParts={spareParts} /></div>
 
                 {/* line */}
                 <div className="absolute top-[145px] h-[1px] w-full left-0 right-0 bg-primary-grey" />
@@ -121,7 +152,7 @@ const Page = () => {
                     <div className='flex gap-6'>
                         <div>
                             <p className='font-semibold font-lato text-xl text-primary-blue'>Installation date</p>
-                            <p className='text-primary-blue'>(17/08/2024)</p>
+                            <p className='text-primary-blue'>({sparePartData?.clientMachineSparePart?.machineData?.installationDate ? new Date(sparePartData?.clientMachineSparePart?.machineData?.installationDate).toLocaleDateString('en-GB') : 'NIL'})</p>
                         </div>
                         <div>
                             <p className='font-semibold font-lato text-xl text-primary-blue'>Last Rebuilt date</p>
@@ -129,7 +160,7 @@ const Page = () => {
                         </div>
                         <div>
                             <p className='font-semibold font-lato text-xl text-primary-blue'>Running Hours</p>
-                            <p className='text-primary-blue'>5040</p>
+                            <p className='text-primary-blue'>{sparePartData?.clientMachineSparePart?.totalRunningHours?.value || 0}</p>
                         </div>
                     </div>
                     <div>
@@ -137,7 +168,7 @@ const Page = () => {
                     </div>
                 </div>
             </div>
-            <RotorComponent optimalStateimg={selectedImage?.[1]} currentStateImge={selectedImage?.[0]} />
+            <RotorComponent optimalStateimg={selectedImage?.[1]} currentStateImge={`https://kadant-api-production.up.railway.app${partCurrentStateImage}`} comment={partCurrentStateImageComment} />
         </div>
     );
 };
