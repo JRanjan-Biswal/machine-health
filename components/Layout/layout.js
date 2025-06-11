@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { SlArrowDown } from "react-icons/sl";
 import { HeaderProvider, useHeader } from '@/context/HeaderContext';
+import { MillOverViewProvider } from '@/context/MillOverview';
 // import useUserLogedIn from '@/app/actions/isUserLoggedIn';
 
 const Header = ({ showArrow, handleProfileButton, isPageLoaded }) => {
@@ -142,15 +143,15 @@ function LayoutContent({ children }) {
       </div>
 
       {/* animated arro | header show hide */}
-      {
-        pathname == "/stock-preparation" &&
-        <div className="arrow-container animated fadeInDown cursor-pointer z-[100]" onClick={() => setAnimateHeaderShow(prev => !prev)}>
-          <div className="arrow-2">
-            <SlArrowDown size={16} color='#fff' className={`${!animateHeaderShow ? 'rotate-180' : 'rotate-0'} transition-all duration-300`} />
-          </div>
-          <div className="arrow-1 animated hinge infinite zoomIn"></div>
+      {/* {
+        pathname == "/stock-preparation" && */}
+      <div className="arrow-container animated fadeInDown cursor-pointer z-[100]" onClick={() => setAnimateHeaderShow(prev => !prev)}>
+        <div className="arrow-2">
+          <SlArrowDown size={16} color='#fff' className={`${!animateHeaderShow ? 'rotate-180' : 'rotate-0'} transition-all duration-300`} />
         </div>
-      }
+        <div className="arrow-1 animated hinge infinite zoomIn"></div>
+      </div>
+      {/* } */}
 
       {/* {
         !animateHeaderShow ? */}
@@ -172,9 +173,11 @@ function Layout({ children }) {
 
   return (
     <HeaderProvider>
-      <LayoutContent>
-        {children}
-      </LayoutContent>
+      <MillOverViewProvider>
+        <LayoutContent>
+          {children}
+        </LayoutContent>
+      </MillOverViewProvider>
     </HeaderProvider>
   );
 }

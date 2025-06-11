@@ -5,6 +5,7 @@ import RotorComponent from '@/components/StockPreparationCategoryInner/RotorComp
 // import RotorLayout from '@/components/StockPreparationCategoryInner/RotorLayout';
 import Image from 'next/image';
 import { LuRotate3D } from "react-icons/lu";
+import { useHeader } from '@/context/HeaderContext';
 
 const Page = () => {
 
@@ -27,6 +28,8 @@ const Page = () => {
         '/rotor-rotated.png',
         '/rotor-bottom-knife.png',
     ]
+
+    const { animateHeaderShow, handleAnimatedHeader, setAnimateHeaderShow } = useHeader();
 
     const [selectedImage, setSelectedImage] = React.useState(imageData['Power Saver']);
     const [bottomKnkifeSelected, setBottomKnifeSelected] = React.useState(false);
@@ -85,7 +88,7 @@ const Page = () => {
 
     // angular-arrow
     return (
-        <div className='flex justify-between mt-6 mx-3 gap-4 container'>
+        <div className={`flex justify-between mt-6 mx-3 gap-4 container ${!animateHeaderShow ? '-translate-y-[80px]' : 'translate-y-0'} transition-all duration-300`}>
             <div className='bg-white w-3/4 shadow-custom-2 rounded-xl relative overflow-hidden'>
                 <div className='px-4 pt-4'><RotorStatus spareParts={spareParts} /></div>
 
