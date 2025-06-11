@@ -11,41 +11,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const componentData = [
-    {
-        name: 'Rotor',
-        status: 'Attention',
-        image: '/rotor-1.png',
-        icon: '/icon-rem.png',
-        color: 'text-red-500',
-        href: '/stock-preparation/hydrapulper/rotor'
-    },
-    {
-        name: 'Rotor Hub',
-        status: 'Healthy',
-        image: '/rotor-hu-2.png',
-        icon: '/icon-rem-2.png',
-        color: 'text-green-500',
-        href: '/#'
-    },
-    {
-        name: 'Rotor Shaft',
-        status: 'Healthy',
-        image: '/rotor-hu-3.png',
-        icon: '/icon-rem-2.png',
-        color: 'text-green-500',
-        href: '/#'
-    },
-    {
-        name: 'BedPlate',
-        status: 'Monitor',
-        image: '/rotor-hu-4.png',
-        icon: '/yellow-bell.png',
-        color: 'text-yellow-500',
-        href: '/#'
-    }
-];
-
 const imageMap = {
     "684363cf58886bd63a211b24": "/rotor-1.png",
     "6845f978af4093194af7ee8d": "/rotor-hu-2.png",

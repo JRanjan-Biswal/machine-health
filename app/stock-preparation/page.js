@@ -3,12 +3,37 @@ import NavigationTabs from '@/components/StockPreparation/NavigationTabs';
 import SideModal from '@/components/StockPreparation/SideModal';
 import StatusLegend from '@/components/StockPreparation/StatusLegend';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '@/app/styles/stock.module.css';
 import { useHeader } from '@/context/HeaderContext';
 
 
+
 const Page = () => {
+    const [status, setStatus] = useState("Healthy");
+
+    const fetchSpareParts = async () => {
+        const response = await fetch('/api/sparepart');
+        const data = await response.json();
+        let parts = data.data;
+
+        let status = "Healthy"; // Default status
+
+        parts.forEach(part => {
+            if (part.clientMachineSparePart.totalRunningHours?.value > part.lifeTime?.value) {
+                status = "Attention";
+                return; // Exit early if Attention is found
+            } else if (part.clientMachineSparePart.totalRunningHours?.value == part.lifeTime?.value && status !== "Attention") {
+                status = "Monitor";
+            }
+        });
+
+        setStatus(status);
+    }
+
+    useEffect(() => {
+        fetchSpareParts();
+    }, []);
 
     const { animateHeaderShow, handleAnimatedHeader, setAnimateHeaderShow } = useHeader();
 
@@ -34,7 +59,11 @@ const Page = () => {
                     </div>
 
                     <div className={styles.hydrapulper} onClick={handleClick}>
-                        <Image src="/hydrapulper-hovert.png" alt='' height={200} width={200} className={styles.hoverBg} />
+                        {
+                            status == "Attention" ? <Image src="/hydrapulper-hovert.png" alt='' height={200} width={200} className={styles.hoverBg} /> :
+                                status == "Monitor" ? <Image src="/yellow-overlay.png" alt='' height={200} width={200} className={styles.hoverBg} /> :
+                                    <Image src="/green-overlay.png" alt='' height={200} width={200} className={styles.hoverBg} />
+                        }
                         <Image src="/hydrapulper-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
                     </div>
                     <div className={styles.hydrapurge} onClick={handleClick}>
