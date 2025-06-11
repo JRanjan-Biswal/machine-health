@@ -7,7 +7,7 @@ import { useHeader } from "@/context/HeaderContext";
 import { useMillOverView } from "@/context/MillOverview";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { LuFactory } from "react-icons/lu";
 
 const DashBoard = ({ clientData }) => {
@@ -16,12 +16,12 @@ const DashBoard = ({ clientData }) => {
     const { animateHeaderShow } = useHeader();
     const { millOverViewPopShow, hideMillOverViewPopup } = useMillOverView();
     const [hideMillOverView, setHideMillOverView] = useState(true);
-    const [clientName, setClientName] = useState(null);
+    const [clientId, setClientId] = useState(null);
 
     useEffect(() => {
         if (typeof window == undefined) return;
         setHideMillOverView(localStorage?.getItem("hideMillOverViewModal") || false);
-        setClientName(localStorage?.getItem("clientName") || false);
+        setClientId(localStorage?.getItem("clientId") || null);
     }, [millOverViewPopShow]);
 
     const [dropdownOpen, setDropdownOpen] = useState(false); // business | recent
@@ -29,6 +29,21 @@ const DashBoard = ({ clientData }) => {
     const toggleDropdown = (type) => setDropdownOpen((prev) => prev == type ? false : type);
 
     const handleHydraPulerClick = () => router.push('/stock-preparation');
+
+    const clientInfo = useMemo(() => {
+        const data = clientData.filter(item => item._id == clientId);
+        return {
+            _id: data?.[0]?._id,
+            name: data?.[0]?.name,
+            location: data?.[0]?.location?.address,
+            capacity: data?.[0]?.capacity,
+            lastService: data?.[0]?.lastVisited,
+            nextVisit: data?.[0]?.nextScheduledVisit,
+            endProduct: data?.[0]?.endProduct,
+            nextScheduledVisitType: data?.[0]?.nextScheduledVisitType
+        }
+    }, [clientId])
+
 
     return (
         <>
@@ -53,7 +68,7 @@ const DashBoard = ({ clientData }) => {
                 <div className="flex justify-between mx-5">
                     <div>
                         <p className="text-[#2D3E5C] font-bold text-2xl">Welcome, Feroz</p>
-                        <p className="text-xl">{clientName}</p>
+                        <p className="text-xl">{clientInfo?.name}</p>
                     </div>
                     <div className="flex gap-5">
                         <div className="flex items-center gap-2">
@@ -91,11 +106,15 @@ const DashBoard = ({ clientData }) => {
                             <p>Recent Activity</p>
                         </div>
                         {
-                            dropdownOpen == "business" && <div className="absolute top-12 right-0 z-10"><Modal isOpen={dropdownOpen == "business"} onClose={toggleDropdown}><BusinessSnapshot /></Modal></div>
+                            dropdownOpen == "business"
+                                ? <div className="absolute top-12 right-0 z-10"><Modal isOpen={dropdownOpen == "business"} onClose={toggleDropdown}><BusinessSnapshot clientInfo={clientInfo} /></Modal></div>
+                                : null
                         }
 
                         {
-                            dropdownOpen == "recent" && <div className="absolute top-12 right-0 z-10"><Modal isOpen={dropdownOpen == "recent"} onClose={toggleDropdown}><RecentActivity /></Modal></div>
+                            dropdownOpen == "recent"
+                                ? <div className="absolute top-12 right-0 z-10"><Modal isOpen={dropdownOpen == "recent"} onClose={toggleDropdown}><RecentActivity clientInfo={clientInfo} /></Modal></div>
+                                : null
                         }
                     </div>
 

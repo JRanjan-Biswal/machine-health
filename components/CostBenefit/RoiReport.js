@@ -115,7 +115,7 @@ function RoiReport({ contentData, totalRunningHours }) {
             totalPowerConsumptionWorn,
             totalFiberLossCost,
             totalPowerLossCost,
-            totalLoss,
+            totalLoss
         };
     }, [
         currentRunningHours,

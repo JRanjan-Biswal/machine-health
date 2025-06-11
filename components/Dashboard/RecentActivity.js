@@ -1,5 +1,4 @@
-const RecentActivity = (company) => {
-  company = company.company;
+const RecentActivity = ({clientInfo}) => {
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
@@ -14,11 +13,11 @@ const RecentActivity = (company) => {
     <div className="w-[303px] p-[25px] bg-white rounded-md border-2 border-[#96a5ba] flex flex-col gap-[15px]">
       <div className="text-[#2d3e5c] leading-[24px] font-lato">
         <div className="font-semibold font-lato text-base">Last Service:</div>
-        <div className="text-[14px] font-medium">{" "}{formatDate(company.lastVisited)}</div>
+        <div className="text-[14px] font-medium">{" "}{formatDate(clientInfo.lastService)}</div>
       </div>
       <div className="text-[#d45815] leading-[24px] font-lato">
         <div className="font-semibold font-lato text-base">Next Visit:</div>
-        <div className="text-[14px] font-medium">{" "}{formatDate(company.nextScheduledVisit)}, {company.nextScheduledVisitType.join(", ")}</div>
+        <div className="text-[14px] font-medium">{" "}{formatDate(clientInfo.nextVisit)}, {clientInfo.nextScheduledVisitType.join(", ")}</div>
       </div>
       <div className="text-[#2d3e5c] leading-[24px] font-lato">
         <div className="font-semibold font-lato text-base">Open Requests:</div> <div className="text-[14px] font-medium">{" "}["None"]</div>

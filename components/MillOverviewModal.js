@@ -49,7 +49,7 @@ const MillOverviewModal = ({ handleShowModal, clientData }) => {
       return;
     }
     // adds clientName globally
-    localStorage.setItem("clientName", selectedClient?.name);
+    localStorage.setItem("clientId", selectedClient?._id);
 
     setSelectedCompany({
       _id: selectedClient._id,
@@ -63,8 +63,8 @@ const MillOverviewModal = ({ handleShowModal, clientData }) => {
   }
 
   const handleSubmit = () => {
+    localStorage.setItem("clientId", selectedCompany?._id);
     handleShowModal();
-    localStorage.setItem("clientName", selectedCompany?.name)
   }
 
   return (
