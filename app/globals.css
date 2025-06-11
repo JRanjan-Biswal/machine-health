@@ -403,10 +403,12 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
-=======
+}
+
 /* slide down arror | header | shows only on stock-preparation page */
 .arrow-container {
   width: 60px;

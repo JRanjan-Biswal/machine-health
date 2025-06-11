@@ -59,18 +59,28 @@ const SideModal = ({ handleClick, showSideBar }) => {
     const [spareParts, setSpareParts] = useState([]);
     const [sparePartData, setSparePartData] = useState([]);
 
+    const [latestSiteVisit, setLatestSiteVisit] = useState([]);
+
+    const fetchLatestSiteVisit = async () => {
+        const response = await fetch('/api/site-visit/latest');
+        const data = await response.json();
+        setLatestSiteVisit(data.data);
+    }
+
     const fetchSpareParts = async () => {
         const response = await fetch('/api/sparepart');
         const data = await response.json();
 
         const filterData = data.data.filter(item => item._id == "684363cf58886bd63a211b24")?.[0];
+        console.log(filterData);
+
         setSpareParts(data.data);
         setSparePartData(filterData);
-        console.log(filterData.clientMachineSparePart?.machineData?.installationDate)
     }
 
     useEffect(() => {
         fetchSpareParts();
+        fetchLatestSiteVisit();
     }, []);
 
     const [showSummary, setShowSummary] = useState(false);
@@ -174,7 +184,7 @@ const SideModal = ({ handleClick, showSideBar }) => {
                                         </div>
                                         <div className="w-1/2 bg-[#DFE6EC] rounded-lg py-2">
                                             <p className="text-center font-normal text-[14px]">Next Service</p>
-                                            <p className="text-center text-orange-400 font-medium">21-Oct-2025</p>
+                                            <p className="text-center text-orange-400 font-medium">{latestSiteVisit.nextScheduledVisit ? new Date(latestSiteVisit.nextScheduledVisit).toLocaleDateString('en-GB') : null}</p>
                                         </div>
                                     </div>
                                 </div>
