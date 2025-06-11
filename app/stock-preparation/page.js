@@ -5,9 +5,12 @@ import StatusLegend from '@/components/StockPreparation/StatusLegend';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import styles from '@/app/styles/stock.module.css';
+import { useHeader } from '@/context/HeaderContext';
 
 
 const Page = () => {
+
+    const { animateHeaderShow, handleAnimatedHeader, setAnimateHeaderShow } = useHeader();
 
     const [showSideBar, setShowSideBar] = useState(false);
     const handleClick = () => {
@@ -15,16 +18,16 @@ const Page = () => {
     }
 
     return (
-        <div className='overflow-hidden'>
+        <div className=''>
             <div className="w-full flex flex-col container">
-                <div className='my-4'>
+                <div className={`my-4 ${!animateHeaderShow ? '-translate-y-[40px]' : 'translate-y-0'} transition-all duration-300`}>
                     <NavigationTabs />
                 </div>
                 <div className='fixed inset-0 -z-1'>
                     <div className='cost-benegit-three-d h-full w-full' />
 
                     {/* trashwell  */}
-                    <Image alt='' src={"/scope-image.png"} width={1700} height={1080} className='w-full h-full fixed -z-1 inset-0 object-cover object-bottom-left' />
+                    <Image alt='' src={"/scope-image.png"} width={1700} height={1080} priority className='w-full h-full fixed -z-1 inset-0 object-cover object-bottom-left' />
                     <div className={styles.trashwell} onClick={handleClick}>
                         <Image src="/trashwell-hover.png" alt='' height={200} width={200} className={styles.hoverBg} />
                         <Image src="/trashwell-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />

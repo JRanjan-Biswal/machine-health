@@ -113,21 +113,24 @@ const page = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col items-center w-1/4 bg-[#2d3e5c] rounded-[12px] pb-4 overflow-hidden shadow-custom-2 px-4 relative">
-                <div className="flex flex-col items-center w-full bg-[#2d3e5c]">
+            <div className="flex flex-col items-center w-1/4 bg-[#2d3e5c] rounded-[12px] pb-4 overflow-hidden shadow-custom-2 relative">
+                <div className="flex flex-col items-center w-full bg-[#2d3e5c] px-4">
                     <h1 className="font-lato font-bold text-xl text-white text-center py-3">Key Components Status</h1>
-                    <div className="w-full h-[1px] bg-[#607797]"></div>
                 </div>
-                <div className="flex flex-col justify-between w-full pe-2 py-4 h-full mb-10">
+                <div className="w-full h-[1px] bg-[#607797]"></div>
+                <div className=" px-4 flex flex-col justify-between w-full pe-2 py-4 h-[calc(100svh_-_280px)] overflow-scroll scroll-hide">
                     {spareParts.map((sparePart) => (
                         <ComponentCard key={sparePart._id} sparePart={sparePart} />
                     ))}
-                    <div className='w-full absolute bottom-4 px-4'>
+                </div>
+                <div className="w-full h-[1px] bg-[#607797]"></div>
+                <div className='w-full px-4 pt-4'>
+                    <Link href="/stock-preparation/hydrapuler/rotor" className='w-full cursor-pointer'>
                         <button className="group flex flex-row items-center justify-center gap-5 py-2 bg-[#bf1e21] rounded-[50px] w-full hover:bg-[#a11a1c] transition-colors duration-200">
                             <Image src="/icon-gea.png" alt="Details icon" className="w-6 h-6 transition-all duration-300 group-hover:rotate-90" height={24} width={24} />
                             <span className="text-white font-montserrat font-bold text-base leading-6">View Details</span>
                         </button>
-                    </div>
+                    </Link>
                 </div>
             </div>
         </div>

@@ -27,16 +27,16 @@ const CostChart = ({ barData, chartRef }) => {
 
                     switch (context.dataIndex) {
                         case 0:
-                            gradientFill.addColorStop(0, '#BF1E21');
-                            gradientFill.addColorStop(1, '#EB5154');
+                            gradientFill.addColorStop(0, '#2D3E5C');
+                            gradientFill.addColorStop(1, '#415E91');
                             break;
                         case 1:
                             gradientFill.addColorStop(0, '#FF9A00');
                             gradientFill.addColorStop(1, '#FFB647');
                             break;
                         case 2:
-                            gradientFill.addColorStop(0, '#2D3E5C');
-                            gradientFill.addColorStop(1, '#415E91');
+                            gradientFill.addColorStop(0, '#BF1E21');
+                            gradientFill.addColorStop(1, '#EB5154');
                             break;
                         default:
                             gradientFill.addColorStop(0, 'rgba(211, 211, 211, 0.8)');
@@ -67,10 +67,10 @@ const CostChart = ({ barData, chartRef }) => {
                 align: 'end',
                 offset: 0,
                 formatter: (value, context) => {
-                    if (context.dataIndex === 2) {
-                        return '';
-                    }
-                    return value;
+                    // if (context.dataIndex === 2) {
+                    //     return '';
+                    // }
+                    return '€ ' + value;
                 },
                 font: {
                     weight: 'bold',
@@ -119,7 +119,7 @@ const CostChart = ({ barData, chartRef }) => {
                         size: 14
                     },
                     padding: 10,
-                    callback: function(value, index) {
+                    callback: function (value, index) {
                         const labels = ['Power Loss', 'Fiber Loss', 'Total Loss'];
                         return labels[index];
                     }
@@ -130,9 +130,9 @@ const CostChart = ({ barData, chartRef }) => {
 
     return (
         <div className="w-[calc(100%_-_400px)] h-[calc(50svh_-_130px)] absolute bottom-[150px]">
-            <Bar 
-                ref={chartRef} 
-                data={data} 
+            <Bar
+                ref={chartRef}
+                data={data}
                 options={{
                     ...options,
                     layout: {
@@ -164,8 +164,8 @@ const CostChart = ({ barData, chartRef }) => {
                             }
                         }
                     }
-                }} 
-                id='chart' 
+                }}
+                id='chart'
             />
         </div>
     );

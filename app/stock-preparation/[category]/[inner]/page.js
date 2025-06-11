@@ -49,7 +49,7 @@ const Page = () => {
         const partId = partIdMaps[key];
         if (sparePartData.clientSparePartPhotos) {
             const partCurrentStateImage = sparePartData.clientSparePartPhotos.find(photo => photo.part === partId);
-            console.log(partCurrentStateImage);
+            console.log({partCurrentStateImage});
 
             if (partCurrentStateImage) {
                 setPartCurrentStateImage(partCurrentStateImage.imageUrl);
@@ -96,7 +96,7 @@ const Page = () => {
                     <div className='text-[#96A5BA]'>Pulping &gt; Hydrapulper &gt; Rotor</div>
                     <div className='text-3xl font-bold text-primary-blue'>Rotor</div>
                     {/* main image */}
-                    <div className={`absolute h-[500px] w-[600px] ${bottomKnkifeSelected ? '-right-10' : 'right-[8%]'} bottom-[5%]`}>
+                    <div className={`absolute h-[calc(100%_-_30px)] right-[8%] bottom-[5%]`}>
                         {
                             selectedMainImage === 1 &&
                             <Image src={"/rotor-rotated.png"} alt="" height={300} width={300} className='w-full h-full object-cover' />
@@ -105,7 +105,7 @@ const Page = () => {
                         {
                             (selectedMainImage != 1) && (
                                 !bottomKnkifeSelected
-                                    ? <Image src="/rotor.png" alt="" height={300} width={300} className='w-full h-full object-cover' />
+                                    ? <Image src="/rotor.png" alt="" height={300} width={300} className='w-full h-full object-contain' />
                                     : <Image src="/rotor-bottom-knife.png" alt="" height={300} width={300} className='w-auto h-full object-contain' />
                             )
                         }
@@ -137,10 +137,10 @@ const Page = () => {
 
                                 {
                                     bottomKnkifeSelected
-                                        ? <Image src="/angular-arrow.png" alt='' width={100} height={2} className='h-[81px] w-[37%] absolute top-[73%] right-[77%] z-10' />
+                                        ? <Image src="/angular-arrow.png" alt='' width={100} height={2} className='h-[20%] w-[42%] absolute top-[73%] right-[73%] z-10' />
                                         : <Image src="/power-saver-arrow.png" alt='' width={100} height={2} className='h-[9px] w-[17%] absolute top-[79%] right-[86%] z-10' />
                                 }
-                                <p onClick={(e) => handleImageClick("Bottom Knife")} className={`cursor-pointer text-primary-blue font-lato font-medium text-base absolute ${bottomKnkifeSelected ? 'top-[84.5%] right-[113%]' : 'top-[76%] right-[102.5%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-3 py-[5px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Bottom Knife</p>
+                                <p onClick={(e) => handleImageClick("Bottom Knife")} className={`cursor-pointer text-primary-blue font-lato font-medium text-base absolute ${bottomKnkifeSelected ? 'top-[87.7%] right-[114%]' : 'top-[76%] right-[102.5%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-3 py-[5px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Bottom Knife</p>
                             </>
                         }
 
@@ -168,7 +168,7 @@ const Page = () => {
                     </div>
                 </div>
             </div>
-            <RotorComponent optimalStateimg={selectedImage?.[1]} currentStateImge={`https://kadant-api-production.up.railway.app${partCurrentStateImage}`} comment={partCurrentStateImageComment} />
+            <RotorComponent optimalStateimg={selectedImage?.[1]} currentStateImge={partCurrentStateImage ? `https://kadant-api-production.up.railway.app${partCurrentStateImage}` : selectedImage?.[0]} comment={partCurrentStateImageComment || "No comments available yet."} />
         </div>
     );
 };
