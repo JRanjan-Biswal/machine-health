@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { SlArrowDown } from "react-icons/sl";
 
-const RotorComponent = ({ currentState = true, optimalState = true, currentStateImge = "/image-95.png", optimalStateimg = "/image-94.png", percentage = "60%", comment = "No comments available yet." }) => {
+const RotorComponent = ({ currentState = true, optimalState = true, currentStateImge = "/image-95.png", optimalStateimg = "/image-94.png", percentage = "60%", comment }) => {
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
 
     return (
@@ -15,7 +16,7 @@ const RotorComponent = ({ currentState = true, optimalState = true, currentState
                 {/* Current State Section */}
                 <div className="flex flex-col gap-1.5">
                     <h2 className="text-white text-base font-montserrat font-medium">Current State</h2>
-                    <div className="relative w-full h-[calc(50svh_-_230px)] bg-[#dfe6ec] rounded-md overflow-hidden">
+                    <div className={`relative w-full ${isCommentsOpen ? 'h-[calc(50svh_-_260px)]' : 'h-[calc(50svh_-_230px)]'} transition-all duration-300 bg-[#dfe6ec] rounded-md overflow-hidden`}>
                         <div className="absolute top-2.5 right-2.5 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100">
                             <Image src="/icon-exp.png" width={24} height={24} alt="expand" />
                         </div>
@@ -29,7 +30,7 @@ const RotorComponent = ({ currentState = true, optimalState = true, currentState
                 {/* Optimal State Section */}
                 <div className="flex flex-col gap-1.5">
                     <h2 className="text-white text-base font-montserrat font-medium">Optimal State</h2>
-                    <div className="relative w-full h-[calc(50svh_-_230px)] bg-[#607797] rounded-md overflow-hidden">
+                    <div className={`relative w-full ${isCommentsOpen ? 'h-[calc(50svh_-_260px)]' : 'h-[calc(50svh_-_230px)]'} transition-all duration-300 bg-[#607797] rounded-md overflow-hidden`}>
                         <div className="absolute top-2.5 right-2.5 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100">
                             <Image src="/icon-exp.png" width={24} height={24} alt="expand" />
                         </div>
@@ -46,20 +47,11 @@ const RotorComponent = ({ currentState = true, optimalState = true, currentState
                         onClick={() => setIsCommentsOpen(!isCommentsOpen)}
                     >
                         <h2 className="text-[#dfe6ec] text-base font-montserrat font-bold">Comments</h2>
-                        <Image
-                            src="/icon.png"
-                            width={22}
-                            height={22}
-                            alt="comment icon"
-                            className={`transition-transform duration-300 ${isCommentsOpen ? 'rotate-90' : 'rotate-[270deg]'}`}
-                        />
+                        <SlArrowDown color='#fff' size={14} />
                     </div>
 
-                    <div
-                        className={`overflow-hidden transition-all duration-300 ease-in-out ${isCommentsOpen ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'
-                            }`}
-                    >
-                        <div className="bg-[#1e2a3d] rounded-lg p-4 text-[#dfe6ec]">
+                    <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCommentsOpen ? 'h-[60px] opacity-100' : 'h-0 opacity-0'}`}>
+                        <div className="rounded-lg text-[#dfe6ec] h-full overflow-y-scroll thin-scroll">
                             {/* Add your comments content here */}
                             <p className="text-sm">
                                 {comment}

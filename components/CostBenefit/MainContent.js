@@ -154,7 +154,7 @@ const MainContent = ({ contentData }) => {
             <Header />
             <div className='px-4 relative h-[calc(100%_-_77px)]'>
                 <ChartLegend />
-                <StatsBox contentData={contentData} />
+                <StatsBox contentData={contentData} barData={barData} />
                 <CostChart barData={barData} chartRef={chartRef} />
                 <Timeline
                     currentRunningHours={currentRunningHours}

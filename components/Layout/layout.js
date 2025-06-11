@@ -3,23 +3,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Profile from '../Profile/Profile';
 import { useState, useEffect } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { SlArrowDown } from "react-icons/sl";
+import { HeaderProvider, useHeader } from '@/context/HeaderContext';
 // import useUserLogedIn from '@/app/actions/isUserLoggedIn';
 
-function Layout({ children }) {
+const Header = ({ showArrow, handleProfileButton, isPageLoaded }) => {
   const pathname = usePathname();
-  const [showProfile, setShowProfile] = useState(false);
   const [pillPosition, setPillPosition] = useState({ left: 0, width: 0 });
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [isPageLoaded, setIsPageLoaded] = useState(false);
-
-  useEffect(() => {
-    // Trigger fade-in animation after a small delay
-    const timer = setTimeout(() => {
-      setIsPageLoaded(true);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     const activeLink = document.querySelector('.nav-link.active');
@@ -27,15 +18,13 @@ function Layout({ children }) {
       const { left, width } = activeLink.getBoundingClientRect();
       const container = document.querySelector('.nav-container');
       const containerLeft = container.getBoundingClientRect().left;
-      
+
       setPillPosition({
         left: left - containerLeft,
         width
       });
     }
   }, [pathname]);
-
-  const handleProfileButton = () => setShowProfile(!showProfile);
 
   const getActivePath = () => {
     if (pathname.includes('dashboard')) return 'dashboard';
@@ -44,20 +33,8 @@ function Layout({ children }) {
     return '';
   };
 
-  // Move the conditional return after all hooks
-  if (pathname === "/" || pathname === "/roi-report") {
-    return (
-      <div className={`transition-opacity duration-700 ease-out ${isPageLoaded ? 'opacity-100' : 'opacity-0'}`}>
-        {children}
-      </div>
-    );
-  }
-
-  // const login = useUserLogedIn();
-  // console.log(login)
-
   return (
-    <div className={`transition-opacity duration-700 ease-out ${isPageLoaded ? 'opacity-100' : 'opacity-0'}`}>
+    <>
       <div className='container'>
         <div className="flex flex-row items-center justify-between px-12 py-1 bg-white rounded-full border border-[#dfe6ec] min-h-[70px] w-full mt-4 shadow-custom-1">
           <div className="w-[134px] h-[20px] relative">
@@ -68,7 +45,7 @@ function Layout({ children }) {
 
           <div className="flex flex-row gap-4 nav-container relative">
             {/* Sliding Pill */}
-            <div 
+            <div
               className="absolute h-[40px] bg-[#d45815] rounded-full transition-all duration-500 ease-out"
               style={{
                 left: `${pillPosition.left}px`,
@@ -114,10 +91,81 @@ function Layout({ children }) {
             />
           </div>
         </div>
-        <Profile handleProfileButton={handleProfileButton} showProfile={showProfile} />
       </div>
+    </>
+  )
+}
+
+function LayoutContent({ children }) {
+  const [isPageLoaded, setIsPageLoaded] = useState(false);
+  const pathname = usePathname();
+  const { animateHeaderShow, handleAnimatedHeader, setAnimateHeaderShow, showAnimatedHeader } = useHeader();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsPageLoaded(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+
+    if (typeof window === undefined) return;
+
+    console.log(pathname)
+
+    if (pathname == "/stock-preparation" && window.innerHeight < 815) {
+      handleAnimatedHeader()
+    }
+    else {
+      setAnimateHeaderShow(true);
+    }
+  }, [pathname]);
+
+  const [showProfile, setShowProfile] = useState(false);
+
+  const handleProfileButton = () => {
+    setShowProfile(!showProfile);
+  }
+
+  // Move the conditional return after all hooks
+  if (pathname === "/" || pathname === "/roi-report") {
+    return (
+      <div className={`transition-opacity duration-700 ease-out ${isPageLoaded ? 'opacity-100' : 'opacity-0'}`}>
+        {children}
+      </div>
+    );
+  }
+  
+  return (
+    <div className={`transition-opacity duration-700 ease-out ${isPageLoaded ? 'opacity-100' : 'opacity-75'}`}>
+      <div className={`${!animateHeaderShow ? '-translate-y-[200px]' : 'translate-y-0'} transtion-all duration-300`}>
+        <Header showArrow={animateHeaderShow} handleProfileButton={handleProfileButton} isPageLoaded={isPageLoaded} />
+      </div>
+      {
+        !animateHeaderShow ?
+          <div className="arrow-container animated fadeInDown cursor-pointer" onClick={() => handleAnimatedHeader()}>
+            <div className="arrow-2">
+              <SlArrowDown size={16} color='#fff' />
+            </div>
+            <div className="arrow-1 animated hinge infinite zoomIn"></div>
+          </div>
+          : null
+      }
       {children}
+      <Profile handleProfileButton={handleProfileButton} showProfile={showProfile} />
     </div>
+  );
+}
+
+function Layout({ children }) {
+
+  return (
+    <HeaderProvider>
+      <LayoutContent>
+        {children}
+      </LayoutContent>
+    </HeaderProvider>
   );
 }
 

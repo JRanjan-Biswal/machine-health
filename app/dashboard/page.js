@@ -104,14 +104,16 @@ const page = () => {
           </div>
 
         </div>
-
+        {/* horizontal line */}
         <div className="fixed top-[194px] h-[1px] w-full left-0 right-0 bg-primary-grey" />
 
-        <div className="h-full w-full relative mt-9">
-          <Image src="/dashboard.png" alt="dashboard table" height={1000} width={1500} className="w-full h-full object-center object-fill" />
+        <div className="mx-auto h-full">
+          <div className="h-full mx-auto w-fit relative mt-9">
+            <Image src="/dashboard.png" alt="dashboard table" height={1000} width={1500} className="w-auto h-full object-center object-contain" />
 
-          {/* clickable | hydrapuler 10DR */}
-          <div onClick={handleHydraPulerClick} className="absolute z-10 top-[32.9%] left-[25%] cursor-pointer w-[7.4%] h-[14.4%] rounded-[11%] hover:shadow-[0_0_8px_1px_red] transition-all duration-300">
+            {/* clickable | hydrapuler 10DR */}
+            <div onClick={handleHydraPulerClick} className="absolute z-10 top-[32.9%] left-[25%] cursor-pointer w-[7.4%] h-[14.4%] rounded-[11%] hover:shadow-[0_0_8px_1px_red] transition-all duration-300">
+            </div>
           </div>
         </div>
       </div>

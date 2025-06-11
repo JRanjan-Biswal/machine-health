@@ -57,11 +57,16 @@ const SideModal = ({ handleClick, showSideBar }) => {
     const router = useRouter()
     const swiperRef = useRef(null);
     const [spareParts, setSpareParts] = useState([]);
+    const [sparePartData, setSparePartData] = useState([]);
 
     const fetchSpareParts = async () => {
         const response = await fetch('/api/sparepart');
         const data = await response.json();
+
+        const filterData = data.data.filter(item => item._id == "684363cf58886bd63a211b24")?.[0];
         setSpareParts(data.data);
+        setSparePartData(filterData);
+        console.log(filterData.clientMachineSparePart?.machineData?.installationDate)
     }
 
     useEffect(() => {
@@ -131,7 +136,7 @@ const SideModal = ({ handleClick, showSideBar }) => {
                             <Image src="/icon.png" alt="Left Icon" width={24} height={24} onClick={() => swiperRef?.current?.slidePrev()} className="cursor-pointer" />
                             <Image src="/icon-2.png" alt="Right Icon" width={24} height={24} onClick={() => swiperRef?.current?.slideNext()} className="cursor-pointer" />
                         </div>
-                        <div className="relative h-[200px] flex item-center">
+                        <div className="relative h-[calc(20svh)] flex item-center">
                             <Swiper
                                 onSwiper={(swiper) => (swiperRef.current = swiper)}
                                 fadeEffect={{ crossFade: true }}
@@ -165,11 +170,11 @@ const SideModal = ({ handleClick, showSideBar }) => {
                                     <div className="flex w-full gap-2 mb-2">
                                         <div className="w-1/2 bg-[#DFE6EC] rounded-lg py-2">
                                             <p className="font-normal text-[14px] text-center">Installation Date</p>
-                                            <p className="font-medium text-center">17-Aug-2024</p>
+                                            <p className="font-medium text-center">{sparePartData.clientMachineSparePart?.machineData?.installationDate ? new Date(sparePartData.clientMachineSparePart?.machineData?.installationDate).toLocaleDateString('en-GB') : null}</p>
                                         </div>
                                         <div className="w-1/2 bg-[#DFE6EC] rounded-lg py-2">
                                             <p className="text-center font-normal text-[14px]">Next Service</p>
-                                            <p className="text-center text-orange-400 font-medium">10-Dec-2026</p>
+                                            <p className="text-center text-orange-400 font-medium">21-Oct-2025</p>
                                         </div>
                                     </div>
                                 </div>
@@ -187,7 +192,7 @@ const SideModal = ({ handleClick, showSideBar }) => {
                         <div className="grid grid-cols-2 gap-4">
                             {
                                 spareParts.map((sparePart, index) => (
-                                    <div key={index} className="bg-[#26334b] rounded-xl h-[170px] relative cursor-pointer overflow-hidden">
+                                    <div key={index} className="bg-[#26334b] rounded-xl h-[17svh] relative cursor-pointer overflow-hidden">
                                         <div className="bg-[#13213a] rounded-t-xl flex items-center justify-center gap-2 py-1 px-4">
                                             <Image src={getSparePartStatusIcon(sparePart)} alt="Status Icon" width={16} height={16} />
                                             <div className={`font-semibold ${getSparePartColor(sparePart)}`}>{getSparePartStatus(sparePart)}</div>
