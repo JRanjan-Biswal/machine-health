@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { RxCross2 } from "react-icons/rx";
 
-const MillOverviewModal = ({ handleShowModal }) => {
+const MillOverviewModal = ({ handleShowModal, handleSelectedCompany }) => {
   const router = useRouter();
   const [selectedCompany, setSelectedCompany] = useState({
     name: "",
@@ -43,6 +43,8 @@ const MillOverviewModal = ({ handleShowModal }) => {
       try {
         const response = await fetch('/api/clients');
         const data = await response.json();
+        setSelectedCompany(data.data.clients[0]);
+        handleSelectedCompany(data.data.clients[0]);
         setClients(data.data.clients);
       } catch (error) {
         console.error('Error fetching clients:', error);
@@ -69,8 +71,8 @@ const MillOverviewModal = ({ handleShowModal }) => {
             >
               <option value="">Select Company</option>
               {
-                clients.map((client) => (
-                  <option key={client._id} value={client._id}>{client.name}</option>
+                clients.map((client, index) => (
+                  <option disabled={index > 0} key={client._id} value={client._id}>{client.name}</option>
                 ))
               }
             </select>
