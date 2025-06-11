@@ -22,9 +22,23 @@ const page = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [selectedCompany, setSelectedCompany] = useState({
+    name: "",
+    powerCost: "",
+    fiberCost: "",
+    capacity: "",
+    location: "",
+    endProduct: "",
+  });
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+  const handleSelectedCompany = (company) => {
+    console.log(company);
+    setSelectedCompany(company);
+  }
 
   return (
     <>
@@ -33,13 +47,8 @@ const page = () => {
         <div className="flex justify-center items-center w-full h-screen bg-black/75 p-5 backdrop-blur-[5px] absolute inset-0 z-100">
           <div className="absolute z-10">
             <MillOverviewModal
-              customerName="Select Company"
-              powerCost="0.09 €/kwhr"
-              fiberCost="200 €/ton"
-              capacity="400 BDMTPD"
-              location="Vapi, Gujarat, India"
-              endProduct="Kraft Test Liner"
               handleShowModal={handleShowModal}
+              handleSelectedCompany={handleSelectedCompany}
             />
           </div>
         </div>
@@ -48,7 +57,7 @@ const page = () => {
         <div className="flex justify-between mx-5">
           <div>
             <p className="text-[#2D3E5C] font-bold text-2xl">Welcome, Feroz</p>
-            <p className="text-xl">Aryan Papers</p>
+            <p className="text-xl">{selectedCompany.name || "Select Company"}</p>
           </div>
           <div className="flex gap-5">
             <div className="flex items-center gap-2">
@@ -86,11 +95,11 @@ const page = () => {
               <p>Recent Activity</p>
             </div>
             {
-              dropdownOpen == "business" && <div className="absolute top-12 right-0 z-10"><Modal isOpen={dropdownOpen == "business"} onClose={toggleDropdown}><BusinessSnapshot /></Modal></div>
+              dropdownOpen == "business" && <div className="absolute top-12 right-0 z-10"><Modal isOpen={dropdownOpen == "business"} onClose={toggleDropdown}><BusinessSnapshot company={selectedCompany} /></Modal></div>
             }
 
             {
-              dropdownOpen == "recent" && <div className="absolute top-12 right-0 z-10"><Modal isOpen={dropdownOpen == "recent"} onClose={toggleDropdown}><RecentActivity /></Modal></div>
+              dropdownOpen == "recent" && <div className="absolute top-12 right-0 z-10"><Modal isOpen={dropdownOpen == "recent"} onClose={toggleDropdown}><RecentActivity company={selectedCompany} /></Modal></div>
             }
           </div>
 

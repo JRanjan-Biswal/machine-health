@@ -1,6 +1,7 @@
 // import { Montserrat } from "next/font/google";
 import "./globals.css";
 import Layout from "@/components/Layout/layout";
+import { Toaster } from "@/components/ui/sonner"
 
 // const montserratSans = Montserrat({
 //   variable: "--font-monteserrat-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
         <Layout>
           {children}
         </Layout>
+        <Toaster />
       </body>
     </html>
   );

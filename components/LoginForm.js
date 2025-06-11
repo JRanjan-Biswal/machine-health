@@ -3,7 +3,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { TbEyeClosed } from "react-icons/tb";
 import { PiEye } from "react-icons/pi";
-import { toast, ToastContainer } from 'react-toastify';
+// import { toast, ToastContainer } from 'react-toastify';
+import { toast } from "sonner"
 
 function isValidEmail(email) {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -118,7 +119,7 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
           </button>
         </form>
       </div>
-      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
+      {/* <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar /> */}
     </>
   );
 };
