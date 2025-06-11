@@ -15,7 +15,7 @@ const formatCurrency = (value, currencyCode) => {
     }).format(value);
 };
 
-const Sidebar = ({ handleSideBarView, showSideBar, contentData }) => {
+const Sidebar = ({ data, lineCapacity, dailyRunningHours, lifetimeOfRotor, totalRunningHours, fiberLoss, fiberCost, totalFiberLossCost, installedMotorPower, powerCost, totalPowerLossCost, totalLossCost, handleSideBarView, showSideBar }) => {
     const [spareParts, setSpareParts] = React.useState([]);
     const [sparePartData, setSparePartData] = React.useState(null);
 
@@ -61,32 +61,32 @@ const Sidebar = ({ handleSideBarView, showSideBar, contentData }) => {
                                 <div className="flex flex-col gap-5">
                                     {/* Basic Info */}
                                     <div className="flex flex-col gap-2.5">
-                                        <p className="text-[#607797] text-base font-medium">Capacity of Line: 400 tpd</p>
-                                        <p className="text-[#607797] text-base font-medium">Daily running Hours: 24 Hrs</p>
-                                        <p className="text-[#607797] text-base font-medium">Lifetime of rotor: 3600 Hrs</p>
-                                        <p className="text-[#607797] text-base font-medium">Total running Hours: 5040 Hrs</p>
+                                        <p className="text-[#607797] text-base font-medium">Capacity of Line: {lineCapacity} tpd</p>
+                                        <p className="text-[#607797] text-base font-medium">Daily running Hours: {dailyRunningHours} Hrs</p>
+                                        <p className="text-[#607797] text-base font-medium">Lifetime of rotor: {lifetimeOfRotor} Hrs</p>
+                                        <p className="text-[#607797] text-base font-medium">Total running Hours: {totalRunningHours} Hrs</p>
                                     </div>
 
                                     {/* Fiber Loss Section */}
                                     <div className="flex flex-col gap-2.5">
                                         <h3 className="text-[#2d3e5c] text-lg font-bold">Fiber Loss</h3>
-                                        <p className="text-[#607797] text-base font-medium">Fiber Loss: 92 tons</p>
-                                        <p className="text-[#607797] text-base font-medium">Fiber Cost: € 200/ton</p>
-                                        <p className="text-[#607797] text-base font-medium">Total Fiber Loss Value: € 18,400</p>
+                                        <p className="text-[#607797] text-base font-medium">Fiber Loss: {Math.round(fiberLoss)} tons</p>
+                                        <p className="text-[#607797] text-base font-medium">Fiber Cost: € {fiberCost}/ton</p>
+                                        <p className="text-[#607797] text-base font-medium">Total Fiber Loss Value: € {Math.round(totalFiberLossCost)}</p>
                                     </div>
 
                                     {/* Power Loss Section */}
                                     <div className="flex flex-col gap-2.5">
                                         <h3 className="text-[#2d3e5c] text-lg font-bold">Power Loss</h3>
-                                        <p className="text-[#607797] text-base font-medium">Installed Motor power: 500 kw</p>
-                                        <p className="text-[#607797] text-base font-medium">Power Cost: 0.09 €/kwhr</p>
-                                        <p className="text-[#607797] text-base font-medium">Total Power Cost: € 6,480</p>
+                                        <p className="text-[#607797] text-base font-medium">Installed Motor power: {installedMotorPower} kw</p>
+                                        <p className="text-[#607797] text-base font-medium">Power Cost: {powerCost} €/kwhr</p>
+                                        <p className="text-[#607797] text-base font-medium">Total Power Cost: € {Math.round(totalPowerLossCost)}</p>
                                     </div>
 
                                     {/* Total Loss Section */}
                                     <div className="flex flex-col gap-2.5">
                                         <h3 className="text-[#2d3e5c] text-lg font-bold">Total Loss</h3>
-                                        <p className="text-[#607797] text-base font-medium">Total Loss: € 24,880</p>
+                                        <p className="text-[#607797] text-base font-medium">Total Loss: € {totalLossCost}</p>
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +113,7 @@ const Sidebar = ({ handleSideBarView, showSideBar, contentData }) => {
             </div>
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <div className="h-[90svh] overflow-y-scroll w-max">
+                <div className="h-[90svh] overflow-y-scroll w-max thin-scroll">
                     <div className="flex justify-end items-center cursor-pointer">
                         <button
                             onClick={() => setIsModalOpen(false)}
@@ -124,7 +124,7 @@ const Sidebar = ({ handleSideBarView, showSideBar, contentData }) => {
                             </svg>
                         </button>
                     </div>
-                    <RoiReport contentData={contentData} />
+                    <RoiReport contentData={data} totalRunningHours={totalRunningHours} />
                 </div>
             </Modal>
         </>

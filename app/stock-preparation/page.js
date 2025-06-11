@@ -45,7 +45,7 @@ const Page = () => {
     return (
         <div className=''>
             <div className="w-full flex flex-col container">
-                <div className={`my-4 ${!animateHeaderShow ? '-translate-y-[40px]' : 'translate-y-0'} transition-all duration-300`}>
+                <div className={`my-4 ${!animateHeaderShow ? '-translate-y-[80px]' : 'translate-y-0'} transition-all duration-300`}>
                     <NavigationTabs />
                 </div>
                 <div className='fixed inset-0 -z-1'>

@@ -45,9 +45,9 @@ const CostChart = ({ barData, chartRef }) => {
                     return gradientFill;
                 },
                 borderColor: [
-                    'rgba(191, 30, 33, 1)',
+                    'rgba(45, 62, 92, 1)',
                     'rgba(255, 154, 0, 1)',
-                    'rgba(45, 62, 92, 1)'
+                    'rgba(191, 30, 33, 1)',
                 ],
                 borderWidth: 1,
                 borderRadius: 5

@@ -415,9 +415,9 @@ body {
   height: 60px;
   margin: 0 auto;
   position: absolute;
-  top: 0px;
+  top: 16px;
   /* bottom: px; */
-  left: 0;
+  /* left: 0; */
   right: 0;
 }
 
