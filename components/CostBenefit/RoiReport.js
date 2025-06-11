@@ -47,8 +47,8 @@ const ImpactRow = ({ label, value, isCost = false }) => {
     );
 };
 
-function RoiReport({ contentData }) {
-    const [currentRunningHours, setCurrentRunningHours] = useState(contentData?.clientMachineSparePart?.totalRunningHours?.value);
+function RoiReport({ contentData, totalRunningHours }) {
+    const [currentRunningHours, setCurrentRunningHours] = useState(totalRunningHours || contentData?.clientMachineSparePart?.totalRunningHours?.value);
     const [fiberCost, setFiberCost] = useState(contentData?.clientMachineSparePart?.fiberCost?.value);
     const [rotorLifetime, setRotorLifetime] = useState(contentData?.clientMachineSparePart?.lifetimeOfRotor?.value);
     const [lineCapacity, setLineCapacity] = useState(contentData?.clientMachineSparePart?.capacityOfLine?.value);
@@ -146,10 +146,12 @@ function RoiReport({ contentData }) {
     return (
         <>
             <div className="report-container" ref={reportRef}>
-                <Link href="/dashboard">
-                    <Image src="/logo.png" alt="" width={300} height={100} className="h-5 w-auto mx-auto mb-6" />
-                </Link>
-                <h1 className="report-title">ROI Report</h1>
+                <div className="">
+                    <Link href="/dashboard">
+                        <Image src="/logo.png" alt="" width={300} height={100} className="h-5 w-auto mx-auto mb-6" />
+                    </Link>
+                    <h1 className="report-title">ROI Report</h1>
+                </div>
                 <div className="report-main-grid">
                     <div className="report-section">
                         <h2 className="report-section-title">FIBER LOSS CALCULATION</h2>

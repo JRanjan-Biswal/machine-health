@@ -8,12 +8,12 @@ export function HeaderProvider({ children }) {
     const [timerState, setTimer] = useState(null)
 
     const handleAnimatedHeader = useCallback(() => {
-        const timer = setTimeout(() => {
-            setAnimateHeaderShow(false)
-        }, 2000);
+        // const timer = setTimeout(() => {
+        //     setAnimateHeaderShow(false)
+        // }, 2000);
 
         setAnimateHeaderShow(true);
-        setTimer(timer)
+        // setTimer(timer)
         return () => clearTimeout(timer);
     }, []);
 

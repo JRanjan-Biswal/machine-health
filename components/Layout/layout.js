@@ -36,7 +36,7 @@ const Header = ({ showArrow, handleProfileButton, isPageLoaded }) => {
   return (
     <>
       <div className='container'>
-        <div className="flex flex-row items-center justify-between px-12 py-1 bg-white rounded-full border border-[#dfe6ec] min-h-[70px] w-full mt-4 shadow-custom-1">
+        <div className="relative flex flex-row items-center justify-between px-12 py-1 bg-white rounded-full border border-[#dfe6ec] min-h-[70px] w-full mt-4 shadow-custom-1">
           <div className="w-[134px] h-[20px] relative">
             <Link href="/dashboard">
               <Image src="/logo.png" alt="Logo" width={134} height={20} />
@@ -112,8 +112,6 @@ function LayoutContent({ children }) {
 
     if (typeof window === undefined) return;
 
-    console.log(pathname)
-
     if (pathname == "/stock-preparation" && window.innerHeight < 815) {
       handleAnimatedHeader()
     }
@@ -136,22 +134,34 @@ function LayoutContent({ children }) {
       </div>
     );
   }
-  
+
   return (
     <div className={`transition-opacity duration-700 ease-out ${isPageLoaded ? 'opacity-100' : 'opacity-75'}`}>
       <div className={`${!animateHeaderShow ? '-translate-y-[200px]' : 'translate-y-0'} transtion-all duration-300`}>
         <Header showArrow={animateHeaderShow} handleProfileButton={handleProfileButton} isPageLoaded={isPageLoaded} />
       </div>
+
+      {/* animated arro | header show hide */}
       {
-        !animateHeaderShow ?
-          <div className="arrow-container animated fadeInDown cursor-pointer" onClick={() => handleAnimatedHeader()}>
+        pathname == "/stock-preparation" &&
+        <div className="arrow-container animated fadeInDown cursor-pointer z-[100]" onClick={() => setAnimateHeaderShow(prev => !prev)}>
+          <div className="arrow-2">
+            <SlArrowDown size={16} color='#fff' className={`${!animateHeaderShow ? 'rotate-180' : 'rotate-0'} transition-all duration-300`} />
+          </div>
+          <div className="arrow-1 animated hinge infinite zoomIn"></div>
+        </div>
+      }
+
+      {/* {
+        !animateHeaderShow ? */}
+      {/* <div className="arrow-container animated fadeInDown cursor-pointer z-[100]" onClick={() => handleAnimatedHeader()}>
             <div className="arrow-2">
               <SlArrowDown size={16} color='#fff' />
             </div>
             <div className="arrow-1 animated hinge infinite zoomIn"></div>
-          </div>
-          : null
-      }
+          </div> */}
+      {/* : null
+      } */}
       {children}
       <Profile handleProfileButton={handleProfileButton} showProfile={showProfile} />
     </div>
