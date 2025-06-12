@@ -9,7 +9,7 @@ import { HeaderProvider, useHeader } from '@/context/HeaderContext';
 import { MillOverViewProvider } from '@/context/MillOverview';
 // import useUserLogedIn from '@/app/actions/isUserLoggedIn';
 
-const Header = ({ showArrow, handleProfileButton, isPageLoaded }) => {
+const Header = ({ showArrow, handleProfileButton, isPageLoaded, profileImage }) => {
   const pathname = usePathname();
   const [pillPosition, setPillPosition] = useState({ left: 0, width: 0 });
 
@@ -83,13 +83,18 @@ const Header = ({ showArrow, handleProfileButton, isPageLoaded }) => {
           </div>
 
           <div className="w-[50px] h-[50px] relative" onClick={handleProfileButton}>
-            <Image
-              src="/profile-dummy.png"
-              alt="User Profile"
-              width={50}
-              height={50}
-              className="rounded-full cursor-pointer hover:opacity-90 transition-opacity"
-            />
+            {
+              profileImage && (
+                <Image
+                  src={profileImage}
+                  alt="User Profile"
+                  width={50}
+                  height={50}
+                  className="rounded-full cursor-pointer hover:opacity-90 transition-opacity h-full w-full object-cover"
+                />
+              )
+            }
+
           </div>
         </div>
       </div>
@@ -101,6 +106,21 @@ function LayoutContent({ children }) {
   const [isPageLoaded, setIsPageLoaded] = useState(false);
   const pathname = usePathname();
   const { animateHeaderShow, handleAnimatedHeader, setAnimateHeaderShow, showAnimatedHeader } = useHeader();
+
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [showProfile, setShowProfile] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
+
+  useEffect(() => {
+    const fetchLoggedInUser = async () => {
+      const response = await fetch('/api/user/get-logged-in-user');
+      const data = await response.json();
+      setLoggedInUser(data.data);
+      setProfileImage("https://kadant-api-production.up.railway.app/uploads/profile-pictures/" + data.data?.image);
+    }
+    fetchLoggedInUser();
+
+  }, [pathname]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -121,11 +141,11 @@ function LayoutContent({ children }) {
     }
   }, [pathname]);
 
-  const [showProfile, setShowProfile] = useState(false);
 
   const handleProfileButton = () => {
     setShowProfile(!showProfile);
   }
+
 
   // Move the conditional return after all hooks
   if (pathname === "/" || pathname === "/roi-report") {
@@ -139,7 +159,7 @@ function LayoutContent({ children }) {
   return (
     <div className={`transition-opacity duration-700 ease-out ${isPageLoaded ? 'opacity-100' : 'opacity-75'}`}>
       <div className={`${!animateHeaderShow ? '-translate-y-[200px]' : 'translate-y-0'} transtion-all duration-300`}>
-        <Header showArrow={animateHeaderShow} handleProfileButton={handleProfileButton} isPageLoaded={isPageLoaded} />
+        <Header showArrow={animateHeaderShow} profileImage={profileImage} handleProfileButton={handleProfileButton} isPageLoaded={isPageLoaded} />
       </div>
 
       {/* animated arro | header show hide */}
@@ -164,7 +184,7 @@ function LayoutContent({ children }) {
       {/* : null
       } */}
       {children}
-      <Profile handleProfileButton={handleProfileButton} showProfile={showProfile} setShowProfile={setShowProfile} />
+      <Profile handleProfileButton={handleProfileButton} setProfileImage={setProfileImage} loggedInUser={loggedInUser} showProfile={showProfile} setShowProfile={setShowProfile} profileImage={profileImage} />
     </div>
   );
 }

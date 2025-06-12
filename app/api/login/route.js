@@ -33,6 +33,14 @@ export async function POST(request) {
             sameSite: 'lax', // Or 'strict' for more security, but can break cross-site navigation
         });
 
+        cookieStore.set('email', email, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', // Use secure in production (HTTPS)
+            maxAge: 60 * 60 * 24 * 7, // 1 week
+            path: '/', // Accessible across your entire site
+            sameSite: 'lax', // Or 'strict' for more security, but can break cross-site navigation
+        });
+
         return NextResponse.json({ success: true, message: 'Login successful' });
     } catch (error) {
         console.error('Error processing login:', error);

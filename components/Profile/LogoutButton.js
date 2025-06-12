@@ -5,7 +5,7 @@ const LogoutButton = ({ onClick = () => {} }) => {
   return (
     <button 
       onClick={onClick}
-      className="w-full max-w-[292px] flex flex-row items-center justify-center gap-2 bg-[#d45815] text-white py-2.5 px-4 rounded-md hover:bg-[#c24d12] transition-colors duration-200"
+      className="w-full cursor-pointer flex flex-row items-center justify-center gap-2 bg-[#d45815] text-white py-2.5 px-4 rounded-md hover:bg-[#c24d12] transition-colors duration-200"
     >
       <span className="font-semibold text-base leading-6">Logout</span>
       <Image

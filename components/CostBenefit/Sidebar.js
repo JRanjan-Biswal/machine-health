@@ -18,11 +18,8 @@ const Sidebar = ({ data, setIsModalPDFOpen, lineCapacity, dailyRunningHours, lif
     const [spareParts, setSpareParts] = React.useState([]);
     const [sparePartData, setSparePartData] = React.useState(null);
 
-    // const [isModalOpen, setIsModalOpen] = React.useState(false);
+    console.log(data);
 
-    // const handleCloseModal = () => {
-    //     setIsModalOpen(false);
-    // };
 
     const fetchSparePart = async () => {
         const response = await fetch('/api/sparepart');
@@ -60,7 +57,7 @@ const Sidebar = ({ data, setIsModalPDFOpen, lineCapacity, dailyRunningHours, lif
                                 <div className="flex flex-col gap-5">
                                     {/* Basic Info */}
                                     <div className="flex flex-col gap-2.5">
-                                        <p className="text-[#607797] text-base font-medium">Capacity of Line: {lineCapacity} tpd</p>
+                                        <p className="text-[#607797] text-base font-medium">Capacity of Line: {lineCapacity} TPD</p>
                                         <p className="text-[#607797] text-base font-medium">Daily running Hours: {dailyRunningHours} Hrs</p>
                                         <p className="text-[#607797] text-base font-medium">Lifetime of rotor: {lifetimeOfRotor} Hrs</p>
                                         <p className="text-[#607797] text-base font-medium">Total running Hours: {totalRunningHours} Hrs</p>
@@ -69,7 +66,7 @@ const Sidebar = ({ data, setIsModalPDFOpen, lineCapacity, dailyRunningHours, lif
                                     {/* Fiber Loss Section */}
                                     <div className="flex flex-col gap-2.5">
                                         <h3 className="text-[#2d3e5c] text-lg font-bold">Fiber Loss</h3>
-                                        <p className="text-[#607797] text-base font-medium">Fiber Loss: {Math.round(fiberLoss)} tons</p>
+                                        <p className="text-[#607797] text-base font-medium">Fiber Loss: {Math.round(fiberLoss)} Tons</p>
                                         <p className="text-[#607797] text-base font-medium">Fiber Cost: € {fiberCost}/ton</p>
                                         <p className="text-[#607797] text-base font-medium">Total Fiber Loss Value: € {Math.round(totalFiberLossCost)}</p>
                                     </div>

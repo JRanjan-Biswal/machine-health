@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import { LuFactory } from "react-icons/lu";
 
-const DashBoard = ({ clientData }) => {
+const DashBoard = ({ clientData, useData }) => {
     const router = useRouter();
 
     const { animateHeaderShow } = useHeader();

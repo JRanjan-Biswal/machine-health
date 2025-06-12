@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TbEyeClosed } from "react-icons/tb";
 import { PiEye } from "react-icons/pi";
 // import { toast, ToastContainer } from 'react-toastify';
@@ -66,6 +66,11 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
     }
     setIsLoading(false);
   };
+
+  // clear cookie | if user comes to this page | to do a fresh login
+  useEffect(() => {
+    (async function () { await fetch("/api/logout")})()
+  }, [])
 
   return (
     <>

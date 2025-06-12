@@ -193,17 +193,6 @@ const Page = () => {
                 </div>
                 <div className='flex justify-center items-center h-full gap-7'>
                     <div>
-                        <p className='text-primary-blue font-lato font-semibold text-2xl text-center pb-4'>Optimal State</p>
-                        <video
-                            src={"https://kadant-api-production.up.railway.app" + sparePartData?.clientSparePartVideo?.videoUrl}
-                            width={500}
-                            height={500}
-                            muted
-                            controls
-                            className='object-cover'
-                        />
-                    </div>
-                    <div>
                         <p className='text-primary-blue font-lato font-semibold text-2xl text-center pb-4'>Current State</p>
                         <video
                             src={"https://kadant-api-production.up.railway.app" + sparePartData?.clientSparePartVideo?.videoUrl}
@@ -211,7 +200,18 @@ const Page = () => {
                             height={500}
                             muted
                             controls
-                            className='object-cover'
+                            className='object-cover h-[280px]'
+                        />
+                    </div>
+                    <div>
+                        <p className='text-primary-blue font-lato font-semibold text-2xl text-center pb-4'>Optimal State</p>
+                        <video
+                            src={"/optimal_state_hydrapulper.mp4"}
+                            width={500}
+                            height={500}
+                            muted
+                            controls
+                            className='object-cover h-[280px]'
                         />
                     </div>
                 </div>

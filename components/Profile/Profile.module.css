@@ -17,7 +17,7 @@
   max-width: 342px;
   height: auto;
   background-color: #ffffff;
-  padding: 20px;
+  padding: 20px 10px 20px 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: fixed;
   z-index: 999;

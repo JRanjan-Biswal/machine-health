@@ -7,6 +7,7 @@ const getData = async () => {
     const cookieStore = await cookies();
     const currentcookie = cookieStore.get('token').value.trim();
 
+    // reutrn machinery information
     const response = await fetch(`${process.env.API_URL}/client`, {
       cache: 'no-store',
       headers: {
@@ -19,7 +20,8 @@ const getData = async () => {
     }
 
     const result = await response.json();
-    return result?.clients;
+
+    return {clientData : result?.clients};
 
   } catch (error) {
     throw notFound();
@@ -28,8 +30,10 @@ const getData = async () => {
 
 const page = async () => {
   const data = await getData();
+  const userData = data?.userData;
+  const clientData = data?.clientData;
 
-  return <DashBoard clientData={data} />
+  return <DashBoard clientData={clientData} userData={userData} />
 };
 
 export default page;

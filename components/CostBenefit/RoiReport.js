@@ -4,6 +4,7 @@ import { usePDF } from 'react-to-pdf';
 import "@/app/styles/roi-report.css";
 import Image from "next/image";
 import Link from "next/link";
+import generateRoiReportHTML from "./generateRoiReportHTML";
 
 // Reusable components
 const InputField = ({ label, value, onChange }) => (
@@ -135,12 +136,53 @@ function RoiReport({ contentData, totalRunningHours }) {
     ]);
 
     const handleGeneratePdf = async () => {
-        try {
-            await toPDF();
-        } catch (error) {
-            console.error('Error generating PDF:', error);
-            alert('Failed to generate PDF. Please try again.');
+        const parameters = {
+            lineCapacity,
+            dailyRunningHours,
+            fiberCost,
+            rotorLifetime,
+            currentRunningHours,
+            lossRangeA,
+            lossRangeB,
+            lossRangeC,
+            lossRangeD,
+            installedMotorPower,
+            consumptionGoodRotor,
+            consumptionWornRotor,
+            powerCost
         }
+
+        const calculatiedData = {
+            totalProduction: lineCapacity,
+            fiberLossInTons: calculationData.fiberLossInTons,
+            noOfHoursWornOut: calculationData.noOfHoursWornOut,
+            powerConsumptionGood: calculationData.powerConsumptionGood,
+            powerConsumptionWorn: calculationData.powerConsumptionWorn,
+            increaseInConsumption: calculationData.increaseInConsumption,
+            totalPowerConsumptionWorn: calculationData.totalPowerConsumptionWorn,
+            totalFiberLossCost: calculationData.totalFiberLossCost,
+            totalPowerLossCost: calculationData.totalPowerLossCost,
+            totalLoss: calculationData.totalLoss
+        };
+
+        const html = generateRoiReportHTML(parameters, calculationData);
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+
+        const iframeDoc = iframe.contentWindow.document;
+        iframeDoc.open();
+        iframeDoc.write(html);
+        iframeDoc.close();
+
+        // Wait for content to load
+        iframe.onload = () => {
+            iframe.contentWindow.print();
+            // Clean up after printing
+            setTimeout(() => {
+                document.body.removeChild(iframe);
+            }, 1000);
+        };
     };
 
     return (
@@ -158,7 +200,7 @@ function RoiReport({ contentData, totalRunningHours }) {
                         <div className="report-subsection">
                             <h3>Performance Parameters</h3>
                             <InputField
-                                label="Capacity of Line (tpd)"
+                                label="Capacity of Line (TPD)"
                                 value={lineCapacity}
                                 onChange={(e) => setLineCapacity(e.target.value)}
                             />
@@ -206,11 +248,11 @@ function RoiReport({ contentData, totalRunningHours }) {
                         <div className="report-subsection">
                             <h3>Calculations</h3>
                             <CalculationRow
-                                label="Total Production (tons/day)"
+                                label="Total Production (Tons/day)"
                                 value={calculationData.totalProduction.toLocaleString()}
                             />
                             <CalculationRow
-                                label="Fiber Loss (tons)"
+                                label="Fiber Loss (Tons)"
                                 value={calculationData.fiberLossInTons.toFixed(2)}
                             />
                             <CalculationRow
@@ -275,7 +317,7 @@ function RoiReport({ contentData, totalRunningHours }) {
                         <div className="report-subsection">
                             <h3>Calculations</h3>
                             <CalculationRow
-                                label="Total Production (tons/day)"
+                                label="Total Production (Tons/day)"
                                 value={calculationData.totalProduction.toLocaleString()}
                             />
                             <CalculationRow
