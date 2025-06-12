@@ -1,5 +1,7 @@
 'use client';
 import RotorStatus from '@/components/MachineryDetails/rotorstatus';
+import { useHeader } from '@/context/HeaderContext';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -65,6 +67,8 @@ const page = () => {
     const [spareParts, setSpareParts] = React.useState([]);
     const [sparePartData, setSparePartData] = React.useState(null);
 
+    const { animateHeaderShow } = useHeader()
+
     const fetchSparePart = async () => {
         const response = await fetch('/api/sparepart');
         const data = await response.json();
@@ -76,35 +80,35 @@ const page = () => {
     }, []);
 
     return (
-        <div className='flex justify-between mt-6 mx-3 gap-4 container'>
+        <div className={cn('flex justify-between mt-6 mx-3 gap-4 container transition-all duration-300', !animateHeaderShow ? '-translate-y-[80px]' : '-translate-y-0')}>
             <div className='bg-white p-4 w-3/4 relative shadow-custom-2 rounded-xl h-fit'>
                 <RotorStatus spareParts={spareParts} />
                 {/* line */}
                 <div className="absolute top-[140px] h-[1px] w-full left-0 right-0 bg-primary-grey" />
 
                 <div className='flex flex-wrap gap-4 mt-8'>
-                    <div className='bg-[#DFE6EC] rounded-lg w-[calc(50%_-_8px)] h-[calc(50svh_-_170px)] overflow-hidden group relative'>
+                    <div className={cn('bg-[#DFE6EC] rounded-lg w-[calc(50%_-_8px)] overflow-hidden group relative transition-all duration-300', !animateHeaderShow ? 'h-[calc(50svh_-_130px)]' : 'h-[calc(50svh_-_170px)]')}>
                         <Link href="/stock-preparation/hydrapuler/rotor">
                             <p className='ps-4 pt-4 font-bold text-2xl font-lato'>Rotor</p>
                             <Image src="/rotor.png" width={300} height={300} alt='' className='object-contain transition-all duration-300 group-hover:scale-[1.02] mx-auto h-[calc(100%_-_50px)]' />
                             <button className='absolute cursor-pointer bottom-[15%] text-base font-bold font-lato text-primary-blue transition-all duration-300 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 rounded-full bg-white px-4 py-2'>View Details</button>
                         </Link>
                     </div>
-                    <div className='bg-[#DFE6EC] rounded-lg w-[calc(50%_-_8px)] h-[calc(50svh_-_170px)] overflow-hidden group relative'>
+                    <div className={cn('bg-[#DFE6EC] rounded-lg w-[calc(50%_-_8px)] overflow-hidden group relative transition-all duration-300', !animateHeaderShow ? 'h-[calc(50svh_-_130px)]' : 'h-[calc(50svh_-_170px)]')}>
                         <Link href="/stock-preparation/hydrapuler/rotor">
                             <p className='ps-4 pt-4 font-bold text-2xl font-lato'>Rotor Hub</p>
                             <Image src="/rotor-hu-2.png" width={300} height={300} alt='' className='object-cover transition-all duration-300 group-hover:scale-[1.02] mx-auto h-[calc(100%_-_50px)]' />
                             <button className='absolute cursor-pointer bottom-[15%] text-base font-bold font-lato text-primary-blue transition-all duration-300 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 rounded-full bg-white px-4 py-2'>View Details</button>
                         </Link>
                     </div>
-                    <div className='bg-[#DFE6EC] rounded-lg w-[calc(50%_-_8px)] h-[calc(50svh_-_170px)] overflow-hidden group relative'>
+                    <div className={cn('bg-[#DFE6EC] rounded-lg w-[calc(50%_-_8px)] overflow-hidden group relative transition-all duration-300', !animateHeaderShow ? 'h-[calc(50svh_-_130px)]' : 'h-[calc(50svh_-_170px)]')}>
                         <Link href="/stock-preparation/hydrapuler/rotor">
                             <p className='ps-4 pt-4 font-bold text-2xl font-lato'>Rotor Shaft</p>
                             <Image src="/rotor-hu-3.png" width={300} height={300} alt='' className='object-cover transition-all duration-300 group-hover:scale-[1.02] mx-auto h-[calc(100%_-_50px)]' />
                             <button className='absolute cursor-pointer bottom-[15%] text-base font-bold font-lato text-primary-blue transition-all duration-300 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 rounded-full bg-white px-4 py-2'>View Details</button>
                         </Link>
                     </div>
-                    <div className='bg-[#DFE6EC] rounded-lg w-[calc(50%_-_8px)] h-[calc(50svh_-_170px)] overflow-hidden group relative'>
+                    <div className={cn('bg-[#DFE6EC] rounded-lg w-[calc(50%_-_8px)] overflow-hidden group relative transition-all duration-300', !animateHeaderShow ? 'h-[calc(50svh_-_130px)]' : 'h-[calc(50svh_-_170px)]')}>
                         <Link href="/stock-preparation/hydrapuler/rotor">
                             <p className='ps-4 pt-4 font-bold text-2xl font-lato'>Bedplate</p>
                             <Image src="/rotor-hu-4.png" width={300} height={300} alt='' className='object-cover transition-all duration-300 group-hover:scale-[1.02] mx-auto h-[calc(100%_-_50px)]' />
@@ -118,22 +122,22 @@ const page = () => {
                     <h1 className="font-lato font-bold text-xl text-white text-center py-3">Key Components Status</h1>
                 </div>
                 <div className="w-full h-[1px] bg-[#607797]"></div>
-                <div className=" px-4 flex flex-col justify-between w-full pe-2 py-4 h-[calc(100svh_-_280px)] overflow-scroll scroll-hide">
-                    {spareParts.map((sparePart) => (
-                        <ComponentCard key={sparePart._id} sparePart={sparePart} />
-                    ))}
-                </div>
-                <div className="w-full h-[1px] bg-[#607797]"></div>
-                <div className='w-full px-4 pt-4'>
-                    <Link href="/stock-preparation/hydrapuler/rotor" className='w-full cursor-pointer'>
-                        <button className="group flex flex-row items-center justify-center gap-5 py-2 bg-[#bf1e21] rounded-[50px] w-full hover:bg-[#a11a1c] transition-colors duration-200">
-                            <Image src="/icon-gea.png" alt="Details icon" className="w-6 h-6 transition-all duration-300 group-hover:rotate-90" height={24} width={24} />
-                            <span className="text-white font-montserrat font-bold text-base leading-6">View Details</span>
-                        </button>
-                    </Link>
-                </div>
+                <div className={cn("px-4 flex flex-col justify-between w-full py-4 overflow-scroll scroll-hide transition-all duration-300", !animateHeaderShow ? 'h-[calc(100svh_-_200px)]' : 'h-[calc(100svh_-_280px)]')}>
+                {spareParts.map((sparePart) => (
+                    <ComponentCard key={sparePart._id} sparePart={sparePart} />
+                ))}
+            </div>
+            <div className="w-full h-[1px] bg-[#607797]"></div>
+            <div className='w-full px-4 pt-4'>
+                <Link href="/stock-preparation/hydrapuler/rotor" className='w-full cursor-pointer'>
+                    <button className="group flex flex-row items-center justify-center gap-5 py-2 bg-[#bf1e21] rounded-[50px] w-full hover:bg-[#a11a1c] transition-colors duration-200">
+                        <Image src="/icon-gea.png" alt="Details icon" className="w-6 h-6 transition-all duration-300 group-hover:rotate-90" height={24} width={24} />
+                        <span className="text-white font-montserrat font-bold text-base leading-6">View Details</span>
+                    </button>
+                </Link>
             </div>
         </div>
+        </div >
     );
 };
 

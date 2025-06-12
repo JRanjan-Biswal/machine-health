@@ -1,86 +1,35 @@
-'use client';
-import NavigationTabs from '@/components/StockPreparation/NavigationTabs';
-import SideModal from '@/components/StockPreparation/SideModal';
-import StatusLegend from '@/components/StockPreparation/StatusLegend';
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
-import styles from '@/app/styles/stock.module.css';
-import { useHeader } from '@/context/HeaderContext';
+import StockPreparation from "@/components/StockPreparation/StockPreparation";
+import { cookies } from "next/headers";
+import { notFound } from "next/navigation";
 
+const getData = async () => {
+    try {
+        const cookieStore = await cookies();
+        const currentcookie = cookieStore.get('token').value.trim();
 
-
-const Page = () => {
-    const [status, setStatus] = useState("Healthy");
-
-    const fetchSpareParts = async () => {
-        const response = await fetch('/api/sparepart');
-        const data = await response.json();
-        let parts = data.data;
-
-        let status = "Healthy"; // Default status
-
-        parts.forEach(part => {
-            if (part.clientMachineSparePart.totalRunningHours?.value > part.lifeTime?.value) {
-                status = "Attention";
-                return; // Exit early if Attention is found
-            } else if (part.clientMachineSparePart.totalRunningHours?.value == part.lifeTime?.value && status !== "Attention") {
-                status = "Monitor";
+        const response = await fetch(`${process.env.API_URL}/machines/684362214978c14755e02860/spare-parts/68436859af3221a4b1df84f1`, {
+            cache: 'no-store',
+            headers: {
+                Authorization: `Bearer ${currentcookie}`
             }
         });
 
-        setStatus(status);
+        if (!response.ok) {
+            throw notFound();
+        }
+
+        const result = await response.json();
+        console.log(result);
+        return result;
+
+    } catch (error) {
+        throw notFound();
     }
+}
 
-    useEffect(() => {
-        fetchSpareParts();
-    }, []);
+const page = async () => {
+    const data = await getData();
+    return <StockPreparation data={data} />
+}
 
-    const { animateHeaderShow, handleAnimatedHeader, setAnimateHeaderShow } = useHeader();
-
-    const [showSideBar, setShowSideBar] = useState(false);
-    const handleClick = () => {
-        setShowSideBar(!showSideBar);
-    }
-
-    return (
-        <div className=''>
-            <div className="w-full flex flex-col container">
-                <div className={`my-4 ${!animateHeaderShow ? '-translate-y-[80px]' : 'translate-y-0'} transition-all duration-300`}>
-                    <NavigationTabs />
-                </div>
-                <div className='fixed inset-0 -z-1'>
-                    <div className='cost-benegit-three-d h-full w-full' />
-
-                    {/* trashwell  */}
-                    <Image alt='' src={"/scope-image.png"} width={1700} height={1080} priority className='w-full h-full fixed -z-1 inset-0 object-cover object-bottom-left' />
-                    <div className={styles.trashwell} onClick={handleClick}>
-                        <Image src="/trashwell-hover.png" alt='' height={200} width={200} className={styles.hoverBg} />
-                        <Image src="/trashwell-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
-                    </div>
-
-                    <div className={styles.hydrapulper} onClick={handleClick}>
-                        {
-                            status == "Attention" ? <Image src="/hydrapulper-hovert.png" alt='' height={200} width={200} className={styles.hoverBg} /> :
-                                status == "Monitor" ? <Image src="/yellow-overlay.png" alt='' height={200} width={200} className={styles.hoverBg} /> :
-                                    <Image src="/green-overlay.png" alt='' height={200} width={200} className={styles.hoverBg} />
-                        }
-                        <Image src="/hydrapulper-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
-                    </div>
-                    <div className={styles.hydrapurge} onClick={handleClick}>
-                        <Image src="/hydrapurge-hover.png" alt='' height={200} width={200} className={styles.hoverBg} />
-                        <Image src="/hydrapurge-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
-                    </div>
-                    <div className={styles.mtk} onClick={handleClick}>
-                        <Image src="/mtk-hover.png" alt='' height={200} width={200} className={styles.hoverBg} />
-                        <Image src="/mtk-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
-                    </div>
-                </div>
-                <StatusLegend />
-            </div>
-
-            <SideModal handleClick={handleClick} showSideBar={showSideBar} />
-        </div>
-    );
-};
-
-export default Page;
+export default page;

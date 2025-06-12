@@ -1,3 +1,5 @@
+import { useHeader } from '@/context/HeaderContext';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -5,6 +7,7 @@ import { SlArrowDown } from "react-icons/sl";
 
 const RotorComponent = ({ currentState = true, optimalState = true, currentStateImge = "/image-95.png", optimalStateimg = "/image-94.png", percentage = "60%", comment }) => {
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+    const { animateHeaderShow } = useHeader();
 
     return (
         <div className="w-[407px] bg-[#2d3e5c] rounded-xl p-5">
@@ -16,7 +19,13 @@ const RotorComponent = ({ currentState = true, optimalState = true, currentState
                 {/* Current State Section */}
                 <div className="flex flex-col gap-1.5">
                     <h2 className="text-white text-base font-montserrat font-medium">Current State</h2>
-                    <div className={`relative w-full ${isCommentsOpen ? 'h-[calc(50svh_-_260px)]' : 'h-[calc(50svh_-_230px)]'} transition-all duration-300 bg-[#dfe6ec] rounded-md overflow-hidden`}>
+                    <div className={cn(
+                        'relative w-full transition-all duration-300 bg-[#dfe6ec] rounded-md overflow-hidden',
+                        [!isCommentsOpen && animateHeaderShow && 'h-[calc(50svh_-_230px)]'], // comment is close | header is in veiw
+                        [!isCommentsOpen && !animateHeaderShow && 'h-[calc(50svh_-_190px)]'],// comment is closed | header not in veiw
+                        [isCommentsOpen && animateHeaderShow && 'h-[calc(50svh_-_260px)]'],// comment is open | header is in view
+                        [isCommentsOpen && !animateHeaderShow && 'h-[calc(50svh_-_220px)]']// comment is open | header is not in view
+                    )}>
                         <div className="absolute top-2.5 right-2.5 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100">
                             <Image src="/icon-exp.png" width={24} height={24} alt="expand" />
                         </div>
@@ -30,7 +39,13 @@ const RotorComponent = ({ currentState = true, optimalState = true, currentState
                 {/* Optimal State Section */}
                 <div className="flex flex-col gap-1.5">
                     <h2 className="text-white text-base font-montserrat font-medium">Optimal State</h2>
-                    <div className={`relative w-full ${isCommentsOpen ? 'h-[calc(50svh_-_260px)]' : 'h-[calc(50svh_-_230px)]'} transition-all duration-300 bg-[#607797] rounded-md overflow-hidden`}>
+                    <div className={cn(
+                        'relative w-full transition-all duration-300 bg-[#607797] rounded-md overflow-hidden',
+                        [!isCommentsOpen && animateHeaderShow && 'h-[calc(50svh_-_230px)]'],
+                        [!isCommentsOpen && !animateHeaderShow && 'h-[calc(50svh_-_190px)]'],
+                        [isCommentsOpen && animateHeaderShow && 'h-[calc(50svh_-_260px)]'],
+                        [isCommentsOpen && !animateHeaderShow && 'h-[calc(50svh_-_220px)]']
+                    )}>
                         <div className="absolute top-2.5 right-2.5 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100">
                             <Image src="/icon-exp.png" width={24} height={24} alt="expand" />
                         </div>

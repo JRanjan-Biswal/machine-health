@@ -18,13 +18,10 @@ const Modal = ({ isOpen, onClose, children }) => {
 
     return (
         <div 
-            className={`fixed inset-0 z-50 flex items-center justify-center transition-all duration-500 ease-out ${
-                isOpen ? 'opacity-100' : 'opacity-0'
-            }`}
-        >
+            className={`fixed inset-0 z-[9999] flex items-center justify-center transition-all duration-500 ease-out bg-black/75 backdrop-blur-[5px] ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
             {/* Backdrop */}
             <div 
-                className="absolute inset-0 bg-black transition-all duration-500 ease-out"
+                className="absolute inset-0 transition-all duration-500 ease-out"
                 style={{ opacity: isOpen ? 0.5 : 0 }}
                 onClick={onClose}
             />

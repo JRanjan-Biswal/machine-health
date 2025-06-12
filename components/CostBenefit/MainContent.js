@@ -12,6 +12,7 @@ import ChartLegend from './Legend';
 import StatsBox from './StatBox';
 import CostChart from './CostChart';
 import Timeline from './Timeline';
+import { useHeader } from '@/context/HeaderContext';
 
 
 // const updateThumbColor = (element, value) => {
@@ -33,13 +34,14 @@ import Timeline from './Timeline';
 // };
 
 
-const MainContent = ({ data, barData, currentRunningHours, setCurrentRunningHours, installedOn, rotorLifetime, chartData }) => {
+const MainContent = ({ data, barData, resetChartData, currentRunningHours, setCurrentRunningHours, installedOn, rotorLifetime, chartData, sendEmail }) => {
     const chartRef = useRef(null);
+    const { animateHeaderShow } = useHeader();
 
 
     return (
-        <div className="w-full mx-auto bg-white rounded-xl border border-[#dfe6ec] overflow-hidden h-[calc(100svh_-_200px)] shadow-custom-1" style={{ "--slider-thumb-color": chartData.thumbColor }}>
-            <Header />
+        <div className={`w-full mx-auto bg-white rounded-xl border border-[#dfe6ec] overflow-hidden ${!animateHeaderShow ? 'h-[calc(100svh_-_120px)]' : 'h-[calc(100svh_-_200px)]'} shadow-custom-1 transition-all duration-300`} style={{ "--slider-thumb-color": chartData.thumbColor }}>
+            <Header sendEmail={sendEmail} />
             <div className='px-4 relative h-[calc(100%_-_77px)]'>
                 <ChartLegend />
                 <StatsBox contentData={data} barData={barData} />
@@ -49,6 +51,7 @@ const MainContent = ({ data, barData, currentRunningHours, setCurrentRunningHour
                     setCurrentRunningHours={setCurrentRunningHours}
                     installedOn={installedOn}
                     lifespan={rotorLifetime}
+                    resetChartData={resetChartData}
                 />
             </div>
         </div>

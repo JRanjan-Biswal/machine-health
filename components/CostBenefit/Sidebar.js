@@ -2,8 +2,7 @@ import { RiArrowLeftSLine } from "react-icons/ri";
 import styles from './sidebar.module.css';
 import React from "react";
 import { useEffect } from "react";
-import Modal from "./Modal";
-import RoiReport from "./RoiReport";
+// import Modal from "./Modal";
 
 const formatCurrency = (value, currencyCode) => {
     if (!value || !currencyCode) return '0';
@@ -15,15 +14,15 @@ const formatCurrency = (value, currencyCode) => {
     }).format(value);
 };
 
-const Sidebar = ({ data, lineCapacity, dailyRunningHours, lifetimeOfRotor, totalRunningHours, fiberLoss, fiberCost, totalFiberLossCost, installedMotorPower, powerCost, totalPowerLossCost, totalLossCost, handleSideBarView, showSideBar }) => {
+const Sidebar = ({ data, setIsModalPDFOpen, lineCapacity, dailyRunningHours, lifetimeOfRotor, totalRunningHours, fiberLoss, fiberCost, totalFiberLossCost, installedMotorPower, powerCost, totalPowerLossCost, totalLossCost, handleSideBarView, showSideBar }) => {
     const [spareParts, setSpareParts] = React.useState([]);
     const [sparePartData, setSparePartData] = React.useState(null);
 
-    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    // const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
+    // const handleCloseModal = () => {
+    //     setIsModalOpen(false);
+    // };
 
     const fetchSparePart = async () => {
         const response = await fetch('/api/sparepart');
@@ -96,7 +95,7 @@ const Sidebar = ({ data, lineCapacity, dailyRunningHours, lifetimeOfRotor, total
 
                             {/* Detail Cost Report Button */}
                             <div className="flex justify-centern absolute bottom-4 left-1/2 -translate-x-1/2 w-full">
-                                <button onClick={() => setIsModalOpen(true)} className="cursor-pointer flex items-center gap-5 px-8 py-3 bg-[#f0f8fe] text-[#607797] rounded-full border-[1.5px] border-[#607797] hover:bg-[#e0f0fe] transition-colors mx-auto">
+                                <button onClick={() => setIsModalPDFOpen(true)} className="cursor-pointer flex items-center gap-5 px-8 py-3 bg-[#f0f8fe] text-[#607797] rounded-full border-[1.5px] border-[#607797] hover:bg-[#e0f0fe] transition-colors mx-auto">
                                     <span className="text-base font-semibold">Detail Cost Report</span>
                                     {/* <Image src="/icon-dow.png" alt="Download" width={24} height={24} /> */}
                                 </button>
@@ -111,22 +110,6 @@ const Sidebar = ({ data, lineCapacity, dailyRunningHours, lifetimeOfRotor, total
                     </div>
                 </div>
             </div>
-
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <div className="h-[90svh] overflow-y-scroll w-max thin-scroll">
-                    <div className="flex justify-end items-center cursor-pointer">
-                        <button
-                            onClick={() => setIsModalOpen(false)}
-                            className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
-                        >
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                    <RoiReport contentData={data} totalRunningHours={totalRunningHours} />
-                </div>
-            </Modal>
         </>
     );
 };

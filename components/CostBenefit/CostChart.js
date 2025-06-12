@@ -128,6 +128,9 @@ const CostChart = ({ barData, chartRef }) => {
         },
     };
 
+    // Check if all data values are 0
+    const allZero = Array.isArray(barData) && barData.every(val => val === 0);
+
     return (
         <div className="w-[calc(100%_-_400px)] h-[calc(50svh_-_130px)] absolute bottom-[150px]">
             <Bar
@@ -156,11 +159,14 @@ const CostChart = ({ barData, chartRef }) => {
                             ...options.scales.x,
                             ticks: {
                                 ...options.scales.x.ticks,
-                                display: true,
+                                color: (context) => {
+                                    if(allZero) return 'rgba(51,51,51,0)' 
+                                    // Set opacity to 0.5 (50%) for tick labels
+                                    return 'rgba(255,255,255,1)';
+                                },
                                 mirror: true,
                                 labelOffset: 0.5,
                                 z: 1,
-                                color: '#FFFFFF'
                             }
                         }
                     }

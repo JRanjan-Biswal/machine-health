@@ -164,7 +164,7 @@ function LayoutContent({ children }) {
       {/* : null
       } */}
       {children}
-      <Profile handleProfileButton={handleProfileButton} showProfile={showProfile} />
+      <Profile handleProfileButton={handleProfileButton} showProfile={showProfile} setShowProfile={setShowProfile} />
     </div>
   );
 }

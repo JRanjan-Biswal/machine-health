@@ -4,6 +4,7 @@ import { useCallback } from "react";
 const useUserLogout = () => {
     const router = useRouter();
     const logoutUser = useCallback(async () => {
+        localStorage.clear();
         await fetch("/api/logout"); // Clear the token from local storage
         router.push('/'); // Redirect to the home page
     }, []);

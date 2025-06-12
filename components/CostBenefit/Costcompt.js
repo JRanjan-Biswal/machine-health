@@ -3,13 +3,22 @@ import { useCallback, useMemo, useState } from 'react';
 import NavigationBar from '@/components/CostBenefit/Navigationbar';
 import Sidebar from '@/components/CostBenefit/Sidebar';
 import MainContent from '@/components/CostBenefit/MainContent';
+import { useHeader } from '@/context/HeaderContext';
+import Modal from './Modal';
+import { RiArrowRightSLine } from "react-icons/ri";
+import EmailTemplate from "./EmailTemplate";
+import Image from 'next/image';
+import RoiReport from "./RoiReport";
 
 const Costcompt = ({ data }) => {
     const [showSideBar, setShowSideBar] = useState(false);
+    const { animateHeaderShow } = useHeader();
 
     const [currentRunningHours, setCurrentRunningHours] = useState(data?.clientMachineSparePart?.totalRunningHours?.value);
     const [installedOn, setInstalledOn] = useState(data?.clientMachineSparePart?.machineData?.installationDate);
     const [barData, setBarData] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalPDFOpen, setIsModalPDFOpen] = useState(false);
 
     // --- General & Fiber Loss Inputs ---
     const [fiberCost, setFiberCost] = useState(data?.clientMachineSparePart?.fiberCost?.value);
@@ -26,6 +35,29 @@ const Costcompt = ({ data }) => {
     const [consumptionGoodRotor, setConsumptionGoodRotor] = useState(data?.clientMachineSparePart?.actualMotorPowerConsumption?.healthy?.value);
     const [consumptionWornRotor, setConsumptionWornRotor] = useState(data?.clientMachineSparePart?.actualMotorPowerConsumption?.wornout?.value);
     const [powerCost, setPowerCost] = useState(data?.clientMachineSparePart?.powerCost?.value);
+
+    const resetChartData = useCallback(() => {
+
+
+        setCurrentRunningHours(data?.clientMachineSparePart?.totalRunningHours?.value);
+        setInstalledOn(data?.clientMachineSparePart?.machineData?.installationDate);
+
+        // --- General & Fiber Loss Inputs ---
+        setFiberCost(data?.clientMachineSparePart?.fiberCost?.value);
+        setRotorLifetime(data?.clientMachineSparePart?.lifetimeOfRotor?.value);
+        setLineCapacity(data?.clientMachineSparePart?.capacityOfLine?.value); // TPD
+        setDailyRunningHours(data?.clientMachineSparePart?.dailyRunningHours?.value);
+        setLossRangeA(data?.clientMachineSparePart?.fiberLossRanges?.[0]?.value);
+        setLossRangeB(data?.clientMachineSparePart?.fiberLossRanges?.[1]?.value);
+        setLossRangeC(data?.clientMachineSparePart?.fiberLossRanges?.[2]?.value);
+        setLossRangeD(data?.clientMachineSparePart?.fiberLossRanges?.[3]?.value);
+
+        // --- State for Power Loss Inputs ---
+        setInstalledMotorPower(data?.clientMachineSparePart?.installedMotorPower?.value);
+        setConsumptionGoodRotor(data?.clientMachineSparePart?.actualMotorPowerConsumption?.healthy?.value);
+        setConsumptionWornRotor(data?.clientMachineSparePart?.actualMotorPowerConsumption?.wornout?.value);
+        setPowerCost(data?.clientMachineSparePart?.powerCost?.value);
+    }, [data, setCurrentRunningHours, setInstalledOn, setBarData, setFiberCost, setRotorLifetime, setLineCapacity, setDailyRunningHours, setLossRangeA, setLossRangeB, setLossRangeC, setLossRangeD, setInstalledMotorPower, setConsumptionGoodRotor, setConsumptionWornRotor, setPowerCost])
 
     const chartData = useMemo(() => {
         // Shared variable for both calculations
@@ -124,22 +156,89 @@ const Costcompt = ({ data }) => {
 
     const handleSideBarView = useCallback(() => {
         setShowSideBar(!showSideBar);
-    }, [showSideBar])
+    }, [showSideBar]);
+
+    const sendEmail = useCallback(async () => {
+        try {
+            setIsModalOpen(true);
+            const response = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    to: 'jranjan2016@gmail.com',
+                    subject: 'Schedule Maintenance | Kadant Lamort x Aryan Paper Mills',
+                    htmlContent: EmailTemplate()
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to send email');
+            }
+
+            const result = await response.json();
+            console.log('Email sent successfully:', result);
+        } catch (error) {
+            console.error('Error sending email:', error);
+            // You might want to show an error message to the user here
+        }
+    }, [])
 
     return (
-        <div className="container transition-all duration-300">
-            <div><NavigationBar /></div>
-            <div className="flex flex-row w-full gap-4 mt-4 h-[calc(100svh_-_200px)]">
-                <div className="flex-grow-0">
-                    <Sidebar data={data} lineCapacity={lineCapacity} dailyRunningHours={dailyRunningHours} lifetimeOfRotor={rotorLifetime} totalRunningHours={currentRunningHours} fiberLoss={chartData.fiberLoss} fiberCost={fiberCost} totalFiberLossCost={chartData?.val2} installedMotorPower={installedMotorPower} powerCost={powerCost} totalPowerLossCost={chartData?.val1} totalLossCost={barData?.[2]}  handleSideBarView={handleSideBarView} showSideBar={showSideBar} />
-                </div>
-                <div className="flex-grow"
-                    style={{ width: showSideBar ? 'calc(100% - 334px)' : 'calc(100% - 50px)' }}
-                >
-                    <MainContent data={data} barData={barData} currentRunningHours={currentRunningHours} setCurrentRunningHours={setCurrentRunningHours} installedOn={installedOn} rotorLifetime={rotorLifetime} chartData={chartData} />
+        <>
+            <div className={`container transition-all duration-300 ${!animateHeaderShow ? '-translate-y-[60px]' : 'translate-y-0'}`}>
+                <div><NavigationBar /></div>
+                <div className={`container flex flex-row w-full gap-4 mt-4 ${!animateHeaderShow ? 'h-[calc(100svh_-_120px)]' : 'h-[calc(100svh_-_200px)]'} transition-all duration-300`}>
+                    <div className="flex-grow-0">
+                        <Sidebar data={data} setIsModalPDFOpen={setIsModalPDFOpen} lineCapacity={lineCapacity} dailyRunningHours={dailyRunningHours} lifetimeOfRotor={rotorLifetime} totalRunningHours={currentRunningHours} fiberLoss={chartData.fiberLoss} fiberCost={fiberCost} totalFiberLossCost={chartData?.val2} installedMotorPower={installedMotorPower} powerCost={powerCost} totalPowerLossCost={chartData?.val1} totalLossCost={barData?.[2]} handleSideBarView={handleSideBarView} showSideBar={showSideBar} />
+                    </div>
+                    <div className="flex-grow">
+                        <MainContent sendEmail={sendEmail} data={data} barData={barData} resetChartData={resetChartData} currentRunningHours={currentRunningHours} setCurrentRunningHours={setCurrentRunningHours} installedOn={installedOn} rotorLifetime={rotorLifetime} chartData={chartData} />
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <div className="space-y-4">
+                    <div className="flex justify-end items-center cursor-pointer">
+                        <button
+                            onClick={() => setIsModalOpen(false)}
+                            className="text-gray-500 hover:text-gray-700 transition-colors duration-200 cursor-pointer"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div>
+                        <Image src="mail.svg" alt="Mail icon" width={200} height={70} className="w-[60%] h-auto mx-auto" />
+                    </div>
+                    <h2 className="text-[#2d3e5c] text-3xl font-bold text-center font-lato">Schedule Maintenance</h2>
+                    <div className="space-y-4">
+                        {/* Add your modal content here */}
+                        <p className="text-gray-600 text-center">We have notified the operations team Thank you, Team Kadant</p>
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal isOpen={isModalPDFOpen} onClose={() => setIsModalPDFOpen(false)}>
+                <div className="h-[90svh] overflow-y-scroll w-max thin-scroll">
+                    <div className="flex justify-end items-center cursor-pointer">
+                        <button
+                            onClick={() => setIsModalPDFOpen(false)}
+                            className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <RoiReport contentData={data} totalRunningHours={currentRunningHours} />
+                </div>
+            </Modal>
+        </>
     )
 }
 

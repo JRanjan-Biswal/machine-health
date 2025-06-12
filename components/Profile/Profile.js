@@ -10,7 +10,7 @@ import styles from './Profile.module.css';
 import { RxCross2 } from "react-icons/rx";
 import useUserLogout from '@/app/actions/useUserLogout';
 
-const Profile = ({ handleProfileButton, showProfile }) => {
+const Profile = ({ handleProfileButton, showProfile, setShowProfile }) => {
   const { logoutUser } = useUserLogout();
 
   return (
@@ -33,7 +33,7 @@ const Profile = ({ handleProfileButton, showProfile }) => {
             <SupportSection />
           </div>
           <div className={styles.logoutSection}>
-            <LogoutButton onClick={() => logoutUser()} />
+            <LogoutButton onClick={() => { logoutUser(); setShowProfile(false) }} />
           </div>
         </div>
       </div>

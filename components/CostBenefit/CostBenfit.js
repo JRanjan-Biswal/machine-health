@@ -12,7 +12,7 @@ const CostBenefit = () => {
     }, [showSideBar])
 
     return (
-        <div className="container transition-all duration-300">
+        <div className={`container transition-all duration-300`}>
             <div><NavigationBar /></div>
             <div className="flex flex-row w-full gap-4 mt-4 h-[calc(100svh_-_200px)]">
                 <div className="flex-grow-0">

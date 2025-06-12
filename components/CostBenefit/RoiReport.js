@@ -1,7 +1,6 @@
 'use client';
 import { useState, useMemo, useRef } from "react";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import { usePDF } from 'react-to-pdf';
 import "@/app/styles/roi-report.css";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,9 +26,9 @@ const ImpactRow = ({ label, value, isCost = false }) => {
     const getCostColor = (valStr) => {
         if (!isCost) return "transparent";
         const numericValue = parseFloat(String(valStr).replace(/[^0-9.-]+/g, ""));
-        if (numericValue <= 0) return "var(--report-green)";
-        if (numericValue > 0 && numericValue < 20000) return "var(--report-orange)";
-        return "var(--report-red)";
+        if (numericValue <= 0) return "rgb(0, 128, 0)";  // green
+        if (numericValue > 0 && numericValue < 20000) return "rgb(255, 165, 0)";  // orange
+        return "rgb(255, 0, 0)";  // red
     };
     return (
         <div className="report-row impact">
@@ -48,6 +47,11 @@ const ImpactRow = ({ label, value, isCost = false }) => {
 };
 
 function RoiReport({ contentData, totalRunningHours }) {
+    const { toPDF, targetRef } = usePDF({
+        filename: 'roi-report.pdf',
+        page: { margin: 20 }
+    });
+
     const [currentRunningHours, setCurrentRunningHours] = useState(totalRunningHours || contentData?.clientMachineSparePart?.totalRunningHours?.value);
     const [fiberCost, setFiberCost] = useState(contentData?.clientMachineSparePart?.fiberCost?.value);
     const [rotorLifetime, setRotorLifetime] = useState(contentData?.clientMachineSparePart?.lifetimeOfRotor?.value);
@@ -61,8 +65,6 @@ function RoiReport({ contentData, totalRunningHours }) {
     const [consumptionGoodRotor, setConsumptionGoodRotor] = useState(contentData?.clientMachineSparePart?.actualMotorPowerConsumption?.healthy?.value);
     const [consumptionWornRotor, setConsumptionWornRotor] = useState(contentData?.clientMachineSparePart?.actualMotorPowerConsumption?.wornout?.value);
     const [powerCost, setPowerCost] = useState(contentData?.clientMachineSparePart?.powerCost?.value);
-
-    const reportRef = useRef();
 
     const calculationData = useMemo(() => {
         const I =
@@ -115,7 +117,7 @@ function RoiReport({ contentData, totalRunningHours }) {
             totalPowerConsumptionWorn,
             totalFiberLossCost,
             totalPowerLossCost,
-            totalLoss
+            totalLoss,
         };
     }, [
         currentRunningHours,
@@ -133,19 +135,17 @@ function RoiReport({ contentData, totalRunningHours }) {
     ]);
 
     const handleGeneratePdf = async () => {
-        const input = reportRef.current;
-        const canvas = await html2canvas(input, { scale: 2 });
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4");
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-        pdf.save("roi-report.pdf");
+        try {
+            await toPDF();
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            alert('Failed to generate PDF. Please try again.');
+        }
     };
 
     return (
         <>
-            <div className="report-container" ref={reportRef}>
+            <div className="report-container" ref={targetRef}>
                 <div className="">
                     <Link href="/dashboard">
                         <Image src="/logo.png" alt="" width={300} height={100} className="h-5 w-auto mx-auto mb-6" />

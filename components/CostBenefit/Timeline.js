@@ -1,19 +1,39 @@
+import { RiResetLeftFill } from "react-icons/ri";
+import { useEffect } from 'react';
+import '@/app/styles/timeline.css';
 
-const Timeline = ({ currentRunningHours, setCurrentRunningHours, installedOn, lifespan }) => {
+const Timeline = ({ currentRunningHours, setCurrentRunningHours, installedOn, lifespan, resetChartData }) => {
+    useEffect(() => {
+        const button = document.querySelector('.animatedButton');
+        if (!button) return;
+
+        const handleClick = () => {
+            button.classList.add('animate-rotate');
+            setTimeout(() => {
+                button.classList.remove('animate-rotate');
+            }, 500);
+        };
+
+        button.addEventListener('click', handleClick);
+        return () => button.removeEventListener('click', handleClick);
+    }, []);
+
     return (
-        <div className="mt-12 mx-auto w-full absolute bottom-[40px]">
-            <div className="slider-container mx-auto">
+        <div className="mt-12 mx-auto w-[calc(100%_-_32px)] absolute bottom-[40px]">
+            <div className="slider-container mx-auto relative">
                 <div className="slider-track">
                     <div className="slider-marker" style={{ left: "25%" }}></div>
                     <div className="slider-marker" style={{ left: "50%" }}></div>
                     <div className="slider-marker" style={{ left: "75%" }}></div>
                 </div>
                 <input
-                    type="range" min="0" max="7200"     
+                    type="range" min="0" max="7200"
                     value={currentRunningHours}
                     className="slider"
                     onChange={(e) => setCurrentRunningHours(e.target.value)}
                 />
+
+                <button className="absolute -right-10 cursor-pointer animatedButton" onClick={resetChartData}><RiResetLeftFill size={24} /></button>
             </div>
 
             <div className="flex justify-between mt-4 text-[#2d3e5c] font-bold w-[70%] mx-auto">
