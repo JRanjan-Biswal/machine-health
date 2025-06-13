@@ -54,7 +54,7 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
       setIsLoading(true);
       if (response.ok) {
         toast.success('Login successful!', { color: '#1d1d1d' });
-        router.push('/dashboard');
+        router.push('/home');
         return;
       }
       else {

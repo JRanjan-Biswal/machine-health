@@ -28,7 +28,8 @@ const Header = ({ showArrow, handleProfileButton, isPageLoaded, profileImage }) 
   }, [pathname]);
 
   const getActivePath = () => {
-    if (pathname.includes('dashboard')) return 'dashboard';
+    if (pathname.includes('home')) return 'home';
+    if (pathname.includes('facility')) return 'facility';
     if (pathname.includes('stock-preparation')) return 'stock-preparation';
     if (pathname.includes('cost-benefit')) return 'cost-benefit';
     return '';
@@ -39,7 +40,7 @@ const Header = ({ showArrow, handleProfileButton, isPageLoaded, profileImage }) 
       <div className='container'>
         <div className="relative flex flex-row items-center justify-between px-12 py-1 bg-white rounded-full border border-[#dfe6ec] min-h-[70px] w-full mt-4 shadow-custom-1">
           <div className="w-[134px] h-[20px] relative">
-            <Link href="/dashboard">
+            <Link href="/home">
               <Image src="/logo.png" alt="Logo" width={134} height={20} />
             </Link>
           </div>
@@ -57,10 +58,18 @@ const Header = ({ showArrow, handleProfileButton, isPageLoaded, profileImage }) 
               }}
             />
 
-            <Link href="/dashboard">
-              <div className={`nav-link flex items-center px-6 py-2 rounded-full relative z-10 transition-colors ${pathname.includes('dashboard') ? 'active' : ''}`}>
-                <span className={`${pathname.includes('dashboard') ? 'text-white' : 'text-[#2d3e5c]'} font-montserrat font-bold text-[16px] leading-[24px]`}>
+            <Link href="/home">
+              <div className={`nav-link flex items-center px-6 py-2 rounded-full relative z-10 transition-colors ${pathname.includes('home') ? 'active' : ''}`}>
+                <span className={`${pathname.includes('home') ? 'text-white' : 'text-[#2d3e5c]'} font-montserrat font-bold text-[16px] leading-[24px]`}>
                   Home
+                </span>
+              </div>
+            </Link>
+
+            <Link href="/facility">
+              <div className={`nav-link flex items-center px-6 py-2 rounded-full relative z-10 transition-colors ${pathname.includes('facility') ? 'active' : ''}`}>
+                <span className={`${pathname.includes('facility') ? 'text-white' : 'text-[#2d3e5c]'} font-montserrat font-bold text-[16px] leading-[24px]`}>
+                  Facility
                 </span>
               </div>
             </Link>

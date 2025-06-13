@@ -3,8 +3,8 @@ import React from 'react';
 import ProfileHeader from './ProfileHeader';
 import EditProfileForm from './EditProfileForm';
 import ChangePasswordForm from './ChangePasswordForm';
-import NotificationSettings from './NotificationSettings';
-import SupportSection from './SupportSection';
+// import NotificationSettings from './NotificationSettings';
+// import SupportSection from './SupportSection';
 import LogoutButton from './LogoutButton';
 import styles from './Profile.module.css';
 import { RxCross2 } from "react-icons/rx";
@@ -13,7 +13,6 @@ import useUserLogout from '@/app/actions/useUserLogout';
 const Profile = ({ handleProfileButton, showProfile, setShowProfile, profileImage, loggedInUser, setProfileImage }) => {
   const { logoutUser } = useUserLogout();
 
-  console.log("loggedInUser --> ", loggedInUser);
 
   return (
     <>

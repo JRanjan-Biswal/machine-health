@@ -1,7 +1,7 @@
 'use client';
 import BusinessSnapshot from "@/components/Dashboard/BusinessSnapshot";
 import RecentActivity from "@/components/Dashboard/RecentActivity";
-import MillOverviewModal from "@/components/MillOverviewModal";
+// import MillOverviewModal from "@/components/MillOverviewModal";
 import Modal from "@/components/Modal";
 import { useHeader } from "@/context/HeaderContext";
 import { useMillOverView } from "@/context/MillOverview";
@@ -10,17 +10,17 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import { LuFactory } from "react-icons/lu";
 
-const DashBoard = ({ clientData, useData }) => {
+const DashBoard = ({ clientData, userData }) => {
     const router = useRouter();
 
     const { animateHeaderShow } = useHeader();
     const { millOverViewPopShow, hideMillOverViewPopup } = useMillOverView();
-    const [hideMillOverView, setHideMillOverView] = useState(true);
+    // const [hideMillOverView, setHideMillOverView] = useState(true);
     const [clientId, setClientId] = useState(null);
 
     useEffect(() => {
         if (typeof window == undefined) return;
-        setHideMillOverView(localStorage?.getItem("hideMillOverViewModal") || false);
+        // setHideMillOverView(localStorage?.getItem("hideMillOverViewModal") || false);
         setClientId(localStorage?.getItem("clientId") || null);
     }, [millOverViewPopShow]);
 
@@ -47,7 +47,7 @@ const DashBoard = ({ clientData, useData }) => {
 
     return (
         <>
-            {
+            {/* {
                 !hideMillOverView &&
                 <div className="flex justify-center items-center w-full h-screen bg-black/75 p-5 backdrop-blur-[5px] absolute inset-0 z-100">
                     <div className="absolute z-10">
@@ -63,16 +63,16 @@ const DashBoard = ({ clientData, useData }) => {
                         />
                     </div>
                 </div>
-            }
+            } */}
             <div className={`container mt-[20px] relative transition-all duration-300 ${!animateHeaderShow ? '-translate-y-[80px] h-[calc(100vh_-_180px)]' : 'translate-y-0 h-[calc(100vh_-_260px)]'}`}>
                 <div className="flex justify-between mx-5">
                     <div>
-                        <p className="text-[#2D3E5C] font-bold text-2xl">Welcome, Feroz</p>
+                        <p className="text-[#2D3E5C] font-bold text-2xl">Welcome, {userData?.name?.split(' ')?.[0]}</p>
                         <p className="text-xl">{clientInfo?.name}</p>
                     </div>
                     <div className="flex gap-5">
                         <div className="flex items-center gap-2">
-                            <div className="bg-[#BF1E21] h-5 w-5 rounded-full" />
+                            <div className="bg-[#00A82D] h-5 w-5 rounded-full" />
                             <div>Feed</div>
                         </div>
                         <div className="flex items-center gap-2">
@@ -89,7 +89,7 @@ const DashBoard = ({ clientData, useData }) => {
                         </div>
                     </div>
 
-                    <div className="flex gap-5 items-center relative">
+                    {/* <div className="flex gap-5 items-center relative">
 
                         <div className={`${dropdownOpen == 'business' ? 'text-orange-500' : 'text-primary-blue'} flex items-center cursor-pointer gap-[5px]`}
                             onClick={() => toggleDropdown('business')}
@@ -116,7 +116,7 @@ const DashBoard = ({ clientData, useData }) => {
                                 ? <div className="absolute top-12 right-0 z-10"><Modal isOpen={dropdownOpen == "recent"} onClose={toggleDropdown}><RecentActivity clientInfo={clientInfo} /></Modal></div>
                                 : null
                         }
-                    </div>
+                    </div> */}
 
                 </div>
                 {/* horizontal line */}

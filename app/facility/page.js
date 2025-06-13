@@ -6,6 +6,7 @@ const getData = async () => {
   try {
     const cookieStore = await cookies();
     const currentcookie = cookieStore.get('token').value.trim();
+    const loggedInUserEmail = cookieStore.get('email').value.trim();
 
     // reutrn machinery information
     const response = await fetch(`${process.env.API_URL}/client`, {
@@ -19,9 +20,24 @@ const getData = async () => {
       throw notFound();
     }
 
+    const allUserResponse = await fetch(`${process.env.API_URL}/user`, {
+      headers: {
+        Authorization: `Bearer ${currentcookie}`
+      }
+    });
+
+    if (!allUserResponse.ok) {
+      throw notFound();
+    }
+
+    const allUserResult = await allUserResponse.json();
+    const allUserResultData = allUserResult?.users;
+
+    const loggedInUser = allUserResultData?.filter(user => user.email == loggedInUserEmail);
+
     const result = await response.json();
 
-    return {clientData : result?.clients};
+    return { clientData: result?.clients, userData: loggedInUser?.[0] };
 
   } catch (error) {
     throw notFound();

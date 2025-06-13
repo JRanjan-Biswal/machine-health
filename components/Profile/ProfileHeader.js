@@ -69,7 +69,6 @@ const ProfileHeader = ({ profileImage = '/profile-dummy.png', setProfileImage })
         className="hidden"
         accept="image/*"
         onChange={handleFileChange}
-        value={selectedFile ? selectedFile.name : ''}
       />
     </div>
   );
