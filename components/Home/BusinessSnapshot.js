@@ -2,10 +2,13 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useHeader } from "@/context/HeaderContext";
 
 const BusinessSnapshot = ({ clientData }) => {
     const router = useRouter();
     const [selectedClient, setSelectedClient] = useState(clientData?.[0] || null);
+
+    const { animateHeaderShow } = useHeader();
     const [formData, setFormData] = useState({
         capacity: '',
         dailyRunningHours: {
@@ -116,7 +119,7 @@ const BusinessSnapshot = ({ clientData }) => {
                 <h1 className="text-2xl font-bold text-white font-lato p-4">Business Snapshot</h1>
             </div>
 
-            <div className="h-[calc(100vh-195px)] overflow-y-auto">
+            <div className={`overflow-y-auto transition-all duration-300 ${!animateHeaderShow ? 'h-[calc(100vh-115px)]' : 'h-[calc(100vh-195px)]'}`}>
                 {/* Info Grid Section */}
                 {/* Info Grid Section */}
                 <div className="p-4 grid grid-cols-2 gap-4">
