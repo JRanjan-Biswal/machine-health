@@ -1,7 +1,12 @@
 import { Bar } from "react-chartjs-2";
+import { useCurrency } from "@/context/CurrencyContext";
+import { convertAndFormatWithContext } from "@/lib/currencyChange";
 
 // Chart Component
 const CostChart = ({ barData, chartRef }) => {
+
+    const { selectedCurrency, currencyValue } = useCurrency();
+
     const data = {
         labels: ['Power Loss', 'Fiber Loss', 'Total Loss'],
         datasets: [
@@ -70,7 +75,7 @@ const CostChart = ({ barData, chartRef }) => {
                     // if (context.dataIndex === 2) {
                     //     return '';
                     // }
-                    return '€ ' + value;
+                    return convertAndFormatWithContext(value, { selectedCurrency, currencyValue });
                 },
                 font: {
                     weight: 'bold',

@@ -2,6 +2,8 @@ import { RiArrowLeftSLine } from "react-icons/ri";
 import styles from './sidebar.module.css';
 import React from "react";
 import { useEffect } from "react";
+import { useCurrency } from "@/context/CurrencyContext";
+import { convertAndFormatWithContext, convertAndFormatWithContextNoSymbol } from "@/lib/currencyChange";
 // import Modal from "./Modal";
 
 const formatCurrency = (value, currencyCode) => {
@@ -15,11 +17,11 @@ const formatCurrency = (value, currencyCode) => {
 };
 
 const Sidebar = ({ data, setIsModalPDFOpen, lineCapacity, dailyRunningHours, lifetimeOfRotor, totalRunningHours, fiberLoss, fiberCost, totalFiberLossCost, installedMotorPower, powerCost, totalPowerLossCost, totalLossCost, handleSideBarView, showSideBar }) => {
+
+    const { selectedCurrency, currencyValue } = useCurrency();
+
     const [spareParts, setSpareParts] = React.useState([]);
     const [sparePartData, setSparePartData] = React.useState(null);
-
-    console.log(data);
-
 
     const fetchSparePart = async () => {
         const response = await fetch('/api/sparepart');
@@ -67,22 +69,32 @@ const Sidebar = ({ data, setIsModalPDFOpen, lineCapacity, dailyRunningHours, lif
                                     <div className="flex flex-col gap-2.5">
                                         <h3 className="text-[#2d3e5c] text-lg font-bold">Fiber Loss</h3>
                                         <p className="text-[#607797] text-base font-medium">Fiber Loss: {Math.round(fiberLoss)} Tons</p>
-                                        <p className="text-[#607797] text-base font-medium">Fiber Cost: € {fiberCost}/ton</p>
-                                        <p className="text-[#607797] text-base font-medium">Total Fiber Loss Value: € {Math.round(totalFiberLossCost)}</p>
+                                        <p className="text-[#607797] text-base font-medium">
+                                            Fiber Cost: {convertAndFormatWithContext(fiberCost, { selectedCurrency, currencyValue })}/ton
+                                        </p>
+                                        <p className="text-[#607797] text-base font-medium">
+                                            Total Fiber Loss Value: {convertAndFormatWithContext(totalFiberLossCost, { selectedCurrency, currencyValue })}
+                                        </p>
                                     </div>
 
                                     {/* Power Loss Section */}
                                     <div className="flex flex-col gap-2.5">
                                         <h3 className="text-[#2d3e5c] text-lg font-bold">Power Loss</h3>
                                         <p className="text-[#607797] text-base font-medium">Installed Motor power: {installedMotorPower} kw</p>
-                                        <p className="text-[#607797] text-base font-medium">Power Cost: {powerCost} €/kwhr</p>
-                                        <p className="text-[#607797] text-base font-medium">Total Power Cost: € {Math.round(totalPowerLossCost)}</p>
+                                        <p className="text-[#607797] text-base font-medium">
+                                            Power Cost: {convertAndFormatWithContextNoSymbol(powerCost, { selectedCurrency, currencyValue }, false)} {selectedCurrency == "EURO" ? "€" : "₹"}/kwhr
+                                        </p>
+                                        <p className="text-[#607797] text-base font-medium">
+                                            Total Power Cost: {convertAndFormatWithContext(totalPowerLossCost, { selectedCurrency, currencyValue })}
+                                        </p>
                                     </div>
 
                                     {/* Total Loss Section */}
                                     <div className="flex flex-col gap-2.5">
                                         <h3 className="text-[#2d3e5c] text-lg font-bold">Total Loss</h3>
-                                        <p className="text-[#607797] text-base font-medium">Total Loss: € {totalLossCost}</p>
+                                        <p className="text-[#607797] text-base font-medium">
+                                            Total Loss: {convertAndFormatWithContext(totalLossCost, { selectedCurrency, currencyValue })}
+                                        </p>
                                     </div>
                                 </div>
                             </div>

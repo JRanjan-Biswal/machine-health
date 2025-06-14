@@ -70,7 +70,7 @@ const MainImageSection = ({ userName = "Feroz", clientData }) => {
     const filteredCustomers = selectedRegion === "India" ? clientData : ["", ""];
 
     return (
-        <div className="flex flex-col w-full h-full bg-inherit">
+        <div className="flex flex-col h-full bg-inherit">
             {/* Welcome and Dropdown Section */}
             <div className="flex justify-between items-center px-8 py-4">
                 <h1 className="text-[24px] font-black text-[#2d3e5c] font-lato">
@@ -150,13 +150,13 @@ const MainImageSection = ({ userName = "Feroz", clientData }) => {
             </div>
 
             {/* Main Facility Image */}
-            <div className="w-full h-full overflow-hidden">
+            <div className="h-full overflow-hidden">
                 <Image
                     src="/home.png"
                     alt="Facility"
                     width={1519}
                     height={823}
-                    className="object-cover h-full w-full object-bottom-left"
+                    className="object-cover h-full w-auto object-bottom-left"
                 />
             </div>
         </div>

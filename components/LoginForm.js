@@ -69,7 +69,7 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
 
   // clear cookie | if user comes to this page | to do a fresh login
   useEffect(() => {
-    (async function () { await fetch("/api/logout")})()
+    (async function () { await fetch("/api/logout") })()
   }, [])
 
   return (
@@ -80,7 +80,7 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
             Client Portal
           </h1>
           <p className="text-base font-normal font-montserrat text-[#1d1d1d]">
-            Log in to view assigned cases
+            Login to access Equipment Health Monitor
           </p>
         </div>
 

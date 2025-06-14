@@ -6,12 +6,13 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import styles from '@/app/styles/stock.module.css';
 import { useHeader } from '@/context/HeaderContext';
+import { cn } from '@/lib/utils';
 
 const StockPreparation = ({ data }) => {
     const [status, setStatus] = useState("Healthy");
 
     useEffect(() => {
-        if(!data?.length) return;
+        if (!data?.length) return;
         data?.forEach(part => {
             if (part?.clientMachineSparePart.totalRunningHours?.value > part?.lifeTime?.value) {
                 setStatus("Attention");
@@ -39,8 +40,10 @@ const StockPreparation = ({ data }) => {
                 <div className='fixed inset-0 -z-1'>
                     <div className='cost-benegit-three-d h-full w-full' />
 
-                    {/* trashwell  */}
+                    {/* main image */}
                     <Image alt='' src={"/scope-image.png"} width={1700} height={1080} priority className='w-full h-full fixed -z-1 inset-0 object-cover object-bottom-left' />
+
+                    {/* trashwell  */}
                     <div className={styles.trashwell}>
                         <Image src="/trashwell-hover.png" alt='' height={200} width={200} className={styles.hoverBg} />
                         <Image src="/trashwell-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
@@ -54,10 +57,14 @@ const StockPreparation = ({ data }) => {
                         }
                         <Image src="/hydrapulper-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
                     </div>
+
+                    {/* hydrapurge */}
                     <div className={styles.hydrapurge}>
-                        <Image src="/hydrapurge-hover.png" alt='' height={200} width={200} className={styles.hoverBg} />
+                        <Image src="/hydrapurge-hover.png" alt='' height={200} width={200} className={cn(styles.hoverBg, 'filter hue-rotate-[-85deg] saturate-[1.5] brightness-[1.5]')} />
                         <Image src="/hydrapurge-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
                     </div>
+
+                    {/* mtk */}
                     <div className={styles.mtk}>
                         <Image src="/mtk-hover.png" alt='' height={200} width={200} className={styles.hoverBg} />
                         <Image src="/mtk-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />

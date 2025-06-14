@@ -6,12 +6,12 @@ import MainImageSection from "@/components/Home/MainImageSection";
 const Home = ({ userData, clientData }) => {
     const { animateHeaderShow } = useHeader();
     return (
-        <div className="flex flex-col w-full container mt-[20px]">
+        <div className="flex flex-col container mt-[20px]">
 
             {/* Main Content Section */}
-            <div className={`flex flex-grow flex-row gap-3 transition-all duration-300 ${!animateHeaderShow ? '-translate-y-[80px]' : '-translate-y-0'}`}>
+            <div className={`flex flex-row w-full gap-3 transition-all duration-300 ${!animateHeaderShow ? '-translate-y-[80px]' : '-translate-y-0'}`}>
                 {/* Main Image and Welcome Section */}
-                <div className={`flex-grow shadow-custom-1 rounded-lg bg-white overflow-hidden transition-all duration-300 ${!animateHeaderShow ? 'h-[calc(100vh-50px)]' : 'h-[calc(100vh-130px)]'}`}>
+                <div className={`shadow-custom-1 w-[calc(75%_-_12px)] rounded-lg bg-white overflow-hidden transition-all duration-300 ${!animateHeaderShow ? 'h-[calc(100vh-50px)]' : 'h-[calc(100vh-130px)]'}`}>
                     <MainImageSection
                         userName={userData?.name?.split(' ')?.[0]}
                         clientData={clientData}

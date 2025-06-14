@@ -107,7 +107,7 @@ const BusinessSnapshot = ({ clientData }) => {
             toast.success('Successfully updated client information', { color: '#1d1d1d' });
 
             // Navigate to dashboard
-            router.push('/dashboard');
+            router.push('/facility');
         } catch (error) {
             toast.error('Failed to update client information', { color: '#1d1d1d' });
         }
@@ -234,7 +234,7 @@ const BusinessSnapshot = ({ clientData }) => {
                     </div>
 
                     {/* Update Button */}
-                    <div className="mt-8 pb-4">
+                    <div className="mt-8 pb-4 w-full flex justify-center">
                         <button
                             className="w-full bg-[#d45815] text-white py-3 px-6 rounded-md font-bold text-base font-montserrat hover:bg-[#c24d12] transition-colors"
                             onClick={handleUpdate}

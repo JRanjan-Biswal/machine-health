@@ -46,7 +46,7 @@ const ChangePasswordForm = () => {
   }, [formData]);
 
   return (
-    <div className="flex flex-col w-full max-w-md gap-4 bg-white">
+    <div className="flex flex-col w-full max-w-md gap-1 bg-white">
       <h2 className="text-[#2D3E5C] text-lg font-bold font-lato leading-[34px]">
         Change Password
       </h2>

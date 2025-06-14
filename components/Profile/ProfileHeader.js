@@ -36,7 +36,7 @@ const ProfileHeader = ({ profileImage = '/profile-dummy.png', setProfileImage })
     <div className="flex flex-row items-center justify-between gap-4 p-2">
       {
         profileImage && (
-          <div className="w-[58px] h-[58px] relative rounded-full overflow-hidden">
+          <div className="w-[58px] h-[58px] relative overflow-hidden border border-[#dfe6ec] rounded-full">
             <Image
               src={profileImage}
               alt="Profile"
