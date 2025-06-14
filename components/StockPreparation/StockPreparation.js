@@ -13,16 +13,17 @@ const StockPreparation = ({ data }) => {
 
     useEffect(() => {
         if (!data?.length) return;
+        let currentStatus = "Healthy";
         data?.forEach(part => {
             if (part?.clientMachineSparePart.totalRunningHours?.value > part?.lifeTime?.value) {
-                setStatus("Attention");
+                currentStatus = "Attention";
             }
-            else if (part?.clientMachineSparePart?.totalRunningHours?.value == part.lifeTime?.value && status !== "Attention") {
-                setStatus("Monitor");
+            else if (part?.clientMachineSparePart?.totalRunningHours?.value == part.lifeTime?.value && currentStatus !== "Attention") {
+                currentStatus = "Monitor";
             }
         });
+        setStatus(currentStatus);
     }, [data]);
-
 
     const { animateHeaderShow } = useHeader();
 

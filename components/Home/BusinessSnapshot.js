@@ -176,7 +176,7 @@ const BusinessSnapshot = ({ clientData }) => {
 
                         <div>
                             <p className="text-[#dfe6ec] text-base font-medium font-lato mb-2">
-                                Daily running Hours
+                                Daily Running Hours
                             </p>
                             <div className="relative">
                                 <input

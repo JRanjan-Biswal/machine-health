@@ -60,9 +60,9 @@ const Sidebar = ({ data, setIsModalPDFOpen, lineCapacity, dailyRunningHours, lif
                                     {/* Basic Info */}
                                     <div className="flex flex-col gap-2.5">
                                         <p className="text-[#607797] text-base font-medium">Capacity of Line: {lineCapacity} TPD</p>
-                                        <p className="text-[#607797] text-base font-medium">Daily running Hours: {dailyRunningHours} Hrs</p>
+                                        <p className="text-[#607797] text-base font-medium">Daily Running Hours: {dailyRunningHours} Hrs</p>
                                         <p className="text-[#607797] text-base font-medium">Lifetime of rotor: {lifetimeOfRotor} Hrs</p>
-                                        <p className="text-[#607797] text-base font-medium">Total running Hours: {totalRunningHours} Hrs</p>
+                                        <p className="text-[#607797] text-base font-medium">Total Running Hours: {totalRunningHours} Hrs</p>
                                     </div>
 
                                     {/* Fiber Loss Section */}

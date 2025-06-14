@@ -41,7 +41,12 @@ export async function POST(request) {
             sameSite: 'lax', // Or 'strict' for more security, but can break cross-site navigation
         });
 
-        return NextResponse.json({ success: true, message: 'Login successful' });
+        const currencyResult = await fetch("https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json");
+        const currencyData = await currencyResult.json();
+
+        const euroValue = currencyData?.eur?.inr;
+
+        return NextResponse.json({ success: true, message: 'Login successful', euroValue });
     } catch (error) {
         console.error('Error processing login:', error);
         return NextResponse.json(

@@ -51,8 +51,12 @@ const LoginForm = ({ defaultClientId = '', defaultPassword = '' }) => {
         method: 'POST',
         body: JSON.stringify({ email: formData.email, password: formData.password }),
       });
+      const result = await response.json();
+      console.log(result);
       setIsLoading(true);
       if (response.ok) {
+        localStorage.setItem('currencyValue', result.euroValue?.toFixed(2));
+        localStorage.setItem('selectedCurrency', 'EURO');
         toast.success('Login successful!', { color: '#1d1d1d' });
         router.push('/home');
         return;
