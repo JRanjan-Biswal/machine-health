@@ -16,7 +16,7 @@ import { Toaster } from "@/components/ui/sonner"
 // });
 
 export const metadata = {
-  title: "kadant",
+  title: "Kadant",
   description: "Kadant",
 };
 
