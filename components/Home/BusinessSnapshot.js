@@ -40,11 +40,11 @@ const BusinessSnapshot = ({ clientData }) => {
     useEffect(() => {
         // Set initial client from localStorage if available
         const storedClientId = localStorage.getItem("clientId");
-        // console.log(storedClientId);
+
         // if (storedClientId && clientData) {
         if (clientData) {
             const client = clientData.find(c => c._id === "68436859af3221a4b1df84f1");
-            console.log(client);
+          
             if (client) {
                 setSelectedClient(client);
                 setFormData({

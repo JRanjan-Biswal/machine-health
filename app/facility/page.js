@@ -33,7 +33,7 @@ const getData = async () => {
     const allUserResult = await allUserResponse.json();
     const allUserResultData = allUserResult?.users;
 
-    const loggedInUser = allUserResultData?.filter(user => user.email == loggedInUserEmail);
+    const loggedInUser = allUserResultData?.filter(user => user.email.toLowerCase() == loggedInUserEmail.toLowerCase());
 
     const result = await response.json();
 

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { SlArrowDown } from "react-icons/sl";
 
-const RotorComponent = ({ currentState = true, optimalState = true, currentStateImge = "/image-95.png", optimalStateimg = "/image-94.png", percentage = "60%", comment }) => {
+const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = true, currentStateImge = "/image-95.png", optimalStateimg = "/image-94.png", percentage = "60%", comment }) => {
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
     const { animateHeaderShow } = useHeader();
 
@@ -26,7 +26,9 @@ const RotorComponent = ({ currentState = true, optimalState = true, currentState
                         [isCommentsOpen && animateHeaderShow && 'h-[calc(50svh_-_260px)]'],// comment is open | header is in view
                         [isCommentsOpen && !animateHeaderShow && 'h-[calc(50svh_-_220px)]']// comment is open | header is not in view
                     )}>
-                        <div className="absolute top-2.5 right-2.5 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100">
+                        <div className="absolute top-2.5 right-2.5 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100"
+                            onClick={() => setIsZoomOpen({ image: currentStateImge, bool: true })}
+                        >
                             <Image src="/icon-exp.png" width={24} height={24} alt="expand" />
                         </div>
                         {
@@ -46,7 +48,9 @@ const RotorComponent = ({ currentState = true, optimalState = true, currentState
                         [isCommentsOpen && animateHeaderShow && 'h-[calc(50svh_-_260px)]'],
                         [isCommentsOpen && !animateHeaderShow && 'h-[calc(50svh_-_220px)]']
                     )}>
-                        <div className="absolute top-2.5 right-2.5 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100">
+                        <div className="absolute top-2.5 right-2.5 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100"
+                            onClick={() => setIsZoomOpen({ image: optimalStateimg, bool: true })}
+                        >
                             <Image src="/icon-exp.png" width={24} height={24} alt="expand" />
                         </div>
                         {

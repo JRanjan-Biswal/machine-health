@@ -34,6 +34,7 @@ const Page = () => {
     const { animateHeaderShow } = useHeader();
 
     const [isOpen, setIsOpen] = React.useState(false);
+    const [isZoomOpen, setIsZoomOpen] = React.useState({ image: null, bool: false });
 
     const [selectedImage, setSelectedImage] = React.useState(imageData['Power Saver']);
     const [bottomKnkifeSelected, setBottomKnifeSelected] = React.useState(false);
@@ -49,7 +50,6 @@ const Page = () => {
         setSpareParts(data.data);
         setSparePartData(data.data.find(sparePart => sparePart._id === '684363cf58886bd63a211b24'));
     }
-    console.log(sparePartData?.clientSparePartVideo?.videoUrl);
 
     const handleImageClick = (key) => {
         setSelectedImage(imageData[key]);
@@ -57,7 +57,6 @@ const Page = () => {
         const partId = partIdMaps[key];
         if (sparePartData.clientSparePartPhotos) {
             const partCurrentStateImage = sparePartData.clientSparePartPhotos.find(photo => photo.part === partId);
-            console.log(partCurrentStateImage);
 
             if (partCurrentStateImage) {
                 setPartCurrentStateImage(partCurrentStateImage.imageUrl);
@@ -178,8 +177,32 @@ const Page = () => {
                         </div>
                     </div>
                 </div>
-                <RotorComponent optimalStateimg={selectedImage?.[1]} currentStateImge={partCurrentStateImage ? `https://kadant-api-production.up.railway.app${partCurrentStateImage}` : selectedImage?.[0]} comment={partCurrentStateImageComment || "No comments available yet."} />
+                <RotorComponent setIsZoomOpen={setIsZoomOpen} optimalStateimg={selectedImage?.[1]} currentStateImge={partCurrentStateImage ? `https://kadant-api-production.up.railway.app${partCurrentStateImage}` : selectedImage?.[0]} comment={partCurrentStateImageComment || "No comments available yet."} />
             </div>
+
+            {/* Modal for image zoom */}
+            <Modal isOpen={isZoomOpen?.bool} onClose={() => setIsZoomOpen({ image: null, bool: false })} blogContentClassName='relative w-[50vw] px-0 pb-0 pt-0 overflow-hidden'>
+                <div className="flex justify-end items-center cursor-pointer absolute top-4 right-4 border-2 border-white rounded-full w-[36px] h-[36px]">
+                    <button
+                        onClick={() => setIsZoomOpen(false)}
+                        className="text-gray-500 hover:text-gray-700 transition-colors duration-200 cursor-pointer flex w-full h-full items-center justify-center"
+                    >
+                        <svg className="w-6 h-6" fill="none" stroke="white" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div className='flex justify-center items-center w-full h-full gap-7'>
+                    {
+                        isZoomOpen?.image &&
+                        <Image
+                            src={isZoomOpen?.image} width={500} height={500} alt='zoomed image'
+                            className='object-cover h-auto w-full'
+                        />
+                    }
+                </div>
+            </Modal>
+
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <div className="flex justify-end items-center cursor-pointer">
                     <button

@@ -3,31 +3,40 @@ import { createContext, useCallback, useContext, useState, useEffect } from 'rea
 
 const CurrencySelector = createContext();
 
-export function CurrencySelectorProvider({ children }) {
-    const [currencySelectorShow, setCurrencySelectorShow] = useState(true);
-    const [selectedCurrency, setSelectedCurrency] = useState('EURO');
-    const [currencyValue, setCurrencyValue] = useState(97.44);
-
-    useEffect(() => {
-        // Load persisted currency settings from localStorage
+// Initialize state from localStorage
+const getInitialState = () => {
+    if (typeof window !== 'undefined') {
         const savedCurrency = localStorage.getItem('selectedCurrency');
         const savedValue = localStorage.getItem('currencyValue');
-        
-        if (savedCurrency) {
-            setSelectedCurrency(savedCurrency);
-        }
-        if (savedValue) {
-            setCurrencyValue(parseFloat(savedValue));
-        }
-    }, []);
+        const hideModal = localStorage.getItem('hideCurrencySelectorModal');
+
+        return {
+            currencySelectorShow: hideModal !== 'true',
+            selectedCurrency: savedCurrency || 'EURO',
+            currencyValue: savedValue ? parseFloat(savedValue) : 97.44
+        };
+    }
+    return {
+        currencySelectorShow: true,
+        selectedCurrency: 'EURO',
+        currencyValue: 97.44
+    };
+};
+
+export function CurrencySelectorProvider({ children }) {
+    const initialState = getInitialState();
+    const [currencySelectorShow, setCurrencySelectorShow] = useState(initialState.currencySelectorShow);
+    const [selectedCurrency, setSelectedCurrency] = useState(initialState.selectedCurrency);
+    const [currencyValue, setCurrencyValue] = useState(initialState.currencyValue);
 
     const showCurrencySelector = useCallback(() => {
         setCurrencySelectorShow(true);
+        localStorage.removeItem('hideCurrencySelectorModal');
     }, []);
 
     const hideCurrencySelector = useCallback(() => {
         setCurrencySelectorShow(false);
-        localStorage.setItem('hideCurrencySelectorModal', true);
+        localStorage.setItem('hideCurrencySelectorModal', 'true');
     }, []);
 
     const updateCurrency = useCallback((currency, value) => {

@@ -44,7 +44,7 @@ const EditProfileForm = ({ loggedInUser }) => {
       toast.error('Invalid email format', { color: '#1d1d1d' });
       return;
     }
-    console.log(formData.phone);
+   
     if (!regexPhone.test(formData.phone)) {
       toast.error('Invalid phone number', { color: '#1d1d1d' });
       return;

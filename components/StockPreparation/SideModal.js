@@ -36,8 +36,7 @@ const SideModal = ({ handleClick, showSideBar }) => {
         const response = await fetch('/api/sparepart');
         const data = await response.json();
 
-        const filterData = data.data.filter(item => item._id == "684363cf58886bd63a211b24")?.[0];
-        console.log(filterData);
+        const filterData = data?.data?.filter(item => item._id == "684363cf58886bd63a211b24")?.[0];
 
         setSpareParts(data.data);
         setSparePartData(filterData);

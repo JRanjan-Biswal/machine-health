@@ -20,7 +20,7 @@ export async function GET() {
         const allUserResult = await allUserResponse.json();
         const allUserResultData = allUserResult?.users;
 
-        const loggedInUser = allUserResultData?.filter(user => user.email == loggedInUserEmail);
+        const loggedInUser = allUserResultData?.filter(user => user.email.toLowerCase() == loggedInUserEmail.toLowerCase());
 
         return NextResponse.json({ message: 'get logged in users', data: loggedInUser?.[0] }, { status: 200 });
     } catch (error) {

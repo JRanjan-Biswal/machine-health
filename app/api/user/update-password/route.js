@@ -16,8 +16,6 @@ export async function PUT(request) {
         const newPassword = allPassword?.newPassword;
         const confirmPassword = allPassword?.confirmPassword;
 
-        console.log(oldPassword, newPassword, confirmPassword);
-
         if (!oldPassword || !newPassword || !confirmPassword) {
             return NextResponse.json(
                 { success: false, message: 'all fields are required' },

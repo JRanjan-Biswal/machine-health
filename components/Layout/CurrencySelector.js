@@ -4,8 +4,6 @@ import { Switch } from "@/components/ui/switch"
 const CurrencySelector = () => {
     const { selectedCurrency, updateCurrency, currencyValue } = useCurrency();
 
-    console.log("selectedCurrency", selectedCurrency, "currencyValue", currencyValue);
-
     return (
         <div className="flex items-center gap-2">
             <span

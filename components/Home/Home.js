@@ -5,6 +5,7 @@ import MainImageSection from "@/components/Home/MainImageSection";
 
 const Home = ({ userData, clientData }) => {
     const { animateHeaderShow } = useHeader();
+
     return (
         <div className="flex flex-col container mt-[20px]">
 

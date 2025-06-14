@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 const CurrencyChanger = () => {
     const { selectedCurrency, updateCurrency, currencyValue } = useCurrency();
-    const [currencyVal, setCurrencyVal] = useState(currencyValue || 97.44);
+    const [currencyVal, setCurrencyVal] = useState(currencyValue);
 
     const handleCurrencyChange = useCallback((currency, value) => {
         updateCurrency(currency, value);

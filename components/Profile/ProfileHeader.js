@@ -24,9 +24,10 @@ const ProfileHeader = ({ profileImage = '/profile-dummy.png', setProfileImage })
         }
 
         const result = await response.json();
-        console.log("iamge --> ", result?.backendData?.media?.url);
+       
         setProfileImage("https://kadant-api-production.up.railway.app" + result?.backendData?.media?.url);
-      } catch (error) {
+      } 
+      catch (error) {
         console.error('Error uploading profile picture:', error);
       }
     }

@@ -89,14 +89,11 @@ const Header = ({ showArrow, handleProfileButton, isPageLoaded, profileImage }) 
 
                     <CurrencySelector />
 
-                    <div className="w-[50px] h-[50px] relative" onClick={handleProfileButton}>
+                    <div className="w-[50px] h-[50px] relative border border-primary-blue rounded-full" onClick={handleProfileButton}>
                         {
                             profileImage && (
                                 <Image
-                                    src={profileImage}
-                                    alt="User Profile"
-                                    width={50}
-                                    height={50}
+                                    src={profileImage} alt="User Profile" width={50} height={50}
                                     className="rounded-full cursor-pointer hover:opacity-90 transition-opacity h-full w-full object-cover"
                                 />
                             )
