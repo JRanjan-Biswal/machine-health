@@ -81,7 +81,7 @@ const MainImageSection = ({ userName = "Feroz", clientData }) => {
                     {/* Region Dropdown */}
                     <div className="relative" id="region-dropdown">
                         <button
-                            className="flex items-center gap-4 px-4 py-2.5 border border-[#96a5ba] rounded-md hover:bg-gray-50"
+                            className="flex items-center justify-between gap-4 px-4 py-2.5 border border-[#96a5ba] rounded-md hover:bg-gray-50 w-40"
                             onClick={() => handleDropdownClick('region')}
                         >
                             <span className="text-base font-semibold text-[#2d3e5c] font-lato">
@@ -98,11 +98,11 @@ const MainImageSection = ({ userName = "Feroz", clientData }) => {
                         </button>
 
                         {showRegionDropdown && (
-                            <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-md shadow-lg border border-[#96a5ba] z-10 overflow-hidden">
+                            <div className="absolute top-full left-0 mt-1 bg-white rounded-md shadow-lg border border-[#96a5ba] z-10 overflow-hidden w-full">
                                 {regions.map((region) => (
                                     <button
                                         key={region}
-                                        className="w-full px-4 py-2 text-left text-[#2d3e5c] hover:bg-gray-50 font-lato"
+                                        className="w-full px-4 py-2 text-left text-[#2d3e5c] hover:bg-gray-200 font-lato"
                                         onClick={() => handleRegionSelect(region)}
                                     >
                                         {region}
@@ -115,7 +115,7 @@ const MainImageSection = ({ userName = "Feroz", clientData }) => {
                     {/* Customer Dropdown */}
                     <div className="relative" id="customer-dropdown">
                         <button
-                            className="flex items-center gap-4 px-4 py-2.5 border border-[#96a5ba] rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex items-center justify-between gap-4 px-4 py-2.5 border border-[#96a5ba] rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed w-56"
                             disabled={selectedRegion !== "India"}
                             onClick={() => handleDropdownClick('customer')}
                         >
@@ -137,7 +137,7 @@ const MainImageSection = ({ userName = "Feroz", clientData }) => {
                                 {filteredCustomers?.map((customer) => (
                                     <button
                                         key={customer._id}
-                                        className="w-full px-4 py-2 text-left text-[#2d3e5c] hover:bg-gray-50 font-lato"
+                                        className="w-full px-4 py-2 text-left text-[#2d3e5c] hover:bg-gray-200 font-lato"
                                         onClick={() => handleCustomerSelect(customer)}
                                     >
                                         {customer.name}

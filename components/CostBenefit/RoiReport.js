@@ -5,6 +5,8 @@ import "@/app/styles/roi-report.css";
 import Image from "next/image";
 import Link from "next/link";
 import generateRoiReportHTML from "./generateRoiReportHTML";
+import { useCurrency } from "@/context/CurrencyContext";
+import { convertAndFormatCurrency, convertAndFormatWithContext, convertAndFormatWithContextNoSymbol, formatNumberAsPerCountry } from "@/lib/currencyChange";
 
 // Reusable components
 const InputField = ({ label, value, onChange }) => (
@@ -24,6 +26,8 @@ const CalculationRow = ({ label, value }) => (
 );
 
 const ImpactRow = ({ label, value, isCost = false }) => {
+    const { selectedCurrency, currencyValue } = useCurrency();
+
     const getCostColor = (valStr) => {
         if (!isCost) return "transparent";
         const numericValue = parseFloat(String(valStr).replace(/[^0-9.-]+/g, ""));
@@ -41,7 +45,7 @@ const ImpactRow = ({ label, value, isCost = false }) => {
                     color: isCost ? "white" : "inherit",
                 }}
             >
-                {value}
+                {convertAndFormatWithContext(value, { selectedCurrency, currencyValue }, true)}
             </span>
         </div>
     );
@@ -52,6 +56,8 @@ function RoiReport({ contentData, totalRunningHours }) {
         filename: 'roi-report.pdf',
         page: { margin: 20 }
     });
+
+    const { selectedCurrency, currencyValue } = useCurrency();
 
     const [currentRunningHours, setCurrentRunningHours] = useState(totalRunningHours || contentData?.clientMachineSparePart?.totalRunningHours?.value);
     const [fiberCost, setFiberCost] = useState(contentData?.clientMachineSparePart?.fiberCost?.value);
@@ -165,7 +171,7 @@ function RoiReport({ contentData, totalRunningHours }) {
             totalLoss: calculationData.totalLoss
         };
 
-        const html = generateRoiReportHTML(parameters, calculationData);
+        const html = generateRoiReportHTML(parameters, calculationData, selectedCurrency, currencyValue, convertAndFormatWithContext, convertAndFormatWithContextNoSymbol, formatNumberAsPerCountry);
         const iframe = document.createElement('iframe');
         iframe.style.display = 'none';
         document.body.appendChild(iframe);
@@ -201,27 +207,27 @@ function RoiReport({ contentData, totalRunningHours }) {
                             <h3>Performance Parameters</h3>
                             <InputField
                                 label="Capacity of Line (TPD)"
-                                value={lineCapacity}
+                                value={formatNumberAsPerCountry(lineCapacity, selectedCurrency || 'INR', true)}
                                 onChange={(e) => setLineCapacity(e.target.value)}
                             />
                             <InputField
                                 label="Daily Running Hours (hrs)"
-                                value={dailyRunningHours}
+                                value={formatNumberAsPerCountry(dailyRunningHours, selectedCurrency || 'INR', true)}
                                 onChange={(e) => setDailyRunningHours(e.target.value)}
                             />
                             <InputField
-                                label="Fiber Cost (euro/ton)"
-                                value={fiberCost}
+                                label={`Fiber Cost (${selectedCurrency == 'EURO' ? '€' : '₹'}/ton)`}
+                                value={convertAndFormatWithContextNoSymbol(fiberCost, { selectedCurrency, currencyValue })}
                                 onChange={(e) => setFiberCost(e.target.value)}
                             />
                             <InputField
                                 label="Lifetime of Rotor (hours)"
-                                value={rotorLifetime}
+                                value={formatNumberAsPerCountry(rotorLifetime, selectedCurrency || 'INR', true)}
                                 onChange={(e) => setRotorLifetime(e.target.value)}
                             />
                             <InputField
                                 label="Total Running Hours Of Rotor (hours)"
-                                value={currentRunningHours}
+                                value={formatNumberAsPerCountry(currentRunningHours, selectedCurrency || 'INR', true)}
                                 onChange={(e) => setCurrentRunningHours(e.target.value)}
                             />
                             <InputField
@@ -261,10 +267,13 @@ function RoiReport({ contentData, totalRunningHours }) {
                             />
                             <CalculationRow
                                 label="Total Fiber Loss"
-                                value={`€ ${calculationData.totalFiberLossCost.toLocaleString(
-                                    undefined,
-                                    { minimumFractionDigits: 0, maximumFractionDigits: 0 }
-                                )}`}
+                                value={
+                                //     `€ ${calculationData.totalFiberLossCost.toLocaleString(
+                                //     undefined,
+                                //     { minimumFractionDigits: 0, maximumFractionDigits: 0 }
+                                // )}`
+                                convertAndFormatWithContext(calculationData.totalFiberLossCost, { selectedCurrency, currencyValue })
+                            }
                             />
                         </div>
                     </div>
@@ -275,17 +284,17 @@ function RoiReport({ contentData, totalRunningHours }) {
                             <h3>Performance Parameters</h3>
                             <InputField
                                 label="Capacity of Line (tpd)"
-                                value={lineCapacity}
+                                value={formatNumberAsPerCountry(lineCapacity, selectedCurrency || 'INR', true)}
                                 onChange={(e) => setLineCapacity(e.target.value)}
                             />
                             <InputField
                                 label="Daily Running Hours (hrs)"
-                                value={dailyRunningHours}
+                                value={formatNumberAsPerCountry(dailyRunningHours, selectedCurrency || 'INR', true)}
                                 onChange={(e) => setDailyRunningHours(e.target.value)}
                             />
                             <InputField
                                 label="Installed Motor Power (kw)"
-                                value={installedMotorPower}
+                                value={formatNumberAsPerCountry(installedMotorPower, selectedCurrency || 'INR', true)}
                                 onChange={(e) => setInstalledMotorPower(e.target.value)}
                             />
                             <InputField
@@ -300,17 +309,17 @@ function RoiReport({ contentData, totalRunningHours }) {
                             />
                             <InputField
                                 label="Lifetime of Rotor (hours)"
-                                value={rotorLifetime}
+                                value={formatNumberAsPerCountry(rotorLifetime, selectedCurrency || 'INR', true)}
                                 onChange={(e) => setRotorLifetime(e.target.value)}
                             />
                             <InputField
                                 label="Total Running Hours of Rotor (hours)"
-                                value={currentRunningHours}
+                                value={formatNumberAsPerCountry(currentRunningHours, selectedCurrency || 'INR', true)}
                                 onChange={(e) => setCurrentRunningHours(e.target.value)}
                             />
                             <InputField
-                                label="Power Cost (euro/kwhr)"
-                                value={powerCost}
+                                label={`Power Cost (${selectedCurrency == 'EURO' ? '€' : '₹'}/kwhr)`}
+                                value={convertAndFormatWithContextNoSymbol(powerCost, { selectedCurrency, currencyValue }, false)}
                                 onChange={(e) => setPowerCost(e.target.value)}
                             />
                         </div>
@@ -342,10 +351,7 @@ function RoiReport({ contentData, totalRunningHours }) {
                             />
                             <CalculationRow
                                 label="Total Power Cost (Worn-out)"
-                                value={`€ ${calculationData.totalPowerLossCost.toLocaleString(
-                                    undefined,
-                                    { minimumFractionDigits: 0, maximumFractionDigits: 0 }
-                                )}`}
+                                value={convertAndFormatWithContext(calculationData.totalPowerLossCost, { selectedCurrency, currencyValue })}
                             />
                         </div>
                     </div>
@@ -361,25 +367,19 @@ function RoiReport({ contentData, totalRunningHours }) {
                         <div className="impact-column">
                             <ImpactRow
                                 label="Total Fiber Loss"
-                                value={`€ ${Math.round(
-                                    calculationData.totalFiberLossCost
-                                ).toLocaleString()}`}
+                                value={calculationData.totalFiberLossCost}
                                 isCost={true}
                             />
                             <ImpactRow
                                 label="Total Power Cost (Worn-out)"
-                                value={`€ ${Math.round(
-                                    calculationData.totalPowerLossCost
-                                ).toLocaleString()}`}
+                                value={calculationData.totalPowerLossCost}
                                 isCost={true}
                             />
                         </div>
                         <div className="impact-column">
                             <ImpactRow
                                 label="Total Loss (Cost)"
-                                value={`€ ${Math.round(
-                                    calculationData.totalLoss
-                                ).toLocaleString()}`}
+                                value={calculationData.totalLoss}
                                 isCost={true}
                             />
                         </div>

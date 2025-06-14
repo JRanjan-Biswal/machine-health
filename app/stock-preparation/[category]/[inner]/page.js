@@ -8,6 +8,7 @@ import { LuRotate3D } from "react-icons/lu";
 import { useHeader } from '@/context/HeaderContext';
 import { CgPlayButtonO } from "react-icons/cg";
 import Modal from '@/components/CostBenefit/Modal';
+import { cn } from '@/lib/utils';
 
 const Page = () => {
 
@@ -36,13 +37,15 @@ const Page = () => {
     const [isOpen, setIsOpen] = React.useState(false);
     const [isZoomOpen, setIsZoomOpen] = React.useState({ image: null, bool: false });
 
-    const [selectedImage, setSelectedImage] = React.useState(imageData['Power Saver']);
+    const [selectedImage, setSelectedImage] = React.useState(null);
     const [bottomKnkifeSelected, setBottomKnifeSelected] = React.useState(false);
     const [selectedMainImage, setSelectedMainImage] = React.useState(0);
     const [spareParts, setSpareParts] = React.useState([]);
     const [sparePartData, setSparePartData] = React.useState(null);
     const [partCurrentStateImage, setPartCurrentStateImage] = React.useState(null);
     const [partCurrentStateImageComment, setPartCurrentStateImageComment] = React.useState(null);
+
+    const [machinePart, setMachinePart] = React.useState(null); // power saver, foil, side shield, bottom knife
 
     const fetchSparePart = async () => {
         const response = await fetch('/api/sparepart');
@@ -53,6 +56,7 @@ const Page = () => {
 
     const handleImageClick = (key) => {
         setSelectedImage(imageData[key]);
+        setMachinePart(key);
         setSelectedMainImage(0);
         const partId = partIdMaps[key];
         if (sparePartData.clientSparePartPhotos) {
@@ -74,6 +78,7 @@ const Page = () => {
 
     const handleRotateThree = useCallback(() => {
         setSelectedMainImage(prev => prev == 2 ? 0 : prev + 1);
+        setMachinePart(null);
         if (selectedMainImage === 2) {
             setSelectedImage(imageData["Power Saver"]);
         }
@@ -127,7 +132,16 @@ const Page = () => {
                                             <Image src="/power-saver-arrow.png" alt='' width={100} height={2}
                                                 className={`absolute z-10 ${bottomKnkifeSelected ? 'w-[15%] h-[9px] top-[31%] right-[100%]' : 'top-[24%] right-[83%] z-10 w-[18%] h-[9px]'}`} />
 
-                                            <p onClick={(e) => handleImageClick("Power Saver")} className={`cursor-pointer text-primary-blue font-lato font-medium text-base absolute ${bottomKnkifeSelected ? 'top-[28%] right-[114.5%]' : 'top-[21%] right-[100.5%]'} w-max shadow-md border border-[#DFE6EC] rounded-full px-3 py-[5px] hover:bg-primary-blue hover:text-white transition-all duration-300`}>Power Saver</p>
+                                            <p
+                                                onClick={(e) => handleImageClick("Power Saver")}
+                                                className={cn(
+                                                    "cursor-pointer text-primary-blue font-lato font-medium text-base absolute",
+                                                    "w-max shadow-md border border-[#DFE6EC] rounded-full px-3 py-[5px] hover:bg-primary-blue hover:text-white transition-all duration-300",
+                                                    bottomKnkifeSelected ? 'top-[28%] right-[114.5%]' : 'top-[21%] right-[100.5%]'
+                                                )}
+                                            >
+                                                Power Saver
+                                            </p>
 
                                             <Image src="/power-saver-arrow.png" alt='' width={100} height={2}
                                                 className={`absolute ${bottomKnkifeSelected ? 'h-[9px] w-[17%] top-[73.5%] right-[96%]' : 'h-[9px] w-[17%] top-[48%] right-[99%]'} z-10`} />
@@ -177,7 +191,7 @@ const Page = () => {
                         </div>
                     </div>
                 </div>
-                <RotorComponent setIsZoomOpen={setIsZoomOpen} optimalStateimg={selectedImage?.[1]} currentStateImge={partCurrentStateImage ? `https://kadant-api-production.up.railway.app${partCurrentStateImage}` : selectedImage?.[0]} comment={partCurrentStateImageComment || "No comments available yet."} />
+                <RotorComponent setIsZoomOpen={setIsZoomOpen} optimalStateimg={selectedImage?.[1]} currentStateImge={partCurrentStateImage ? `https://kadant-api-production.up.railway.app${partCurrentStateImage}` : selectedImage?.[0]} comment={partCurrentStateImageComment || "No comments available yet."} machinePart={machinePart} />
             </div>
 
             {/* Modal for image zoom */}

@@ -1,8 +1,13 @@
 import { RiResetLeftFill } from "react-icons/ri";
 import { useEffect } from 'react';
 import '@/app/styles/timeline.css';
+import { formatCurrency, formatNumberAsPerCountry } from "@/lib/currencyChange";
+import { useCurrency } from "@/context/CurrencyContext";
 
 const Timeline = ({ currentRunningHours, setCurrentRunningHours, installedOn, lifespan, resetChartData }) => {
+
+    const { selectedCurrency } = useCurrency();
+
     useEffect(() => {
         const button = document.querySelector('.animatedButton');
         if (!button) return;
@@ -43,11 +48,11 @@ const Timeline = ({ currentRunningHours, setCurrentRunningHours, installedOn, li
                 </div>
                 <div className="text-center">
                     <p>Lifespan</p>
-                    <p>{lifespan} Hrs</p>
+                    <p>{formatNumberAsPerCountry(lifespan, selectedCurrency || 'INR', true)} Hrs</p>
                 </div>
                 <div className="text-center">
                     <p>Current running hours</p>
-                    <p>({currentRunningHours} Hrs)</p>
+                    <p>({formatNumberAsPerCountry(currentRunningHours, selectedCurrency || 'INR', true)} Hrs)</p>
                 </div>
             </div>
         </div>

@@ -90,28 +90,28 @@ const page = () => {
                     <div className={cn('bg-[#DFE6EC] rounded-lg w-[calc(50%_-_8px)] overflow-hidden group relative transition-all duration-300', !animateHeaderShow ? 'h-[calc(50svh_-_130px)]' : 'h-[calc(50svh_-_170px)]')}>
                         <Link href="/stock-preparation/hydrapuler/rotor">
                             <p className='ps-4 pt-4 font-bold text-2xl font-lato'>Rotor</p>
-                            <Image src="/rotor.png" width={300} height={300} alt='' className='object-contain transition-all duration-300 group-hover:scale-[1.02] mx-auto h-[calc(100%_-_50px)]' />
+                            <Image src="/rotor.png" width={300} height={300} alt='' className='object-contain  transition-all duration-300 group-hover:scale-[1.02] mx-auto h-[calc(100%_-_50px)]' />
                             <button className='absolute cursor-pointer bottom-[15%] text-base font-bold font-lato text-primary-blue transition-all duration-300 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 rounded-full bg-white px-4 py-2'>View Details</button>
                         </Link>
                     </div>
                     <div className={cn('bg-[#DFE6EC] rounded-lg w-[calc(50%_-_8px)] overflow-hidden group relative transition-all duration-300', !animateHeaderShow ? 'h-[calc(50svh_-_130px)]' : 'h-[calc(50svh_-_170px)]')}>
                         <Link href="/stock-preparation/hydrapuler/rotor">
                             <p className='ps-4 pt-4 font-bold text-2xl font-lato'>Rotor Hub</p>
-                            <Image src="/rotor-hu-2.png" width={300} height={300} alt='' className='object-cover transition-all duration-300 group-hover:scale-[1.02] mx-auto h-[calc(100%_-_50px)]' />
+                            <Image src="/rotor-hu-2.png" width={300} height={300} alt='' className='object-contain transition-all duration-300 group-hover:scale-[1.02] mx-auto h-[calc(100%_-_50px)]' />
                             <button className='absolute cursor-pointer bottom-[15%] text-base font-bold font-lato text-primary-blue transition-all duration-300 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 rounded-full bg-white px-4 py-2'>View Details</button>
                         </Link>
                     </div>
                     <div className={cn('bg-[#DFE6EC] rounded-lg w-[calc(50%_-_8px)] overflow-hidden group relative transition-all duration-300', !animateHeaderShow ? 'h-[calc(50svh_-_130px)]' : 'h-[calc(50svh_-_170px)]')}>
                         <Link href="/stock-preparation/hydrapuler/rotor">
                             <p className='ps-4 pt-4 font-bold text-2xl font-lato'>Rotor Shaft</p>
-                            <Image src="/rotor-hu-3.png" width={300} height={300} alt='' className='object-cover transition-all duration-300 group-hover:scale-[1.02] mx-auto h-[calc(100%_-_50px)]' />
+                            <Image src="/rotor-hu-3.png" width={300} height={300} alt='' className='object-contain transition-all duration-300 group-hover:scale-[1.02] mx-auto h-[calc(100%_-_50px)]' />
                             <button className='absolute cursor-pointer bottom-[15%] text-base font-bold font-lato text-primary-blue transition-all duration-300 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 rounded-full bg-white px-4 py-2'>View Details</button>
                         </Link>
                     </div>
                     <div className={cn('bg-[#DFE6EC] rounded-lg w-[calc(50%_-_8px)] overflow-hidden group relative transition-all duration-300', !animateHeaderShow ? 'h-[calc(50svh_-_130px)]' : 'h-[calc(50svh_-_170px)]')}>
                         <Link href="/stock-preparation/hydrapuler/rotor">
                             <p className='ps-4 pt-4 font-bold text-2xl font-lato'>Bedplate</p>
-                            <Image src="/rotor-hu-4.png" width={300} height={300} alt='' className='object-cover transition-all duration-300 group-hover:scale-[1.02] mx-auto h-[calc(100%_-_50px)]' />
+                            <Image src="/rotor-hu-4.png" width={300} height={300} alt='' className='object-contain transition-all duration-300 group-hover:scale-[1.02] mx-auto h-[calc(100%_-_50px)]' />
                             <button className='absolute cursor-pointer bottom-[15%] text-base font-bold font-lato text-primary-blue transition-all duration-300 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 rounded-full bg-white px-4 py-2'>View Details</button>
                         </Link>
                     </div>

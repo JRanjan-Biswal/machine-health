@@ -1,6 +1,7 @@
 let logo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIYAAAAVCAYAAACDi5Z8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAS9SURBVHgB7VrZURtBEG0JQVEFH+s/bkQEyBGwRICIABEBIgKkCCwiMERgiMBLBBYRMOYoPi1/c8ivVbuuodV7H+Vy6VUNoN6Z2ZmeN32JGpWIzc3NMeXEw8NDjWaoHHWaYQYFDSoRtVrN0AwzzPD/oLaxsbFnC97e3szz8/NP2dEBlpeXd6U8rH8U5DsZj4+PN5QB6+vru7BMTlSf8Xg8enp6uqWCsLq6uj03N9cs6h1SH2FzaWcQp39N1wJqDNeAUj1bgA338Ktvy1ZWVpqNRsND320x3iwuLrqUAltbW0fY+IWUI1BtI9C8ppTAmgZobkwfnp//5D1c3N/fX1IOQEc3Uhe+29yhlGgCOFxPzDUC+VrywMGLXdm3Xq938Ct0P/J8kyI2+AwjBQ73FnL37u4ulbV4f3/vhDzqUvlwmZQgyR1bGsoAnOOeckEmjxLczqRwQL4rKXx5eflNFSGSGBGk8LKQgueLuN1ugYqNQxM3zctCDhxOJ+wZ9tajgoC5WljfF1s2Pz8/oooQSgxWmkYK3PhLxAP7xpjUi8QtOIt6XqBij/Gu/aBh3i7ILEnsgBwDSgEmtm+6w1AoufGubt75uA5kN+jDlX2gn77spxLDv9nXiqXoIyjqUAZoSsV8PdHN5QCLcgKE/g7iekFDTHHOFk4hR6qDlMRmq8PWU3Q7pALBMVEROkkLjRiHMFk/FD86gKXoUUbgYA6EyGC+PkfgthBRdymxBghisKcT5VHig8T4ffuzH0RfiT5HBR9kc2lp6YwqxhQxsDH2u9rG2jk3fCo+e/wDrmkg3n9S1g3hbEKRJYozOJuSlwVjOda6FOR28pJbWrYiXEpapCmJZ2auplRsfpJiLSwseKI7K/aISkCWuCgACPwhhWc3wsG3P+fQfhZimdLgq3RR7FIQ+FbmUqKIMZJmnpnLh0wpoaSo7Ea8yR/G3ChKaNM/BC1FtWsxXEsRQ5y8NxzuvCv036RqUvoJwohhYCJbWNjUQiAbcOWPEgLZTUtJUYc7OzvbQcOcQ/G8lNSV1yJlIK2JG/f6+ir1MEKh6e8eoCsjL1HeDAvWiCufPVuGi1mKJdWgEcMENQpkIOw/ZaHFwfMLSg7NrLahbBM0tkRKn0Kjewb2ornCq6gxfoYmLRinukNrD0OlLO+muUAaYFXPlaynEkwRAwu5tgtXIMFxSJoX60cT5P2hKDK6Z+uztrb2DcGiPGATV4aPq73EjD2lnPD1X1lhK4BmMX7ZHzi4wuKmTBj71bjKIRSTJwjLHN3jBntc9vbbmL8vUEjBiJw/xFokRhHk9tPsDlWMRFkJB4gyrZwMrtevojaODU25A5CsKSpxn9D4y6e2Mj4rsZpW0zDigDjOWiBj2lNcxAWvV2s07ZYKybB4nYpLLxWJ01VEyX3FpYSmsFqKGqR4towtEt8Kf/OemMbBjT+gAuF/z9Pi+Cmur0xR/fGXJgQgh3Z5OlQAqnYp/B9cx7aAq55aRz5ApG0uonHXlmPjWneWG/Q9FjJ1buvdXbiBz7YMyo5UBhTWw3uSfN094oJU0loG9upg3p6UB2m2BrasIPKHPeMwJ/9HMQJChrE89gx43ciAXKkfpQ4Uh1v5Puhl6n1/ABH2ar0XxGSPAAAAAElFTkSuQmCC";
 
-function generateRoiReportHTML(parameters, calculationData) {
+function generateRoiReportHTML(parameters, calculationData, selectedCurrency, currencyValue, convertAndFormatWithContext, convertAndFormatWithContextNoSymbol, formatNumberAsPerCountry) {
+    
     const {
         lineCapacity,
         dailyRunningHours,
@@ -336,23 +337,23 @@ function generateRoiReportHTML(parameters, calculationData) {
                     </div>
                     
                     <div class="report-row">
-                        <span class="report-label">Fiber Cost (euro/ton)</span>
+                        <span class="report-label">Fiber Cost (${selectedCurrency == 'EURO' ? '€' : '₹'}/ton)</span>
                         <div class="input-wrapper">
-                            <span class="report-value">${fiberCost}</span>
+                            <span class="report-value">${formatNumberAsPerCountry(fiberCost, selectedCurrency || 'INR', true)}</span>
                         </div>
                     </div>
                     
                     <div class="report-row">
                         <span class="report-label">Lifetime of Rotor (hours)</span>
                         <div class="input-wrapper">
-                            <span class="report-value">${rotorLifetime}</span>
+                            <span class="report-value">${formatNumberAsPerCountry(rotorLifetime, selectedCurrency || 'INR', true)}</span>
                         </div>
                     </div>
                     
                     <div class="report-row">
                         <span class="report-label">Total Running Hours Of Rotor (hours)</span>
                         <div class="input-wrapper">
-                            <span class="report-value">${currentRunningHours}</span>
+                            <span class="report-value">${formatNumberAsPerCountry(currentRunningHours, selectedCurrency || 'INR', true)}</span>
                         </div>
                     </div>
                     
@@ -412,7 +413,7 @@ function generateRoiReportHTML(parameters, calculationData) {
                     <div class="report-row">
                         <span class="report-label">Total Fiber Loss</span>
                         <div class="input-wrapper">
-                            <span class="report-value">€ ${totalFiberLossCost.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+                            <span class="report-value">${convertAndFormatWithContext(totalFiberLossCost, { selectedCurrency, currencyValue })}</span>
                         </div>
                     </div>
                 </div>
@@ -462,21 +463,21 @@ function generateRoiReportHTML(parameters, calculationData) {
                     <div class="report-row">
                         <span class="report-label">Lifetime of Rotor (hours)</span>
                         <div class="input-wrapper">
-                            <span class="report-value">${rotorLifetime}</span>
+                            <span class="report-value">${formatNumberAsPerCountry(rotorLifetime, selectedCurrency || 'INR', true)}</span>
                         </div>
                     </div>
                     
                     <div class="report-row">
                         <span class="report-label">Total Running Hours of Rotor (hours)</span>
                         <div class="input-wrapper">
-                            <span class="report-value">${currentRunningHours}</span>
+                            <span class="report-value">${convertAndFormatWithContextNoSymbol(currentRunningHours, { selectedCurrency, currencyValue })}</span>
                         </div>
                     </div>
                     
                     <div class="report-row">
-                        <span class="report-label">Power Cost (euro/kwhr)</span>
+                        <span class="report-label">Power Cost (${selectedCurrency == 'EURO' ? '€' : '₹'}/kwhr)</span>
                         <div class="input-wrapper">
-                            <span class="report-value">${powerCost}</span>
+                            <span class="report-value">${convertAndFormatWithContextNoSymbol(powerCost, { selectedCurrency, currencyValue })}</span>
                         </div>
                     </div>
                 </div>
@@ -529,7 +530,7 @@ function generateRoiReportHTML(parameters, calculationData) {
                     <div class="report-row">
                         <span class="report-label">Total Power Cost (Worn-out)</span>
                         <div class="input-wrapper">
-                            <span class="report-value">€ ${totalPowerLossCost.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+                            <span class="report-value">${convertAndFormatWithContext(totalPowerLossCost, { selectedCurrency, currencyValue })}</span>
                         </div>
                     </div>
                 </div>
@@ -547,12 +548,12 @@ function generateRoiReportHTML(parameters, calculationData) {
                         <div class="report-subsection">
                             <div class="report-row impact">
                                 <span class="report-label">Total Fiber Loss</span>
-                                <span class="report-value ${getCostClass(Math.round(totalFiberLossCost))}">€ ${Math.round(totalFiberLossCost).toLocaleString()}</span>
+                                <span class="report-value ${getCostClass(Math.round(totalFiberLossCost))}">${convertAndFormatWithContext(totalFiberLossCost, { selectedCurrency, currencyValue })}</span>
                             </div>
                             
                             <div class="report-row impact">
                                 <span class="report-label">Total Power Cost (Worn-out)</span>
-                                <span class="report-value ${getCostClass(Math.round(totalPowerLossCost))}">€ ${Math.round(totalPowerLossCost).toLocaleString()}</span>
+                                <span class="report-value ${getCostClass(Math.round(totalPowerLossCost))}">${convertAndFormatWithContext(totalPowerLossCost, { selectedCurrency, currencyValue })}</span>
                             </div>
                         </div>
                     </div>
@@ -561,7 +562,7 @@ function generateRoiReportHTML(parameters, calculationData) {
                         <div class="report-subsection">
                             <div class="report-row impact">
                                 <span class="report-label">Total Loss (Cost)</span>
-                                <span class="report-value ${getCostClass(Math.round(totalLoss))}">€ ${Math.round(totalLoss).toLocaleString()}</span>
+                                <span class="report-value ${getCostClass(Math.round(totalLoss))}">${convertAndFormatWithContext(totalLoss, { selectedCurrency, currencyValue })}</span>
                             </div>
                         </div>
                     </div>

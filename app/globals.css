@@ -308,18 +308,40 @@ body {
   margin-inline: auto;
 }
 
-@media screen and (max-width:1281px) {
+@media screen and (max-width:981px) {
   .container {
     margin-inline: 30px;
   }
 }
 
+@media screen and (min-width: 1080px) {
+  .container {
+    max-width: 980px;
+    margin-inline: auto;
+  }
+}
+
+@media screen and (min-width: 1180px) {
+  .container {
+    max-width: 1080px;
+    margin-inline: auto;
+  }
+}
+
 @media screen and (min-width: 1280px) {
+  .container {
+    max-width: 1180px;
+    margin-inline: auto;
+  }
+}
+
+@media screen and (min-width: 1380px) {
   .container {
     max-width: 1280px;
     margin-inline: auto;
   }
 }
+
 
 /* @media screen and (min-width: 1440px) {
   .container {
@@ -411,19 +433,19 @@ body {
 
 /* slide down arror | header | shows only on stock-preparation page */
 .arrow-container {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   margin: 0 auto;
   position: absolute;
   top: 16px;
   /* bottom: px; */
   /* left: 0; */
-  right: 0;
+  right: -40px;
 }
 
 .arrow-1 {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   background: #2d3e5c;
   opacity: 0.5;
   border-radius: 50%;
@@ -431,8 +453,8 @@ body {
 }
 
 .arrow-2 {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   background: #2d3e5c;
   border-radius: 50%;
   position: absolute;

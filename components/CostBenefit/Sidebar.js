@@ -3,7 +3,7 @@ import styles from './sidebar.module.css';
 import React from "react";
 import { useEffect } from "react";
 import { useCurrency } from "@/context/CurrencyContext";
-import { convertAndFormatWithContext, convertAndFormatWithContextNoSymbol } from "@/lib/currencyChange";
+import { convertAndFormatWithContext, convertAndFormatWithContextNoSymbol, formatNumberAsPerCountry } from "@/lib/currencyChange";
 // import Modal from "./Modal";
 
 const formatCurrency = (value, currencyCode) => {
@@ -59,10 +59,10 @@ const Sidebar = ({ data, setIsModalPDFOpen, lineCapacity, dailyRunningHours, lif
                                 <div className="flex flex-col gap-5">
                                     {/* Basic Info */}
                                     <div className="flex flex-col gap-2.5">
-                                        <p className="text-[#607797] text-base font-medium">Capacity of Line: {lineCapacity} TPD</p>
-                                        <p className="text-[#607797] text-base font-medium">Daily Running Hours: {dailyRunningHours} Hrs</p>
-                                        <p className="text-[#607797] text-base font-medium">Lifetime of rotor: {lifetimeOfRotor} Hrs</p>
-                                        <p className="text-[#607797] text-base font-medium">Total Running Hours: {totalRunningHours} Hrs</p>
+                                        <p className="text-[#607797] text-base font-medium">Capacity of Line: {formatNumberAsPerCountry(lineCapacity, selectedCurrency || 'INR', true)} TPD</p>
+                                        <p className="text-[#607797] text-base font-medium">Daily Running Hours: {formatNumberAsPerCountry(dailyRunningHours, selectedCurrency || 'INR', true)} Hrs</p>
+                                        <p className="text-[#607797] text-base font-medium">Lifetime of rotor: {formatNumberAsPerCountry(lifetimeOfRotor, selectedCurrency || 'INR', true)} Hrs</p>
+                                        <p className="text-[#607797] text-base font-medium">Total Running Hours: {formatNumberAsPerCountry(totalRunningHours, selectedCurrency || 'INR', true)} Hrs</p>
                                     </div>
 
                                     {/* Fiber Loss Section */}
@@ -80,7 +80,7 @@ const Sidebar = ({ data, setIsModalPDFOpen, lineCapacity, dailyRunningHours, lif
                                     {/* Power Loss Section */}
                                     <div className="flex flex-col gap-2.5">
                                         <h3 className="text-[#2d3e5c] text-lg font-bold">Power Loss</h3>
-                                        <p className="text-[#607797] text-base font-medium">Installed Motor power: {installedMotorPower} kw</p>
+                                        <p className="text-[#607797] text-base font-medium">Installed Motor power: {formatNumberAsPerCountry(installedMotorPower, selectedCurrency || 'INR', true)} kw</p>
                                         <p className="text-[#607797] text-base font-medium">
                                             Power Cost: {convertAndFormatWithContextNoSymbol(powerCost, { selectedCurrency, currencyValue }, false)} {selectedCurrency == "EURO" ? "€" : "₹"}/kwhr
                                         </p>

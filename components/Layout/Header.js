@@ -33,7 +33,7 @@ const Header = ({ showArrow, handleProfileButton, isPageLoaded, profileImage }) 
 
     return (
         <>
-            <div className='container'>
+            <div className=''>
                 <div className="relative flex flex-row items-center justify-between px-12 py-1 bg-white rounded-full border border-[#dfe6ec] min-h-[70px] w-full mt-4 shadow-custom-1">
                     <div className="w-[134px] h-[20px] relative">
                         <Link href="/home">

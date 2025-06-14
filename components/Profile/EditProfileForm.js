@@ -117,8 +117,8 @@ const EditProfileForm = ({ loggedInUser }) => {
             autoComplete='off'
             type="text"
             value={formData.designation}
-            readOnly
             className="w-full text-[16px] font-normal font-montserrat text-[#2D3E5C] focus:outline-none cursor-default"
+            onChange={handleChange}
             name="designation"
             placeholder='Enter your designation'
           />

@@ -5,13 +5,13 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { SlArrowDown } from "react-icons/sl";
 
-const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = true, currentStateImge = "/image-95.png", optimalStateimg = "/image-94.png", percentage = "60%", comment }) => {
+const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = true, currentStateImge = "/image-95.png", optimalStateimg = "/image-94.png", percentage = "60%", comment, machinePart }) => {
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
     const { animateHeaderShow } = useHeader();
 
     return (
         <div className="w-[407px] bg-[#2d3e5c] rounded-xl p-5">
-            <h1 className="text-2xl font-bold text-white font-lato">Rotor</h1>
+            <h1 className="text-2xl font-bold text-white font-lato">Rotor<span className='font-lato font-normal text-lg'>{machinePart ? ": " + machinePart : ""}</span></h1>
 
             <div className="w-full h-[1px] bg-[#607797] my-4" />
 
@@ -33,7 +33,7 @@ const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = tru
                         </div>
                         {
                             currentStateImge &&
-                            <Image src={currentStateImge} width={397} height={351} alt="current state" className="object-cover h-full" />
+                            <Image src={currentStateImge} width={397} height={351} alt="current state" className=" w-full" />
                         }
                     </div>
                 </div>
@@ -54,7 +54,7 @@ const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = tru
                             <Image src="/icon-exp.png" width={24} height={24} alt="expand" />
                         </div>
                         {
-                            optimalStateimg && <Image src={optimalStateimg} height={340} width={371.6} alt="optimal state" className="object-cover h-full" />
+                            optimalStateimg && <Image src={optimalStateimg} height={340} width={371.6} alt="optimal state" className="object-cover h-full w-full" />
                         }
                     </div>
                 </div>

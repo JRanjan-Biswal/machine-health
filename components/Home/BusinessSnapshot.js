@@ -44,7 +44,7 @@ const BusinessSnapshot = ({ clientData }) => {
         // if (storedClientId && clientData) {
         if (clientData) {
             const client = clientData.find(c => c._id === "68436859af3221a4b1df84f1");
-          
+
             if (client) {
                 setSelectedClient(client);
                 setFormData({
@@ -86,7 +86,8 @@ const BusinessSnapshot = ({ clientData }) => {
         });
     };
 
-    const handleUpdate = async () => {
+    const handleUpdate = async (e) => {
+        e.preventDefault();
         // Validate if a client is selected
         if (!selectedClient) {
             toast.error('Please select a client first', { color: '#1d1d1d' });
@@ -102,10 +103,22 @@ const BusinessSnapshot = ({ clientData }) => {
         try {
             // Store the selected client ID in localStorage
             localStorage.setItem("clientId", selectedClient._id);
+            const response = await fetch(`/api/clients/update-client-data`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    capacity: formData.capacity,
+                    fibercost: formData.fiberCost.value,
+                    powercost: formData.powerCost.value,
+                    dailyrunninghours: formData.dailyRunningHours.value,
+                    clientId: selectedClient._id,
+                }),
+            });
 
-            // Show success message
-            toast.success('Successfully updated client information', { color: '#1d1d1d' });
-
+            if (response.ok) {
+                toast.success('Successfully updated client information', { color: '#1d1d1d' });
+            } else {
+                toast.error('Failed to update client information', { color: '#1d1d1d' });
+            }
             // Navigate to dashboard
             router.push('/facility');
         } catch (error) {

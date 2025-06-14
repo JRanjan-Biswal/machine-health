@@ -1,5 +1,6 @@
 import { useCurrency } from "@/context/CurrencyContext";
 import { Switch } from "@/components/ui/switch"
+import { cn } from "@/lib/utils";
 
 const CurrencySelector = () => {
     const { selectedCurrency, updateCurrency, currencyValue } = useCurrency();
@@ -7,7 +8,10 @@ const CurrencySelector = () => {
     return (
         <div className="flex items-center gap-2">
             <span
-                className={`text-[#2d3e5c] font-montserrat font-medium cursor-pointer ${selectedCurrency === 'EURO' ? 'opacity-40' : ''}`}
+                className={cn(
+                    "text-[#2d3e5c] font-montserrat font-medium cursor-pointer",
+                    selectedCurrency === 'EURO' ? 'opacity-40' : 'opacity-100'
+                )}
                 onClick={() => {
                     updateCurrency('INR', currencyValue);
                 }}
@@ -21,7 +25,10 @@ const CurrencySelector = () => {
                 }}
             />
             <span
-                className={`text-[#2d3e5c] font-montserrat font-medium cursor-pointer ${selectedCurrency === 'INR' ? 'opacity-40' : ''}`}
+                className={cn(
+                    "text-[#2d3e5c] font-montserrat font-medium cursor-pointer",
+                    selectedCurrency === 'INR' ? 'opacity-40' : 'opacity-100'
+                )}
                 onClick={() => {
                     updateCurrency('EURO', currencyValue);
                 }}

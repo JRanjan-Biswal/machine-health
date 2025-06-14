@@ -61,17 +61,19 @@ function LayoutContent({ children }) {
 
     return (
         <div className={`transition-opacity duration-700 ease-out ${isPageLoaded ? 'opacity-100' : 'opacity-75'}`}>
-            <div className={`${!animateHeaderShow ? '-translate-y-[200px]' : 'translate-y-0'} transtion-all duration-300`}>
-                <Header showArrow={animateHeaderShow} profileImage={profileImage} handleProfileButton={handleProfileButton} isPageLoaded={isPageLoaded} />
-            </div>
-
-            {/* animated arro | header show hide */}
-            <div className="arrow-container animated fadeInDown cursor-pointer z-[100]" onClick={() => setAnimateHeaderShow(prev => !prev)}>
-                <div className="arrow-2">
-                    <SlArrowDown size={16} color='#fff' className={`${!animateHeaderShow ? 'rotate-180' : 'rotate-0'} transition-all duration-300`} />
+            <div className="relative container">
+                <div className={`${!animateHeaderShow ? '-translate-y-[200px]' : 'translate-y-0'} transtion-all duration-300`}>
+                    <Header showArrow={animateHeaderShow} profileImage={profileImage} handleProfileButton={handleProfileButton} isPageLoaded={isPageLoaded} />
                 </div>
-                <div className="arrow-1 animated hinge infinite zoomIn"></div>
+
+                <div className="arrow-container animated fadeInDown cursor-pointer z-[100]" onClick={() => setAnimateHeaderShow(prev => !prev)}>
+                    <div className="arrow-2">
+                        <SlArrowDown size={16} color='#fff' className={`${!animateHeaderShow ? 'rotate-0' : 'rotate-180'} transition-all duration-300`} />
+                    </div>
+                    <div className="arrow-1 animated hinge infinite zoomIn"></div>
+                </div>
             </div>
+            {/* animated arro | header show hide */}
             {children}
             <Profile handleProfileButton={handleProfileButton} setProfileImage={setProfileImage} loggedInUser={loggedInUser} showProfile={showProfile} setShowProfile={setShowProfile} profileImage={profileImage} />
         </div>

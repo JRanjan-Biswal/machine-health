@@ -45,7 +45,7 @@ const StockPreparation = ({ data }) => {
                     <Image alt='' src={"/scope-image.png"} width={1700} height={1080} priority className='w-full h-full fixed -z-1 inset-0 object-cover object-bottom-left' />
 
                     {/* trashwell  */}
-                    <div className={styles.trashwell}>
+                    <div className={styles.trashwell} onClick={() => setShowSideBar(false)}>
                         <Image src="/trashwell-hover.png" alt='' height={200} width={200} className={styles.hoverBg} />
                         <Image src="/trashwell-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
                     </div>
@@ -60,13 +60,13 @@ const StockPreparation = ({ data }) => {
                     </div>
 
                     {/* hydrapurge */}
-                    <div className={styles.hydrapurge}>
+                    <div className={styles.hydrapurge} onClick={() => setShowSideBar(false)}>
                         <Image src="/hydrapurge-hover.png" alt='' height={200} width={200} className={cn(styles.hoverBg, 'filter hue-rotate-[-85deg] saturate-[1.5] brightness-[1.5]')} />
                         <Image src="/hydrapurge-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
                     </div>
 
                     {/* mtk */}
-                    <div className={styles.mtk}>
+                    <div className={styles.mtk} onClick={() => setShowSideBar(false)}>
                         <Image src="/mtk-hover.png" alt='' height={200} width={200} className={styles.hoverBg} />
                         <Image src="/mtk-tooltip.png" alt='' height={200} width={500} className={styles.tooltip} />
                     </div>
