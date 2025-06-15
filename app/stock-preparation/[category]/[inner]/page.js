@@ -9,7 +9,7 @@ import { useHeader } from '@/context/HeaderContext';
 import { CgPlayButtonO } from "react-icons/cg";
 import Modal from '@/components/CostBenefit/Modal';
 import { cn } from '@/lib/utils';
-import { convertAndFormatWithContextNoSymbol } from '@/lib/currencyChange';
+import { formatNumberAsPerCountry } from '@/lib/currencyChange';
 import { useCurrency } from '@/context/CurrencyContext';
 
 const Page = () => {
@@ -59,7 +59,7 @@ const Page = () => {
         const data = await response.json();
         setSpareParts(data.data);
         setSparePartData(data.data.find(sparePart => sparePart._id === '684363cf58886bd63a211b24'));
-        console.log(data.sparePartData);
+            // console.log(data.sparePartData);
 
         // only return rotor image
         const rotorImage = data.sparePartData?.filter(item => item?.part?.name == "Rotor")?.[0];
@@ -196,7 +196,7 @@ const Page = () => {
                             <div>
                                 <p className='font-semibold font-lato text-xl text-primary-blue'>Running Hours</p>
                                 <p className='text-primary-blue'>
-                                    {convertAndFormatWithContextNoSymbol(sparePartData?.clientMachineSparePart?.totalRunningHours?.value, { selectedCurrency, currencyValue })}
+                                    {formatNumberAsPerCountry(sparePartData?.clientMachineSparePart?.totalRunningHours?.value, selectedCurrency || "INR", currencyValue)}
                                 </p>
                             </div>
                         </div>
