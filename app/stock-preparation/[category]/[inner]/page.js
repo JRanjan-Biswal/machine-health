@@ -206,7 +206,7 @@ const Page = () => {
                         </div>
                     </div>
                 </div>
-                <RotorComponent setIsZoomOpen={setIsZoomOpen} optimalStateimg={selectedImage?.[1]} currentStateImge={partCurrentStateImage ? `https://kadant-api-production.up.railway.app${partCurrentStateImage}` : selectedImage?.[0]} comment={partCurrentStateImageComment || "No comments available yet."} machinePart={machinePart} />
+                <RotorComponent setIsZoomOpen={setIsZoomOpen} optimalStateimg={selectedImage?.[1]} currentStateImge={partCurrentStateImage ? `https://api.healthmonitorapp.online${partCurrentStateImage}` : selectedImage?.[0]} comment={partCurrentStateImageComment || "No comments available yet."} machinePart={machinePart} />
             </div>
 
             {/* Modal for image zoom */}
@@ -247,7 +247,7 @@ const Page = () => {
                     <div>
                         <p className='text-primary-blue font-lato font-semibold text-2xl text-center pb-4'>Current State</p>
                         <video
-                            src={"https://kadant-api-production.up.railway.app" + sparePartData?.clientSparePartVideo?.videoUrl}
+                            src={"https://api.healthmonitorapp.online" + sparePartData?.clientSparePartVideo?.videoUrl}
                             width={500}
                             height={500}
                             muted
