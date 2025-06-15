@@ -9,6 +9,8 @@ import { useHeader } from '@/context/HeaderContext';
 import { CgPlayButtonO } from "react-icons/cg";
 import Modal from '@/components/CostBenefit/Modal';
 import { cn } from '@/lib/utils';
+import { convertAndFormatWithContextNoSymbol } from '@/lib/currencyChange';
+import { useCurrency } from '@/context/CurrencyContext';
 
 const Page = () => {
 
@@ -37,6 +39,8 @@ const Page = () => {
     const [isOpen, setIsOpen] = React.useState(false);
     const [isZoomOpen, setIsZoomOpen] = React.useState({ image: null, bool: false });
 
+    const { selectedCurrency, currencyValue } = useCurrency();
+
     const [selectedImage, setSelectedImage] = React.useState(null);
     const [bottomKnkifeSelected, setBottomKnifeSelected] = React.useState(false);
     const [selectedMainImage, setSelectedMainImage] = React.useState(0);
@@ -45,6 +49,9 @@ const Page = () => {
     const [partCurrentStateImage, setPartCurrentStateImage] = React.useState(null);
     const [partCurrentStateImageComment, setPartCurrentStateImageComment] = React.useState(null);
 
+    //spare part images
+    const [sparePartImages, setSparePartImages] = React.useState([]);
+
     const [machinePart, setMachinePart] = React.useState(null); // power saver, foil, side shield, bottom knife
 
     const fetchSparePart = async () => {
@@ -52,6 +59,12 @@ const Page = () => {
         const data = await response.json();
         setSpareParts(data.data);
         setSparePartData(data.data.find(sparePart => sparePart._id === '684363cf58886bd63a211b24'));
+        console.log(data.sparePartData);
+
+        // only return rotor image
+        const rotorImage = data.sparePartData?.filter(item => item?.part?.name == "Rotor")?.[0];
+        setSparePartImages(rotorImage);
+        setPartCurrentStateImage(rotorImage?.imageUrls?.[0]);
     }
 
     const handleImageClick = (key) => {
@@ -182,7 +195,9 @@ const Page = () => {
                             </div>
                             <div>
                                 <p className='font-semibold font-lato text-xl text-primary-blue'>Running Hours</p>
-                                <p className='text-primary-blue'>{sparePartData?.clientMachineSparePart?.totalRunningHours?.value || 0}</p>
+                                <p className='text-primary-blue'>
+                                    {convertAndFormatWithContextNoSymbol(sparePartData?.clientMachineSparePart?.totalRunningHours?.value, { selectedCurrency, currencyValue })}
+                                </p>
                             </div>
                         </div>
                         <div className='flex gap-2'>

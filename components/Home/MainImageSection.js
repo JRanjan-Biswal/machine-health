@@ -16,7 +16,7 @@ const MainImageSection = ({ userName = "Feroz", clientData }) => {
 
     // Get unique regions from client data
     //   const regions = [...new Set(clientData?.map(client => client.location?.region) || ["India", "Europe", "South America"])].filter(Boolean);
-    const regions = ["India", "Europe", "South America"];
+    const regions = ["India", "Asia-Pacific", "Europe & Africa", "LATAM"];
 
     useEffect(() => {
         const handleClickOutside = (event) => {

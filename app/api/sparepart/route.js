@@ -14,7 +14,13 @@ export async function GET(request) {
             },
         });
 
-        if (!response.ok) {
+        const sparePartResponse = await fetch(`${url}/spare-part-photos/684362214978c14755e02860/68436859af3221a4b1df84f1`, {
+            headers: {
+                authorization: `Bearer ${currentcookie}`, // Assuming you have an API token for authentication
+            },
+        });
+
+        if (!response.ok  || !sparePartResponse.ok) {
             const errorData = await response.json();
             return NextResponse.json(
                 { success: false, message: errorData.message || 'Invalid credentials' },
@@ -23,9 +29,10 @@ export async function GET(request) {
         }
 
         const data = await response.json();
+        const sparePartData = await sparePartResponse.json();
         // TODO: Add your logic to handle the data, e.g., save to database
 
-        return NextResponse.json({ message: 'Spare part created successfully', data }, { status: 200 });
+        return NextResponse.json({ message: 'Spare part created successfully', data, sparePartData }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: 'Failed to create spare part', details: error.message }, { status: 500 });
     }
