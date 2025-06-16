@@ -35,7 +35,7 @@ const imageMap = {
 //   }
 // ]
 
-const RotorStatus = ({ spareParts = [] }) => {
+const RotorStatus = ({ sparePartsStatus = [] }) => {
 
   const getSparePartColor = (sparePart) => {
     if (sparePart.clientMachineSparePart) {
@@ -63,23 +63,25 @@ const RotorStatus = ({ spareParts = [] }) => {
 
   return (
     <div className="flex flex-row gap-[13px]">
-      {spareParts.map((item, index) => (
-        <div key={index} className="bg-[#dfe6ecff] rounded-[6px] w-1/4 h-[111px] relative overflow-hidden">
-          <h3 className="text-[#2d3e5cff] font-bold text-base leading-[20px] p-[11px]">
-            {item.name}
-          </h3>
+      {
+        sparePartsStatus?.map((item, index) => (
+          <div key={index} className="bg-[#dfe6ecff] rounded-[6px] w-1/4 h-[111px] relative overflow-hidden">
+            <h3 className="text-[#2d3e5cff] font-bold text-base leading-[20px] p-[11px]">
+              {item.name}
+            </h3>
 
-          <div className="absolute left-1/2 top-1/2 -translate-y-1/2">
-            <Image src={imageMap[item._id]} alt={item.name} width={118} height={107} className="object-contain" priority />
-          </div>
+            <div className="absolute left-1/2 top-1/2 -translate-y-1/2">
+              <Image src={imageMap[item._id]} alt={item.name} width={118} height={107} className="object-contain" priority />
+            </div>
 
-          <div className={`absolute bottom-0 w-full h-[26px] ${getSparePartColor(item)} flex justify-end items-center`}>
-            <span className="text-white font-bold text-[14px] leading-[20px] uppercase mr-[14px]">
-              {getSparePartStatus(item)}
-            </span>
+            <div className={`absolute bottom-0 w-full h-[26px] ${getSparePartColor(item)} flex justify-end items-center`}>
+              <span className="text-white font-bold text-[14px] leading-[20px] uppercase mr-[14px]">
+                {getSparePartStatus(item)}
+              </span>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
 
       <div className="bg-[#dfe6ecff] rounded-[6px] w-[53px] h-[111px] flex items-center justify-center">
         <div className="rounded-full bg-[#dfe6ecff] p-[12px] hover:bg-[#c4ccd3] transition-colors cursor-pointer">

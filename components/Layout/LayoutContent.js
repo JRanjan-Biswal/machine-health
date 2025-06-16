@@ -19,7 +19,7 @@ function LayoutContent({ children }) {
             const response = await fetch('/api/user/get-logged-in-user');
             const data = await response.json();
             setLoggedInUser(data.data);
-            setProfileImage("https://kadant-api-production.up.railway.app/uploads/profile-pictures/" + data.data?.image);
+            setProfileImage("https://api.healthmonitorapp.online/uploads/profile-pictures/" + data.data?.image);
         }
         fetchLoggedInUser();
 

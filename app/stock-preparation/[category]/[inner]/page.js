@@ -12,27 +12,28 @@ import { cn } from '@/lib/utils';
 import { formatNumberAsPerCountry } from '@/lib/currencyChange';
 import { useCurrency } from '@/context/CurrencyContext';
 
+const imageData = {
+    'Power Saver': ['/power-saver-1.png', '/power-saver-2.png'],
+    'Foil': ['/foil-1.png', '/foil-2.png'],
+    'Side Shield': ['/side-shield-1.png', '/side-shield-2.png'],
+    'Bottom Knife': ['/bottom-knife-1.png', '/bottom-knife-2.png']
+}
+
+const partIdMaps = {
+    'Foil': "684610b78576c08de8d762dd",
+    "Side Shield": "684610c48576c08de8d76311",
+    "Power Saver": "684610d28576c08de8d76345",
+    "Bottom Knife": "684610da8576c08de8d76379",
+}
+
+const mainImage = [
+    '/rotor.png',
+    '/rotor-rotated.png',
+    '/rotor-bottom-knife.png',
+]
+
 const Page = () => {
 
-    const imageData = {
-        'Power Saver': ['/power-saver-1.png', '/power-saver-2.png'],
-        'Foil': ['/foil-1.png', '/foil-2.png'],
-        'Side Shield': ['/side-shield-1.png', '/side-shield-2.png'],
-        'Bottom Knife': ['/bottom-knife-1.png', '/bottom-knife-2.png']
-    }
-
-    const partIdMaps = {
-        'Foil': "684610b78576c08de8d762dd",
-        "Side Shield": "684610c48576c08de8d76311",
-        "Power Saver": "684610d28576c08de8d76345",
-        "Bottom Knife": "684610da8576c08de8d76379",
-    }
-
-    const mainImage = [
-        '/rotor.png',
-        '/rotor-rotated.png',
-        '/rotor-bottom-knife.png',
-    ]
 
     const { animateHeaderShow } = useHeader();
 
@@ -44,42 +45,67 @@ const Page = () => {
     const [selectedImage, setSelectedImage] = React.useState(null);
     const [bottomKnkifeSelected, setBottomKnifeSelected] = React.useState(false);
     const [selectedMainImage, setSelectedMainImage] = React.useState(0);
-    const [spareParts, setSpareParts] = React.useState([]);
-    const [sparePartData, setSparePartData] = React.useState(null);
+    const [sparePartsStatus, setSparePartsStatus] = React.useState([]); // rotor status
+
+    const [sparePartData, setSparePartData] = React.useState(null); // give entire rotor data
+
+    const [sparePartAllData, setSparePartAllData] = React.useState(null); // adds all spare part data
     const [partCurrentStateImage, setPartCurrentStateImage] = React.useState(null);
     const [partCurrentStateImageComment, setPartCurrentStateImageComment] = React.useState(null);
 
     //spare part images
-    const [sparePartImages, setSparePartImages] = React.useState([]);
+    // const [sparePartImages, setSparePartImages] = React.useState([]);
 
-    const [machinePart, setMachinePart] = React.useState(null); // power saver, foil, side shield, bottom knife
+    const [machinePart, setMachinePart] = React.useState(null); // 'power saver' | 'foil' | 'side shield' | 'bottom knife'
 
     const fetchSparePart = async () => {
         const response = await fetch('/api/sparepart');
         const data = await response.json();
-        setSpareParts(data.data);
-        setSparePartData(data.data.find(sparePart => sparePart._id === '684363cf58886bd63a211b24'));
-            // console.log(data.sparePartData);
 
-        // only return rotor image
-        const rotorImage = data.sparePartData?.filter(item => item?.part?.name == "Rotor")?.[0];
-        setSparePartImages(rotorImage);
-        setPartCurrentStateImage(rotorImage?.imageUrls?.[0]);
+        // used for rotor status
+        setSparePartsStatus(data.data);
+
+        // initally set the rotor image
+        const rotorArrData = data.sparePartData?.filter(item => item?.part?.name == "Rotor")?.[0];
+        const rotorImageData = rotorArrData?.imageUrls?.map(item => `https://api.healthmonitorapp.online${item}`);
+        const rotorCommentData = rotorArrData?.comments;
+        setPartCurrentStateImage(rotorImageData);
+        setPartCurrentStateImageComment(rotorCommentData);
+        // console.log(rotorImageArrData);
+
+        // saves all spare part data
+        setSparePartAllData(data.sparePartData);
+
+        setSparePartData(data.data.find(sparePart => sparePart._id === '684363cf58886bd63a211b24')); // give entire rotor data
     }
 
     const handleImageClick = (key) => {
+
+        // seleccts static optimal and current state image
         setSelectedImage(imageData[key]);
         setMachinePart(key);
         setSelectedMainImage(0);
-        const partId = partIdMaps[key];
-        if (sparePartData.clientSparePartPhotos) {
-            const partCurrentStateImage = sparePartData.clientSparePartPhotos.find(photo => photo.part === partId);
 
-            if (partCurrentStateImage) {
-                setPartCurrentStateImage(partCurrentStateImage.imageUrl);
-                setPartCurrentStateImageComment(partCurrentStateImage.comments);
-            }
-        }
+        const partId = partIdMaps[key];
+
+        // gets the current state image
+        const partCurrentStateImage = sparePartAllData?.find(item => item?.part?._id === partId);
+        console.log(partCurrentStateImage);
+
+        const currentStateImage = partCurrentStateImage?.imageUrls?.map(item => `https://api.healthmonitorapp.online${item}`);
+        setPartCurrentStateImage(currentStateImage);
+        setPartCurrentStateImageComment(partCurrentStateImage?.comments);
+
+        // if (sparePartData.clientSparePartPhotos) {
+        //     const partCurrentStateImage = sparePartData.clientSparePartPhotos.find(photo => photo.part === partId);
+
+        //     console.log(sparePartData);
+
+        //     if (partCurrentStateImage) {
+        //         setPartCurrentStateImage(partCurrentStateImage.imageUrl);
+        //         setPartCurrentStateImageComment(partCurrentStateImage.comments);
+        //     }
+        // }
         // setSelectedMainImage({ image: null, rotation: 0 });
         if (key === 'Bottom Knife') {
             setBottomKnifeSelected(imageData[key]);
@@ -113,7 +139,7 @@ const Page = () => {
         <>
             <div className={`flex justify-between mt-6 mx-3 gap-4 container ${!animateHeaderShow ? '-translate-y-[80px] h-[calc(100svh_-_60px)]' : 'translate-y-0 h-[calc(100svh_-_140px)]'} transition-all duration-300`}>
                 <div className='bg-white w-3/4 shadow-custom-2 rounded-xl relative overflow-hidden'>
-                    <div className='px-4 pt-4'><RotorStatus spareParts={spareParts} /></div>
+                    <div className='px-4 pt-4'><RotorStatus sparePartsStatus={sparePartsStatus} /></div>
 
                     {/* line */}
                     <div className="absolute top-[145px] h-[1px] w-full left-0 right-0 bg-primary-grey" />
@@ -121,7 +147,7 @@ const Page = () => {
                     <div className='h-[calc(100%_-_240px)] mt-8 relative px-4'>
                         <div className='text-[#96A5BA]'>Pulping &gt; Hydrapulper &gt; Rotor</div>
                         <div className='text-3xl font-bold text-primary-blue'>Rotor</div>
-                        {/* main image */}
+                        {/* main image section */}
                         <div className={`absolute h-[calc(100%_-_30px)] right-[8%] bottom-[5%]`}>
                             {
                                 selectedMainImage === 1 &&
@@ -206,7 +232,13 @@ const Page = () => {
                         </div>
                     </div>
                 </div>
-                <RotorComponent setIsZoomOpen={setIsZoomOpen} optimalStateimg={selectedImage?.[1]} currentStateImge={partCurrentStateImage ? `https://kadant-api-production.up.railway.app${partCurrentStateImage}` : selectedImage?.[0]} comment={partCurrentStateImageComment || "No comments available yet."} machinePart={machinePart} />
+                <RotorComponent
+                    setIsZoomOpen={setIsZoomOpen}
+                    optimalStateimg={selectedImage?.[1]}
+                    currentStateImge={partCurrentStateImage || selectedImage}
+                    comment={partCurrentStateImageComment || "No comments available yet."}
+                    machinePart={machinePart}
+                />
             </div>
 
             {/* Modal for image zoom */}
@@ -247,7 +279,7 @@ const Page = () => {
                     <div>
                         <p className='text-primary-blue font-lato font-semibold text-2xl text-center pb-4'>Current State</p>
                         <video
-                            src={"https://kadant-api-production.up.railway.app" + sparePartData?.clientSparePartVideo?.videoUrl}
+                            src={"https://api.healthmonitorapp.online" + sparePartData?.clientSparePartVideo?.videoUrl}
                             width={500}
                             height={500}
                             muted

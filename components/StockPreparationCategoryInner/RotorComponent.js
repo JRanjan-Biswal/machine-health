@@ -4,8 +4,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { SlArrowDown } from "react-icons/sl";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
-const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = true, currentStateImge = "/image-95.png", optimalStateimg = "/image-94.png", percentage = "60%", comment, machinePart }) => {
+const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = true, currentStateImge = ["/image-95.png"], optimalStateimg = "/image-94.png", percentage = "60%", comment, machinePart }) => {
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
     const { animateHeaderShow } = useHeader();
 
@@ -27,14 +29,28 @@ const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = tru
                         [isCommentsOpen && !animateHeaderShow && 'h-[calc(50svh_-_220px)]']// comment is open | header is not in view
                     )}>
                         <div className="absolute top-2.5 right-2.5 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100"
-                            onClick={() => setIsZoomOpen({ image: currentStateImge, bool: true })}
+                            onClick={() => setIsZoomOpen({ image: currentStateImge?.[0], bool: true })}
                         >
                             <Image src="/icon-exp.png" width={24} height={24} alt="expand" />
                         </div>
                         {
-                            currentStateImge &&
-                            <Image src={currentStateImge} width={397} height={351} alt="current state" className=" w-full" />
+                            currentStateImge?.[0] &&
+                            <Image src={currentStateImge?.[0]} width={397} height={351} alt="current state" className=" w-full" />
                         }
+                        {/* <Swiper
+                        slidesPerView={1}
+                        >
+                            {
+                                currentStateImge?.map((item, index) => (
+                                    <SwiperSlide key={index}>
+                                        {
+                                            console.log({item})
+                                        }
+                                        <Image src={item} width={397} height={351} alt="current state" className=" w-full" />
+                                    </SwiperSlide>
+                                ))
+                            }
+                        </Swiper> */}
                     </div>
                 </div>
 
@@ -52,6 +68,11 @@ const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = tru
                             onClick={() => setIsZoomOpen({ image: optimalStateimg, bool: true })}
                         >
                             <Image src="/icon-exp.png" width={24} height={24} alt="expand" />
+                        </div>
+                        <div>
+                            <Swiper>
+
+                            </Swiper>
                         </div>
                         {
                             optimalStateimg && <Image src={optimalStateimg} height={340} width={371.6} alt="optimal state" className="object-cover h-full w-full" />
