@@ -12,9 +12,10 @@ import { cn } from '@/lib/utils';
 import { formatNumberAsPerCountry } from '@/lib/currencyChange';
 import { useCurrency } from '@/context/CurrencyContext';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
+import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 const imageData = {
     'Power Saver': ['/power-saver-1.png', '/power-saver-2.png'],
@@ -238,7 +239,7 @@ const Page = () => {
                 </div>
                 <RotorComponent
                     setIsZoomOpen={setIsZoomOpen}
-                    optimalStateimg={selectedImage?.[1]}
+                    optimalStateimg={selectedImage?.[1] ? [selectedImage?.[1]] : ["/image-94.png"]}
                     currentStateImge={partCurrentStateImage || selectedImage}
                     comment={partCurrentStateImageComment || "No comments available yet."}
                     machinePart={machinePart}
@@ -247,20 +248,20 @@ const Page = () => {
 
             {/* Modal for image zoom */}
             <Modal isOpen={isZoomOpen?.bool} onClose={() => setIsZoomOpen({ image: null, bool: false })} blogContentClassName='relative w-[50vw] px-0 pb-0 pt-0 overflow-hidden'>
-                <div className="flex justify-end items-center cursor-pointer absolute top-4 right-4 z-10 border-2 border-white rounded-full w-[36px] h-[36px]">
+                <div className="flex justify-end items-center cursor-pointer absolute top-4 right-3 z-10 rounded-full w-[42px] h-[42px] overflow-hidden">
                     <button
                         onClick={() => setIsZoomOpen(false)}
-                        className="text-gray-500 hover:text-gray-700 transition-colors duration-200 cursor-pointer flex w-full h-full items-center justify-center"
+                        className="text-gray-500 hover:text-gray-700 transition-colors duration-200 cursor-pointer flex w-full h-full items-center justify-center bg-white"
                     >
-                        <svg className="w-6 h-6" fill="none" stroke="white" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        <svg className="w-6 h-6" fill="none" stroke="black" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
-                <div className='flex justify-center items-center w-full h-full gap-7'>
+                <div className='flex justify-center items-center w-full h-full gap-7' id='slider-stock-preparation-modal'>
                     {
                         isZoomOpen?.image?.length &&
-                        <Swiper slidesPerView={1} pagination={{ clickable: true }} modules={[Pagination]} className='w-full h-full'>
+                        <Swiper slidesPerView={1} pagination={{ clickable: true }} modules={[Pagination, Navigation]} navigation={true} className='w-full h-full'>
                             {
                                 isZoomOpen?.image?.map((item, index) => (
                                     <SwiperSlide key={index}>

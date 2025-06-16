@@ -1,18 +1,17 @@
 'use client';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useCustomerSelected } from "@/context/CustomerSelectedContext";
 
 const MainImageSection = ({ userName = "Feroz", clientData }) => {
     const router = useRouter();
     const [selectedRegion, setSelectedRegion] = useState("");
-    // const [selectedCustomer, setSelectedCustomer] = useState(clientData?.[0] || null);
-    const [selectedCustomer, setSelectedCustomer] = useState(null);
+    const { customerSelected, handleCustomerSelected } = useCustomerSelected();
 
     const [showRegionDropdown, setShowRegionDropdown] = useState(false);
     const [showCustomerDropdown, setShowCustomerDropdown] = useState(false);
-
-    //   console.log(clientData);
+    const [selectedCustomer, setSelectedCustomer] = useState(null);
 
     // Get unique regions from client data
     //   const regions = [...new Set(clientData?.map(client => client.location?.region) || ["India", "Europe", "South America"])].filter(Boolean);
@@ -35,6 +34,24 @@ const MainImageSection = ({ userName = "Feroz", clientData }) => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [showRegionDropdown, showCustomerDropdown]);
 
+    // useEffect(() => {
+    //     if (clientData) {
+    //         handleCustomerSelected(selectedCustomer);
+    //     }
+    // }, [clientData]);
+
+    useEffect(() => {
+
+        console.log("this is clientData-->",clientData);
+        if (!clientData || !customerSelected) return;
+        const filteredCustomers = clientData?.filter(client => client?.location?.address?.toLowerCase().includes("india"));
+
+        if (filteredCustomers?.length > 0) {
+            setSelectedCustomer(filteredCustomers[0]);
+            setSelectedRegion("India");
+        }
+    }, [clientData]);
+
     const handleDropdownClick = (type) => {
         if (type === 'region') {
             setShowRegionDropdown(!showRegionDropdown);
@@ -49,18 +66,20 @@ const MainImageSection = ({ userName = "Feroz", clientData }) => {
         setSelectedRegion(region);
         setShowRegionDropdown(false);
         // Filter customers based on selected region
-        const filteredCustomers = clientData?.filter(client => client.location?.region === region);
-        if (filteredCustomers?.length > 0) {
-            setSelectedCustomer(filteredCustomers[0]);
-            localStorage.setItem("clientId", filteredCustomers[0]._id);
-        }
+        // const filteredCustomers = clientData?.filter(client => client?.location?.address?.toLowerCase().includes(region.toLowerCase()));
+        // if (filteredCustomers?.length > 0) {
+            // handleCustomerSelected(filteredCustomers[0]?._id);
+            // setSelectedCustomer(filteredCustomers[0]);
+            // localStorage.setItem("clientId", filteredCustomers[0]._id);
+        // }
     };
 
-    const handleCustomerSelect = (customer) => {
-        setSelectedCustomer(customer);
+    const handleCustomerSelect = useCallback((customer) => {
         setShowCustomerDropdown(false);
         localStorage.setItem("clientId", customer._id);
-    };
+        handleCustomerSelected(customer._id);
+        setSelectedCustomer(customer);
+    }, [customerSelected]);
 
     // Filter customers based on selected region
     // const filteredCustomers = selectedRegion
@@ -132,19 +151,23 @@ const MainImageSection = ({ userName = "Feroz", clientData }) => {
                             </svg>
                         </button>
 
-                        {showCustomerDropdown && (
-                            <div className="absolute top-full right-0 mt-1 w-56 bg-white rounded-md shadow-lg border border-[#96a5ba] z-10 overflow-hidden">
-                                {filteredCustomers?.map((customer) => (
-                                    <button
-                                        key={customer._id}
-                                        className="w-full px-4 py-2 text-left text-[#2d3e5c] hover:bg-gray-200 font-lato"
-                                        onClick={() => handleCustomerSelect(customer)}
-                                    >
-                                        {customer.name}
-                                    </button>
-                                ))}
-                            </div>
-                        )}
+                        {
+                            showCustomerDropdown && (
+                                <div className="absolute top-full right-0 mt-1 w-56 bg-white rounded-md shadow-lg border border-[#96a5ba] z-10 overflow-hidden">
+                                    {
+                                        filteredCustomers?.map((customer) => (
+                                            <button
+                                                key={customer._id}
+                                                className="w-full px-4 py-2 text-left text-[#2d3e5c] hover:bg-gray-200 font-lato"
+                                                onClick={() => handleCustomerSelect(customer)}
+                                            >
+                                                {customer.name}
+                                            </button>
+                                        ))
+                                    }
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import BusinessSnapshot from "@/components/Home/BusinessSnapshot";
 import MainImageSection from "@/components/Home/MainImageSection";
 
 const Home = ({ userData, clientData }) => {
+    
     const { animateHeaderShow } = useHeader();
 
     return (

@@ -567,3 +567,40 @@ body {
 .thin-scroll::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(255, 255, 255, 0.3);
 }
+
+/* slider */
+#slider-stock-preparation .swiper-button-prev,
+#slider-stock-preparation .swiper-button-next {
+  border: 1px solid white;
+  padding: 12px;
+  background-color: white;
+  border-radius: 100%;
+  --swiper-navigation-size: 10px !important;
+  --swiper-navigation-color: black !important;
+}
+
+#slider-stock-preparation .swiper-button-next::after {
+  margin-left: 1px !important;
+}
+#slider-stock-preparation .swiper-button-prev::after {
+  margin-right: 1px !important;
+}
+
+#slider-stock-preparation-modal .swiper-button-prev,
+#slider-stock-preparation-modal .swiper-button-next {
+  border: 1px solid white;
+  padding: 20px;
+  background-color: white;
+  border-radius: 100%;
+  --swiper-navigation-size: 20px !important;
+  --swiper-navigation-color: black !important;
+}
+
+#slider-stock-preparation-modal .swiper-button-next::after {
+  margin-left: 2px !important;
+  margin-top: 2px !important;
+}
+#slider-stock-preparation-modal .swiper-button-prev::after {
+  margin-right: 2px !important;
+  margin-top: 2px !important;
+}

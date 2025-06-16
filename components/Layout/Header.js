@@ -1,13 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import CurrencySelector from "./CurrencySelector";
+import { useCustomerSelected } from "@/context/CustomerSelectedContext";
+import { toast } from "sonner";
 
 const Header = ({ showArrow, handleProfileButton, isPageLoaded, profileImage }) => {
     const pathname = usePathname();
     const [pillPosition, setPillPosition] = useState({ left: 0, width: 0 });
+    const router = useRouter();
+    const { customerSelected } = useCustomerSelected();
+    
+    console.log(customerSelected);
 
+    useEffect(() => {
+        console.log("this is customerSelected-->",customerSelected);
+        if (!customerSelected) {
+            router.push("/home");
+            pathname !== "/home" && toast.error("Please select a customer to access this page");
+        }
+    }, []);
+    
 
     useEffect(() => {
         const activeLink = document.querySelector('.nav-link.active');
@@ -30,6 +44,15 @@ const Header = ({ showArrow, handleProfileButton, isPageLoaded, profileImage }) 
         if (pathname.includes('cost-benefit')) return 'cost-benefit';
         return '';
     };
+
+    const handleLinkClick = (path) => {
+        console.log(customerSelected);
+        if (!customerSelected) {
+            toast.error("Please update all the details to proceed !");
+            return;
+        }
+        router.push(path);
+    }
 
     return (
         <>
@@ -62,7 +85,7 @@ const Header = ({ showArrow, handleProfileButton, isPageLoaded, profileImage }) 
                             </div>
                         </Link>
 
-                        <Link className="cursor-pointer flex items-center justify-center" href="/facility">
+                        <Link className="cursor-pointer flex items-center justify-center" href={!customerSelected ? "#" : "/facility"} onClick={() => handleLinkClick("/facility")}>
                             <div className={`nav-link flex items-center px-6 py-2 rounded-full relative z-10 transition-colors ${getActivePath() == 'facility' ? 'active' : ''}`}>
                                 <span className={`text-center ${getActivePath() == 'facility' ? 'text-white' : 'text-[#2d3e5c]'} font-montserrat font-bold text-[16px] leading-[24px]`}>
                                     Facility
@@ -70,7 +93,7 @@ const Header = ({ showArrow, handleProfileButton, isPageLoaded, profileImage }) 
                             </div>
                         </Link>
 
-                        <Link className="cursor-pointer flex items-center justify-center" href="/stock-preparation">
+                        <Link className="cursor-pointer flex items-center justify-center" href={!customerSelected ? "#" : "/stock-preparation"} onClick={() => handleLinkClick("/stock-preparation")}>
                             <div className={`nav-link flex items-center px-6 py-2 rounded-full relative z-10 transition-colors ${getActivePath() == 'stock-preparation' ? 'active' : ''}`}>
                                 <span className={`text-center ${getActivePath() == 'stock-preparation' ? 'text-white' : 'text-[#2d3e5c]'} font-montserrat font-bold text-[16px] leading-[24px]`}>
                                     Stock Preparation
@@ -78,7 +101,7 @@ const Header = ({ showArrow, handleProfileButton, isPageLoaded, profileImage }) 
                             </div>
                         </Link>
 
-                        <Link className="cursor-pointer flex items-center justify-center" href="/cost-benefit">
+                        <Link className="cursor-pointer flex items-center justify-center" href={!customerSelected ? "#" : "/cost-benefit"} onClick={() => handleLinkClick("/cost-benefit")}>
                             <div className={`nav-link flex items-center px-6 py-2 rounded-full relative z-10 transition-colors ${getActivePath() == 'cost-benefit' ? 'active' : ''}`}>
                                 <span className={`text-center ${getActivePath() == 'cost-benefit' ? 'text-white' : 'text-[#2d3e5c]'} font-montserrat font-bold text-[16px] leading-[24px]`}>
                                     Cost Benefit Analysis

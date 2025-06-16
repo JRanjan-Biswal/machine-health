@@ -2,6 +2,7 @@
 import { HeaderProvider } from '@/context/HeaderContext';
 import { MillOverViewProvider } from '@/context/MillOverview';
 import { CurrencySelectorProvider } from '@/context/CurrencyContext';
+import { CustomerSelectedProvider } from '@/context/CustomerSelectedContext';
 import LayoutContent from './LayoutContent';
 
 
@@ -11,9 +12,11 @@ function Layout({ children }) {
     <HeaderProvider>
       <MillOverViewProvider>
         <CurrencySelectorProvider>
-          <LayoutContent>
-            {children}
-          </LayoutContent>
+          <CustomerSelectedProvider>
+            <LayoutContent>
+              {children}
+            </LayoutContent>
+          </CustomerSelectedProvider>
         </CurrencySelectorProvider>
       </MillOverViewProvider>
     </HeaderProvider>

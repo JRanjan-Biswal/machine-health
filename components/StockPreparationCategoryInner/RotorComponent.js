@@ -5,12 +5,13 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { SlArrowDown } from "react-icons/sl";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
+import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 
-const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = true, currentStateImge = ["/image-95.png"], optimalStateimg = "/image-94.png", percentage = "60%", comment, machinePart }) => {
+const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = true, currentStateImge = ["/image-95.png"], optimalStateimg = ["/image-94.png"], percentage = "60%", comment, machinePart }) => {
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
     const { animateHeaderShow } = useHeader();
 
@@ -22,7 +23,7 @@ const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = tru
 
             <div className="flex flex-col gap-5">
                 {/* Current State Section */}
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-col gap-1.5" id='slider-stock-preparation'>
                     <h2 className="text-white text-base font-montserrat font-medium">Current State</h2>
                     <div className={cn(
                         'relative w-full transition-all duration-300 bg-[#dfe6ec] rounded-md overflow-hidden',
@@ -31,10 +32,10 @@ const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = tru
                         [isCommentsOpen && animateHeaderShow && 'h-[calc(50svh_-_260px)]'],// comment is open | header is in view
                         [isCommentsOpen && !animateHeaderShow && 'h-[calc(50svh_-_220px)]']// comment is open | header is not in view
                     )}>
-                        <div className="absolute top-2.5 right-2.5 z-10 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100"
+                        <div className="absolute top-2.5 right-2.5 z-10 bg-white p-[7px] rounded-full cursor-pointer hover:bg-gray-100"
                             onClick={() => setIsZoomOpen({ image: currentStateImge, bool: true })}
                         >
-                            <Image src="/icon-exp.png" width={24} height={24} alt="expand" />
+                            <Image src="/icon-exp.png" width={24} height={24} alt="expand" className='h-3 w-3' />
                         </div>
                         {/* {
                             currentStateImge?.[0] &&
@@ -42,7 +43,7 @@ const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = tru
                         } */}
                         {
                             currentStateImge?.length &&
-                            <Swiper slidesPerView={1} pagination={{ clickable: true }} modules={[Pagination]} className='w-full h-full'>
+                            <Swiper slidesPerView={1} pagination={{ clickable: true }} modules={[Pagination, Navigation]} navigation={true} className='w-full h-full'>
                                 {
                                     currentStateImge?.map((item, index) => (
                                         <SwiperSlide key={index}>
@@ -65,18 +66,22 @@ const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = tru
                         [isCommentsOpen && animateHeaderShow && 'h-[calc(50svh_-_260px)]'],
                         [isCommentsOpen && !animateHeaderShow && 'h-[calc(50svh_-_220px)]']
                     )}>
-                        <div className="absolute top-2.5 right-2.5 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100"
+                        <div className="absolute top-2.5 right-2.5 z-10 bg-white p-[7px] rounded-full cursor-pointer hover:bg-gray-100"
                             onClick={() => setIsZoomOpen({ image: optimalStateimg, bool: true })}
                         >
-                            <Image src="/icon-exp.png" width={24} height={24} alt="expand" />
-                        </div>
-                        <div>
-                            <Swiper>
-
-                            </Swiper>
+                            <Image src="/icon-exp.png" width={24} height={24} alt="expand" className='h-3 w-3' />
                         </div>
                         {
-                            optimalStateimg && <Image src={optimalStateimg} height={340} width={371.6} alt="optimal state" className="object-cover h-full w-full" />
+                            optimalStateimg &&
+                            <Swiper slidesPerView={1} pagination={{ clickable: true }} modules={[Pagination]} className='w-full h-full'>
+                                {
+                                    optimalStateimg?.map((item, index) => (
+                                        <SwiperSlide key={index}>
+                                            <Image src={item} height={340} width={371.6} alt="optimal state" className="object-cover h-full w-full" />
+                                        </SwiperSlide>
+                                    ))
+                                }
+                            </Swiper>
                         }
                     </div>
                 </div>
