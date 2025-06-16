@@ -45,9 +45,7 @@ function LayoutContent({ children }) {
     }, [pathname]);
 
 
-    const handleProfileButton = () => {
-        setShowProfile(!showProfile);
-    }
+    const handleProfileButton = () => setShowProfile(!showProfile);
 
 
     // Move the conditional return after all hooks

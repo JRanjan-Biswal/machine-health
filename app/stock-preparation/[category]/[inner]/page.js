@@ -11,6 +11,10 @@ import Modal from '@/components/CostBenefit/Modal';
 import { cn } from '@/lib/utils';
 import { formatNumberAsPerCountry } from '@/lib/currencyChange';
 import { useCurrency } from '@/context/CurrencyContext';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const imageData = {
     'Power Saver': ['/power-saver-1.png', '/power-saver-2.png'],
@@ -243,7 +247,7 @@ const Page = () => {
 
             {/* Modal for image zoom */}
             <Modal isOpen={isZoomOpen?.bool} onClose={() => setIsZoomOpen({ image: null, bool: false })} blogContentClassName='relative w-[50vw] px-0 pb-0 pt-0 overflow-hidden'>
-                <div className="flex justify-end items-center cursor-pointer absolute top-4 right-4 border-2 border-white rounded-full w-[36px] h-[36px]">
+                <div className="flex justify-end items-center cursor-pointer absolute top-4 right-4 z-10 border-2 border-white rounded-full w-[36px] h-[36px]">
                     <button
                         onClick={() => setIsZoomOpen(false)}
                         className="text-gray-500 hover:text-gray-700 transition-colors duration-200 cursor-pointer flex w-full h-full items-center justify-center"
@@ -255,12 +259,24 @@ const Page = () => {
                 </div>
                 <div className='flex justify-center items-center w-full h-full gap-7'>
                     {
+                        isZoomOpen?.image?.length &&
+                        <Swiper slidesPerView={1} pagination={{ clickable: true }} modules={[Pagination]} className='w-full h-full'>
+                            {
+                                isZoomOpen?.image?.map((item, index) => (
+                                    <SwiperSlide key={index}>
+                                        <Image src={item} width={397} height={351} alt="current state" className=" w-full" />
+                                    </SwiperSlide>
+                                ))
+                            }
+                        </Swiper>
+                    }
+                    {/* {
                         isZoomOpen?.image &&
                         <Image
                             src={isZoomOpen?.image} width={500} height={500} alt='zoomed image'
                             className='object-cover h-auto w-full'
                         />
-                    }
+                    } */}
                 </div>
             </Modal>
 

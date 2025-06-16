@@ -5,7 +5,10 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { SlArrowDown } from "react-icons/sl";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
 import 'swiper/css';
+import 'swiper/css/pagination';
+
 
 const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = true, currentStateImge = ["/image-95.png"], optimalStateimg = "/image-94.png", percentage = "60%", comment, machinePart }) => {
     const [isCommentsOpen, setIsCommentsOpen] = useState(false);
@@ -28,29 +31,27 @@ const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = tru
                         [isCommentsOpen && animateHeaderShow && 'h-[calc(50svh_-_260px)]'],// comment is open | header is in view
                         [isCommentsOpen && !animateHeaderShow && 'h-[calc(50svh_-_220px)]']// comment is open | header is not in view
                     )}>
-                        <div className="absolute top-2.5 right-2.5 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100"
-                            onClick={() => setIsZoomOpen({ image: currentStateImge?.[0], bool: true })}
+                        <div className="absolute top-2.5 right-2.5 z-10 bg-white p-2.5 rounded-full cursor-pointer hover:bg-gray-100"
+                            onClick={() => setIsZoomOpen({ image: currentStateImge, bool: true })}
                         >
                             <Image src="/icon-exp.png" width={24} height={24} alt="expand" />
                         </div>
-                        {
+                        {/* {
                             currentStateImge?.[0] &&
                             <Image src={currentStateImge?.[0]} width={397} height={351} alt="current state" className=" w-full" />
+                        } */}
+                        {
+                            currentStateImge?.length &&
+                            <Swiper slidesPerView={1} pagination={{ clickable: true }} modules={[Pagination]} className='w-full h-full'>
+                                {
+                                    currentStateImge?.map((item, index) => (
+                                        <SwiperSlide key={index}>
+                                            <Image src={item} width={397} height={351} alt="current state" className=" w-full" />
+                                        </SwiperSlide>
+                                    ))
+                                }
+                            </Swiper>
                         }
-                        {/* <Swiper
-                        slidesPerView={1}
-                        >
-                            {
-                                currentStateImge?.map((item, index) => (
-                                    <SwiperSlide key={index}>
-                                        {
-                                            console.log({item})
-                                        }
-                                        <Image src={item} width={397} height={351} alt="current state" className=" w-full" />
-                                    </SwiperSlide>
-                                ))
-                            }
-                        </Swiper> */}
                     </div>
                 </div>
 
