@@ -195,7 +195,7 @@ const BusinessSnapshot = ({ clientData }) => {
                                 <input
                                     type="text"
                                     value={formData.dailyRunningHours.value}
-                                    onChange={(e) => handleInputChange('dailyRunningHours', e.target.value, 'value')}
+                                    onChange={(e) => e.target.value > 24 ? toast.error('Daily running hours cannot be greater than 24') : handleInputChange('dailyRunningHours', e.target.value, 'value')}
                                     className="w-full p-2 bg-transparent text-white rounded-md border border-[#607797] focus:outline-none focus:border-[#d45815]"
                                     placeholder="Enter hours"
                                 />

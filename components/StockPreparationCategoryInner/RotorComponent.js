@@ -72,8 +72,14 @@ const RotorComponent = ({ currentState = true, setIsZoomOpen, optimalState = tru
                             <Image src="/icon-exp.png" width={24} height={24} alt="expand" className='h-3 w-3' />
                         </div>
                         {
-                            optimalStateimg &&
-                            <Swiper slidesPerView={1} pagination={{ clickable: true }} modules={[Pagination]} className='w-full h-full'>
+                            optimalStateimg?.length &&
+                            <Swiper 
+                                slidesPerView={1} 
+                                pagination={{ clickable: true }} 
+                                modules={[Pagination]} 
+                                className='w-full h-full' 
+                                key={optimalStateimg?.length} // Add key to force re-render when images change
+                            >
                                 {
                                     optimalStateimg?.map((item, index) => (
                                         <SwiperSlide key={index}>
